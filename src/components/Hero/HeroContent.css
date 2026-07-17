@@ -1,0 +1,149 @@
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(1.5rem, 4vh, 3rem);
+  min-height: 0;
+  padding: 0.5rem 0 0.25rem;
+}
+
+/* ---------- Identity (top / right) ---------- */
+
+.hero-identity {
+  align-self: flex-end;
+  max-width: 28rem;
+  text-align: right;
+}
+
+.hero-identity__name {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.hero-identity__role {
+  margin: 0.55rem 0 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* Bead + line divider (reference-style design detail) */
+.hero-rule {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin: 1rem 0 0.9rem;
+}
+
+.hero-rule__bead {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.hero-rule__line {
+  width: min(14rem, 55vw);
+  height: 1.5px;
+  background: var(--color-accent);
+}
+
+.hero-identity__quote {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.hero-identity__dates {
+  margin: 0.65rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.hero-identity__dates-sep {
+  margin: 0 0.4rem;
+  color: var(--color-accent);
+}
+
+/* ---------- Pitch (left) ---------- */
+
+.hero-pitch {
+  align-self: flex-start;
+  max-width: 34rem;
+  text-align: left;
+}
+
+.hero-pitch__greeting {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.hero-pitch__headline {
+  margin: 0 0 1.1rem;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.hero-pitch__bio {
+  margin: 0 0 1.75rem;
+  max-width: 30rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.hero-pitch__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    min-height: 0;
+    gap: 1.75rem;
+  }
+
+  .hero-identity {
+    align-self: stretch;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .hero-rule {
+    justify-content: flex-start;
+  }
+
+  .hero-pitch {
+    max-width: 100%;
+  }
+}

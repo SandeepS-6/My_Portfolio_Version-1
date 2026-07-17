@@ -1,0 +1,43 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 100%;
+  padding: 2rem var(--page-pad) 2.5rem;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+/* Content stays above the floating badges */
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  height: 100%;
+  min-height: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* Re-enable clicks on real content (buttons, links) */
+.hero__inner > * {
+  pointer-events: auto;
+}
+
+/*
+  Full-bleed skills cloud behind the copy.
+  Positions are % of this Hero section.
+*/
+.hero__skills {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 1.25rem var(--page-pad) 1.5rem;
+  }
+}

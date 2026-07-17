@@ -1,0 +1,37 @@
+/* Tall track = scroll distance while hero stays pinned */
+.scroll-scene {
+  position: relative;
+  height: 220vh;
+  background: var(--color-bg);
+}
+
+.scroll-scene__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/* Real left gap — width driven by scroll progress */
+.scroll-scene__gap {
+  flex-shrink: 0;
+  height: 100%;
+  overflow: hidden;
+  will-change: width;
+}
+
+/* Hero fills remaining width and full viewport height */
+.scroll-scene__hero {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  /* On small screens, keep a shorter transition */
+  .scroll-scene {
+    height: 180vh;
+  }
+}

@@ -1,0 +1,36 @@
+.sidebar-slot {
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.35s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.sidebar-slot--visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.sidebar-slot__inner {
+  height: 100%;
+  padding: 1.5rem 1rem;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg-soft);
+}
+
+.sidebar-slot__label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.sidebar-slot__hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}

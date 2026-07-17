@@ -1,0 +1,19 @@
+.home {
+  background: var(--color-bg);
+}
+
+/* After the hero transition, main column can sit beside a fixed rail later */
+.home__content {
+  position: relative;
+  background: var(--color-bg);
+}
+
+@media (min-width: 769px) {
+  /*
+    Match the opened gap so later sections align with the shifted hero.
+    Sidebar will live in the reserved left strip later.
+  */
+  .home__content {
+    margin-left: 220px;
+  }
+}

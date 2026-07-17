@@ -1,0 +1,55 @@
+/*
+  Portfolio color system (light)
+  Inspired by the Creative Director reference — colors & principles only.
+  Sidebar / new layout = later. Hero architecture stays as-is.
+
+  5 design principles this palette supports:
+  1. Hierarchy  — accent for headlines, muted for support copy
+  2. Contrast   — orange on cool light bg reads clearly
+  3. Balance    — calm surfaces so floating skills stay soft
+  4. Repetition — one brand orange used everywhere consistently
+  5. Whitespace — soft bg + light borders, no heavy chrome
+*/
+
+:root {
+  color-scheme: light;
+
+  /* --- Surfaces --- */
+  --color-bg: #ebeaf2;
+  --color-bg-soft: #e3e2ec;
+  --color-surface: #ffffff;
+
+  /* --- Text --- */
+  --color-text: #2a2a32;
+  --color-text-muted: #6a6a76;
+  --color-text-soft: #8e8e9a;
+  --color-text-on-accent: #ffffff;
+
+  /* --- Brand accent (single source of truth) --- */
+  --color-accent: #f17a32;
+  --color-accent-hover: #e06b24;
+  --color-accent-strong: #d45f1c;
+  --color-name: var(--color-accent);
+
+  /* --- Actions --- */
+  --color-btn-primary: var(--color-accent);
+  --color-btn-primary-text: var(--color-text-on-accent);
+  --color-btn-primary-hover: var(--color-accent-hover);
+  --color-btn-secondary-bg: transparent;
+  --color-btn-secondary-border: #cfcfd8;
+  --color-btn-secondary-hover: rgba(255, 255, 255, 0.7);
+
+  /* --- Lines / elevation --- */
+  --color-border: #d8d7e2;
+  --color-rule: #c4c3cf;
+  --shadow-soft: 0 4px 12px rgba(42, 42, 50, 0.05);
+  --shadow-button: 0 6px 16px rgba(241, 122, 50, 0.28);
+
+  /* --- Type --- */
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* --- Layout --- */
+  --page-max: 1200px;
+  --page-pad: 1.5rem;
+  --radius-pill: 999px;
+}
