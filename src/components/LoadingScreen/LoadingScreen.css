@@ -1,0 +1,114 @@
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 90; /* above the page, below the custom cursor (100) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 0 1.5rem;
+  background: var(--color-bg);
+  opacity: 1;
+  transition: opacity 0.85s ease;
+}
+
+.loading-screen--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Sentence --- */
+.loading-screen__sentence {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.55ch;
+  max-width: 28ch;
+  min-height: 2.2em; /* keep layout steady while phrases wrap */
+  align-content: center;
+  text-align: center;
+  font-size: clamp(1.6rem, 4.2vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.loading-screen__tail {
+  color: var(--color-text);
+  animation: loading-tail-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.loading-screen__tail--leaving {
+  animation: loading-tail-out 0.38s ease both;
+}
+
+@keyframes loading-tail-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes loading-tail-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(-16px);
+  }
+}
+
+/* --- Progress --- */
+.loading-screen__progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: min(420px, 72vw);
+}
+
+.loading-screen__line {
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.loading-screen__line-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transition: width 0.3s ease;
+}
+
+.loading-screen__percent {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen__tail,
+  .loading-screen__tail--leaving {
+    animation: none;
+  }
+
+  .loading-screen__line-fill {
+    transition: none;
+  }
+}

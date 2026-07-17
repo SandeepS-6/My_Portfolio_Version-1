@@ -1,36 +1,186 @@
+/*
+  Fixed left rail — spans the full viewport height on every section.
+  Hidden until the hero transition ends, then stays visible.
+*/
 .sidebar-slot {
-  height: 100%;
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-rail);
+  height: 100vh;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg-soft);
   opacity: 0;
-  transform: translateX(-12px);
-  transition: opacity 0.35s ease, transform 0.45s ease;
+  transform: translateX(-100%);
+  /* quick exit when scrolling back into the hero */
+  transition: opacity 0.2s ease, transform 0.25s ease-in;
   pointer-events: none;
 }
 
 .sidebar-slot--visible {
   opacity: 1;
   transform: translateX(0);
+  /* springy overshoot = "jump" entrance */
+  transition:
+    opacity 0.15s ease,
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: auto;
 }
 
-.sidebar-slot__inner {
-  height: 100%;
-  padding: 1.5rem 1rem;
-  border-right: 1px solid var(--color-border);
-  background: var(--color-bg-soft);
+/* --- Top: initials logo --- */
+.sidebar-slot__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: var(--shadow-button);
 }
 
-.sidebar-slot__label {
+/* --- Middle: vertical section label --- */
+.sidebar-slot__middle {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 0.45rem;
+  overflow: hidden;
+}
+
+.sidebar-slot__name,
+.sidebar-slot__role {
   margin: 0;
-  font-size: 0.75rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  animation: sidebar-label-in 0.5s ease both;
+}
+
+.sidebar-slot__name {
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.sidebar-slot__role {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+@keyframes sidebar-label-in {
+  from {
+    opacity: 0;
+    transform: rotate(180deg) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(180deg) translateY(0);
+  }
+}
+
+/* --- Bottom: hamburger → cross --- */
+.sidebar-slot__burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.sidebar-slot__burger span {
+  display: block;
+  width: 1.35rem;
+  height: 2px;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: var(--color-text);
+  transition:
+    transform 0.35s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.25s ease;
+}
+
+.sidebar-slot__burger--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.sidebar-slot__burger--open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.sidebar-slot__burger--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --- Full-screen menu overlay --- */
+.sidebar-menu {
+  position: fixed;
+  inset: 0 0 0 var(--sidebar-rail);
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.sidebar-menu--open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-menu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-left: clamp(2rem, 14vw, 11rem);
+}
+
+.sidebar-menu__link {
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.4s ease, transform 0.45s ease, color 0.2s ease;
+}
+
+.sidebar-menu--open .sidebar-menu__link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sidebar-menu__link:hover {
   color: var(--color-accent);
 }
 
-.sidebar-slot__hint {
-  margin: 0.4rem 0 0;
-  font-size: 0.85rem;
-  color: var(--color-text-soft);
+@media (max-width: 768px) {
+  /* No rail on small screens — content uses full width */
+  .sidebar-slot,
+  .sidebar-menu {
+    display: none;
+  }
 }

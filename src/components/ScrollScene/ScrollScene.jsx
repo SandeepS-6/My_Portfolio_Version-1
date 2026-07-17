@@ -1,6 +1,3 @@
-import { useRef } from "react";
-import { useScrollProgress } from "../../hooks/useScrollProgress";
-import SidebarSlot from "../SidebarSlot/SidebarSlot";
 import "./ScrollScene.css";
 
 /*
@@ -9,33 +6,27 @@ import "./ScrollScene.css";
   - Tall section creates scroll room (hero stays on screen)
   - Sticky stage is always 100vh
   - Left rail WIDTH grows with scroll → hero is pushed right for real
-  - Sidebar slot fades in only after the gap is mostly open
+  - The fixed SidebarSlot (rendered by Home) slides in over the gap
+    near the end of the shift and stays for all later sections
 */
 
-const GAP_MAX = 72; // slim rail width (matches reference sidebar)
-const SIDEBAR_SHOW_AT = 0.72; // show slot near end of shift
+const GAP_MAX = 72; // slim rail width (matches --sidebar-rail)
 
-function ScrollScene({ children }) {
-  const sectionRef = useRef(null);
-  const progress = useScrollProgress(sectionRef);
-
+function ScrollScene({ ref, progress, children }) {
   const gapWidth = progress * GAP_MAX;
-  const sidebarVisible = progress >= SIDEBAR_SHOW_AT;
 
   return (
     <section
       className="scroll-scene"
-      ref={sectionRef}
+      ref={ref}
       aria-label="Hero introduction scene"
     >
       <div className="scroll-scene__sticky">
         <div
           className="scroll-scene__gap"
           style={{ width: `${gapWidth}px` }}
-          aria-hidden={!sidebarVisible}
-        >
-          <SidebarSlot visible={sidebarVisible} />
-        </div>
+          aria-hidden="true"
+        />
 
         <div className="scroll-scene__hero">{children}</div>
       </div>
