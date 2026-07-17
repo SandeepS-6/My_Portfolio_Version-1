@@ -12,7 +12,7 @@ import "./ScrollScene.css";
   - Sidebar slot fades in only after the gap is mostly open
 */
 
-const GAP_MAX = 220; // px reserved for future sidebar
+const GAP_MAX = 72; // slim rail width (matches reference sidebar)
 const SIDEBAR_SHOW_AT = 0.72; // show slot near end of shift
 
 function ScrollScene({ children }) {

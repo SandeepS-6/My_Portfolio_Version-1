@@ -14,6 +14,6 @@
     Sidebar will live in the reserved left strip later.
   */
   .home__content {
-    margin-left: 220px;
+    margin-left: var(--sidebar-rail);
   }
 }
