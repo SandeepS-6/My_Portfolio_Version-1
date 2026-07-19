@@ -2,18 +2,28 @@
   background: var(--color-bg);
 }
 
-/* After the hero transition, main column can sit beside a fixed rail later */
 .home__content {
   position: relative;
   background: var(--color-bg);
 }
 
+/* Alternate empty sections with brand soft surface */
+.home__content > div:nth-child(even) .placeholder-section {
+  background: var(--color-bg-soft);
+}
+
 @media (min-width: 769px) {
-  /*
-    Match the opened gap so later sections align with the shifted hero.
-    Sidebar will live in the reserved left strip later.
-  */
   .home__content {
     margin-left: var(--sidebar-rail);
   }
+
+  /* No lavender rail strip beside the contact ending */
+  .home--on-contact .home__content {
+    margin-left: 0;
+  }
+}
+
+/* Match contact ending so empty edges use the same surface */
+.home--on-contact {
+  background: var(--color-contact-bg);
 }

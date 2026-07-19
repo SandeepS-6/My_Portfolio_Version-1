@@ -57,6 +57,20 @@ function Hero() {
       cloudSizeRef.current.height = hero.clientHeight;
     }
 
+    // Seed mouse at hero text center so badges react before first move
+    function seedMouseAtTextCenter() {
+      const pitch = hero.querySelector(".hero-pitch");
+      const target = pitch || hero;
+      const heroRect = hero.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      mouseRef.current.x =
+        targetRect.left + targetRect.width / 2 - heroRect.left;
+      mouseRef.current.y =
+        targetRect.top + targetRect.height / 2 - heroRect.top;
+      mouseRef.current.isInside = true;
+    }
+
     function handleMouseMove(event) {
       const rect = hero.getBoundingClientRect();
       mouseRef.current.x = event.clientX - rect.left;
@@ -69,6 +83,7 @@ function Hero() {
     }
 
     updateCloudSize();
+    seedMouseAtTextCenter();
     window.addEventListener("resize", updateCloudSize);
     hero.addEventListener("mousemove", handleMouseMove);
     hero.addEventListener("mouseleave", handleMouseLeave);

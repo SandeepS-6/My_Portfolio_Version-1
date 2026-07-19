@@ -38,19 +38,18 @@ button {
   font-family: inherit;
 }
 
-/* Magic UI SmoothCursor — hide native cursor on fine pointers only */
-@media (any-hover: hover) and (any-pointer: fine) {
-  *,
-  *::before,
-  *::after {
-    cursor: none !important;
-  }
+/* Custom cursor: hide native only while SmoothCursor is mounted */
+html.has-custom-cursor,
+html.has-custom-cursor *,
+html.has-custom-cursor *::before,
+html.has-custom-cursor *::after {
+  cursor: none !important;
+}
 
-  input,
-  textarea,
-  select {
-    cursor: text !important;
-  }
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select {
+  cursor: text !important;
 }
 
 h1,

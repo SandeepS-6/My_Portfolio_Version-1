@@ -1,15 +1,12 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
+import {
+  DOCKED_THRESHOLD,
+  getContactProgress,
+  getDockTranslate,
+  getPageScrollProgress,
+} from "./fabScroll";
 import "./FloatingActionButton.css";
-
-/*
-  Circular badge FAB — rotating "LET'S TALK • SAY HELLO" ring
-  around a centered arrow, wrapped by a scroll-progress ring.
-
-  Progress is written straight to a CSS variable from a
-  rAF-throttled scroll listener, so scrolling never re-renders React.
-  Ring color comes from the shared --color-accent token (CMS-ready).
-*/
 
 const RING_TEXT = "LET'S TALK • SAY HELLO • LET'S TALK • SAY HELLO • ";
 
@@ -19,28 +16,71 @@ function FloatingActionButton({
   disabled = false,
   offsetBottom = 0,
   showProgress = true,
+  contactSectionId = "contact",
   className = "",
 }) {
   const buttonRef = useRef(null);
+  const dockedRef = useRef(false);
 
   useEffect(() => {
-    if (!showProgress) return undefined;
-
     const el = buttonRef.current;
+    if (!el) return undefined;
+
     let frame = 0;
 
-    const update = () => {
-      frame = 0;
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const progress =
-        max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      el.style.setProperty("--fab-progress", progress.toFixed(4));
-    };
+    function writeProgress() {
+      if (!showProgress) return;
+      el.style.setProperty(
+        "--fab-progress",
+        getPageScrollProgress().toFixed(4),
+      );
+    }
 
-    const requestUpdate = () => {
+    function writeDock() {
+      const contact = document.getElementById(contactSectionId);
+      if (!contact) {
+        dockedRef.current = false;
+        el.dataset.contact = "false";
+        el.style.setProperty("--fab-tx", "0px");
+        el.style.setProperty("--fab-ty", "0px");
+        el.style.setProperty("--fab-scale", "1");
+        el.style.setProperty("--fab-progress-opacity", "1");
+        return;
+      }
+
+      const dock = getContactProgress(contact);
+      dockedRef.current = dock > DOCKED_THRESHOLD;
+      el.dataset.contact = dock > 0.35 ? "true" : "false";
+
+      if (dock <= 0) {
+        el.dataset.contact = "false";
+        el.style.setProperty("--fab-tx", "0px");
+        el.style.setProperty("--fab-ty", "0px");
+        el.style.setProperty("--fab-scale", "1");
+        el.style.setProperty("--fab-progress-opacity", "1");
+        return;
+      }
+
+      const { tx, ty, scale } = getDockTranslate(el, contact, dock);
+      el.style.setProperty("--fab-tx", `${tx.toFixed(2)}px`);
+      el.style.setProperty("--fab-ty", `${ty.toFixed(2)}px`);
+      el.style.setProperty("--fab-scale", scale.toFixed(3));
+      // Fade out orange ring as the button docks into Contact
+      el.style.setProperty(
+        "--fab-progress-opacity",
+        Math.max(0, 1 - dock).toFixed(3),
+      );
+    }
+
+    function update() {
+      frame = 0;
+      writeProgress();
+      writeDock();
+    }
+
+    function requestUpdate() {
       if (!frame) frame = requestAnimationFrame(update);
-    };
+    }
 
     update();
     window.addEventListener("scroll", requestUpdate, { passive: true });
@@ -51,7 +91,11 @@ function FloatingActionButton({
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
-  }, [showProgress]);
+  }, [showProgress, contactSectionId]);
+
+  function handleClick(event) {
+    if (onClick) onClick(event, { docked: dockedRef.current });
+  }
 
   return (
     <button
@@ -59,7 +103,7 @@ function FloatingActionButton({
       type="button"
       className={`fab${className ? ` ${className}` : ""}`}
       style={{ "--fab-offset-bottom": `${offsetBottom}px` }}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       aria-label={label}
       title={label}

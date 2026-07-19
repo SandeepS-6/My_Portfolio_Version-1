@@ -1,8 +1,3 @@
-/*
-  Local cookie-consent persistence.
-  Essential cookies are always allowed; optional ones need Accept All.
-*/
-
 export const CONSENT_STORAGE_KEY = "portfolio.cookieConsent.v1";
 export const CONSENT_VERSION = 1;
 export const CONSENT_TTL_MS = 1000 * 60 * 60 * 24 * 180; // 180 days

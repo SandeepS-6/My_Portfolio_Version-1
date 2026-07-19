@@ -1,10 +1,5 @@
 import api from "./api";
 
-/*
-  Fire-and-forget consent sync.
-  Never blocks the UI if the API is offline.
-*/
-
 export function syncCookieConsent(consent) {
   if (!consent) return Promise.resolve(null);
 

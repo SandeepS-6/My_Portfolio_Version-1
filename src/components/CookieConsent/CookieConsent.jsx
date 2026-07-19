@@ -30,9 +30,9 @@ function CookieConsent({ onVisibilityChange }) {
       return;
     }
 
-    const publish = () => {
+    function publish() {
       onVisibilityChange(true, node.getBoundingClientRect().height);
-    };
+    }
 
     publish();
 
@@ -53,7 +53,6 @@ function CookieConsent({ onVisibilityChange }) {
   }
 
   function openSettings() {
-    // Placeholder until the settings panel ships
     console.info("Cookie Settings — coming soon");
   }
 

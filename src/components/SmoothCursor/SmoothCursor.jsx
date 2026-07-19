@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useSpring } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 const DESKTOP_POINTER_QUERY = "(any-hover: hover) and (any-pointer: fine)";
 
-function isTrackablePointer(pointerType) {
-  return pointerType !== "touch";
+function isMousePointer(event) {
+  return event.pointerType === "mouse" || event.pointerType === "";
 }
 
 function DefaultCursorSVG() {
@@ -70,8 +70,21 @@ function DefaultCursorSVG() {
   );
 }
 
+function snap(motionValue, value) {
+  if (typeof motionValue.jump === "function") {
+    motionValue.jump(value);
+  } else {
+    motionValue.set(value);
+  }
+}
+
+/*
+  Mounted from app start so we always know the real mouse position.
+  Paints only when `active` — forced to clientX/clientY (never top-left 0,0).
+*/
 export function SmoothCursor({
   cursor = <DefaultCursorSVG />,
+  active = false,
   springConfig = {
     damping: 45,
     stiffness: 400,
@@ -79,16 +92,21 @@ export function SmoothCursor({
     restDelta: 0.001,
   },
 }) {
-  const lastMousePos = useRef({ x: 0, y: 0 });
-  const velocity = useRef({ x: 0, y: 0 });
-  const lastUpdateTime = useRef(Date.now());
-  const previousAngle = useRef(0);
-  const accumulatedRotation = useRef(0);
-  const [isEnabled, setIsEnabled] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [readyToPaint, setReadyToPaint] = useState(false);
 
-  const cursorX = useSpring(0, springConfig);
-  const cursorY = useSpring(0, springConfig);
+  const lastPos = useRef(null);
+  const velocity = useRef({ x: 0, y: 0 });
+  const lastTime = useRef(0);
+  const prevAngle = useRef(0);
+  const accumulatedRotation = useRef(0);
+  const activeRef = useRef(active);
+  activeRef.current = active;
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const cursorX = useSpring(mouseX, springConfig);
+  const cursorY = useSpring(mouseY, springConfig);
   const rotation = useSpring(0, {
     ...springConfig,
     damping: 60,
@@ -102,139 +120,140 @@ export function SmoothCursor({
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(DESKTOP_POINTER_QUERY);
-
-    const updateEnabled = () => {
-      const nextIsEnabled = mediaQuery.matches;
-      setIsEnabled(nextIsEnabled);
-
-      if (!nextIsEnabled) {
-        setIsVisible(false);
-      }
-    };
-
-    updateEnabled();
-    mediaQuery.addEventListener("change", updateEnabled);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateEnabled);
-    };
+    const sync = () => setIsDesktop(mediaQuery.matches);
+    sync();
+    mediaQuery.addEventListener("change", sync);
+    return () => mediaQuery.removeEventListener("change", sync);
   }, []);
 
+  // Track real pointer from the first moment (even while loading / inactive)
   useEffect(() => {
-    if (!isEnabled) {
-      return;
+    if (!isDesktop) return undefined;
+
+    let moveRaf = 0;
+    let scaleTimeout = null;
+    let pending = null;
+
+    function writePosition(x, y, immediate) {
+      lastPos.current = { x, y };
+      if (immediate) {
+        snap(mouseX, x);
+        snap(mouseY, y);
+        snap(cursorX, x);
+        snap(cursorY, y);
+      } else {
+        mouseX.set(x);
+        mouseY.set(y);
+      }
     }
 
-    let timeout = null;
+    function onPointerMove(event) {
+      if (!isMousePointer(event)) return;
 
-    const updateVelocity = (currentPos) => {
-      const currentTime = Date.now();
-      const deltaTime = currentTime - lastUpdateTime.current;
+      const x = event.clientX;
+      const y = event.clientY;
+      const now = performance.now();
+      const dt = now - lastTime.current;
 
-      if (deltaTime > 0) {
+      if (dt > 0 && lastTime.current > 0 && lastPos.current) {
         velocity.current = {
-          x: (currentPos.x - lastMousePos.current.x) / deltaTime,
-          y: (currentPos.y - lastMousePos.current.y) / deltaTime,
+          x: (x - lastPos.current.x) / dt,
+          y: (y - lastPos.current.y) / dt,
         };
       }
+      lastTime.current = now;
+      pending = { x, y };
 
-      lastUpdateTime.current = currentTime;
-      lastMousePos.current = currentPos;
-    };
+      if (moveRaf) return;
+      moveRaf = requestAnimationFrame(() => {
+        moveRaf = 0;
+        if (!pending) return;
 
-    const smoothPointerMove = (e) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return;
-      }
+        const { x: px, y: py } = pending;
+        pending = null;
 
-      setIsVisible(true);
+        // Before visible: hard-snap so we never animate from (0,0)
+        writePosition(px, py, !activeRef.current);
 
-      const currentPos = { x: e.clientX, y: e.clientY };
-      updateVelocity(currentPos);
+        if (!activeRef.current) return;
 
-      const speed = Math.sqrt(
-        velocity.current.x ** 2 + velocity.current.y ** 2,
-      );
-
-      cursorX.set(currentPos.x);
-      cursorY.set(currentPos.y);
-
-      if (speed > 0.1) {
-        const currentAngle =
-          Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
-          90;
-
-        let angleDiff = currentAngle - previousAngle.current;
-        if (angleDiff > 180) angleDiff -= 360;
-        if (angleDiff < -180) angleDiff += 360;
-        accumulatedRotation.current += angleDiff;
-        rotation.set(accumulatedRotation.current);
-        previousAngle.current = currentAngle;
-
-        scale.set(0.95);
-
-        if (timeout !== null) {
-          clearTimeout(timeout);
+        const speed = Math.hypot(velocity.current.x, velocity.current.y);
+        if (speed > 0.1) {
+          const angle =
+            Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
+            90;
+          let diff = angle - prevAngle.current;
+          if (diff > 180) diff -= 360;
+          if (diff < -180) diff += 360;
+          accumulatedRotation.current += diff;
+          prevAngle.current = angle;
+          rotation.set(accumulatedRotation.current);
+          scale.set(0.95);
+          if (scaleTimeout) clearTimeout(scaleTimeout);
+          scaleTimeout = setTimeout(() => scale.set(1), 150);
         }
-
-        timeout = setTimeout(() => {
-          scale.set(1);
-        }, 150);
-      }
-    };
-
-    let rafId = 0;
-    const throttledPointerMove = (e) => {
-      if (!isTrackablePointer(e.pointerType)) {
-        return;
-      }
-
-      if (rafId) return;
-
-      rafId = requestAnimationFrame(() => {
-        smoothPointerMove(e);
-        rafId = 0;
       });
-    };
+    }
 
-    document.body.style.cursor = "none";
-    window.addEventListener("pointermove", throttledPointerMove, {
-      passive: true,
-    });
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     return () => {
-      window.removeEventListener("pointermove", throttledPointerMove);
-      document.body.style.cursor = "auto";
-      if (rafId) cancelAnimationFrame(rafId);
-      if (timeout !== null) {
-        clearTimeout(timeout);
-      }
+      window.removeEventListener("pointermove", onPointerMove);
+      if (moveRaf) cancelAnimationFrame(moveRaf);
+      if (scaleTimeout) clearTimeout(scaleTimeout);
     };
-  }, [cursorX, cursorY, rotation, scale, isEnabled]);
+  }, [isDesktop, mouseX, mouseY, cursorX, cursorY, rotation, scale]);
 
-  if (!isEnabled) {
+  // Turn custom cursor on/off — always snap to live mouse first, then paint
+  useEffect(() => {
+    if (!isDesktop) return undefined;
+
+    if (!active) {
+      document.documentElement.classList.remove("has-custom-cursor");
+      setReadyToPaint(false);
+      return undefined;
+    }
+
+    const point = lastPos.current ?? {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    };
+
+    snap(mouseX, point.x);
+    snap(mouseY, point.y);
+    snap(cursorX, point.x);
+    snap(cursorY, point.y);
+    lastPos.current = point;
+
+    document.documentElement.classList.add("has-custom-cursor");
+    setReadyToPaint(true);
+
+    return () => {
+      document.documentElement.classList.remove("has-custom-cursor");
+      setReadyToPaint(false);
+    };
+  }, [isDesktop, active, mouseX, mouseY, cursorX, cursorY]);
+
+  if (!isDesktop || !active || !readyToPaint) {
     return null;
   }
 
   return (
     <motion.div
+      aria-hidden="true"
       style={{
         position: "fixed",
-        left: cursorX,
-        top: cursorY,
+        top: 0,
+        left: 0,
+        x: cursorX,
+        y: cursorY,
         translateX: "-50%",
         translateY: "-50%",
         rotate: rotation,
-        scale: scale,
-        zIndex: 100,
+        scale,
+        zIndex: 200,
         pointerEvents: "none",
         willChange: "transform",
-        opacity: isVisible ? 1 : 0,
-      }}
-      initial={false}
-      animate={{ opacity: isVisible ? 1 : 0 }}
-      transition={{
-        duration: 0.15,
       }}
     >
       {cursor}

@@ -45,6 +45,11 @@
   --shadow-soft: 0 4px 12px rgba(42, 42, 50, 0.05);
   --shadow-button: 0 6px 16px rgba(241, 122, 50, 0.28);
 
+  /* Contact ending — brand dark (same family as --color-text), not raw #000 */
+  --color-contact-bg: #2a2a32;
+  --color-contact-text: #ffffff;
+  --color-contact-muted: rgba(255, 255, 255, 0.78);
+
   /* --- Type --- */
   --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
 

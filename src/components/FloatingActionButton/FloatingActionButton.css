@@ -2,6 +2,10 @@
   --fab-offset-bottom: 0px;
   --fab-size: 6.5rem;
   --fab-progress: 0;
+  --fab-tx: 0px;
+  --fab-ty: 0px;
+  --fab-scale: 1;
+  --fab-progress-opacity: 1;
 
   position: fixed;
   right: 1.5rem;
@@ -18,14 +22,16 @@
   background: var(--color-text);
   color: var(--color-text-on-accent);
   box-shadow: 0 10px 28px rgba(42, 42, 50, 0.28);
+  transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
+    scale(var(--fab-scale));
   transition:
-    transform 0.25s cubic-bezier(0.34, 1.4, 0.64, 1),
     bottom 0.25s ease,
     box-shadow 0.25s ease;
 }
 
 .fab:hover:not(:disabled) {
-  transform: scale(1.07);
+  transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
+    scale(calc(var(--fab-scale) * 1.07));
   box-shadow: 0 14px 34px rgba(42, 42, 50, 0.34);
 }
 
@@ -39,15 +45,26 @@
   cursor: not-allowed;
 }
 
-/* --- Scroll progress ring (accent fill around the disc) --- */
+/* On the black contact ending — match white “Let’s talk” theme + brand accent */
+.fab[data-contact="true"] {
+  background: #ffffff;
+  color: var(--color-text);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.fab[data-contact="true"] .fab__arrow {
+  color: var(--color-accent);
+}
+
 .fab__progress {
   position: absolute;
   inset: -7px;
   width: calc(100% + 14px);
   height: calc(100% + 14px);
-  transform: rotate(-90deg); /* fill starts at 12 o'clock */
+  transform: rotate(-90deg);
   pointer-events: none;
   overflow: visible;
+  opacity: var(--fab-progress-opacity);
 }
 
 .fab__progress-track,
@@ -68,13 +85,12 @@
   stroke-dashoffset: calc(1 - var(--fab-progress));
 }
 
-/* --- Rotating text ring --- */
 .fab__ring {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  animation: fab-spin 14s linear infinite;
+  animation: fab-spin 14s linear infinite reverse;
 }
 
 .fab:hover:not(:disabled) .fab__ring {
@@ -94,7 +110,6 @@
   }
 }
 
-/* --- Center arrow --- */
 .fab__arrow {
   display: inline-flex;
   align-items: center;
@@ -118,5 +133,9 @@
 @media (prefers-reduced-motion: reduce) {
   .fab__ring {
     animation: none;
+  }
+
+  .fab {
+    transition: bottom 0.25s ease, box-shadow 0.25s ease;
   }
 }
