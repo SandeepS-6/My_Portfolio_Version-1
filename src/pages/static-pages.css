@@ -1,0 +1,65 @@
+/* Shared layout for simple standalone pages (Let's Talk, 404) */
+
+.static-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 3rem var(--page-pad);
+  background: var(--color-bg);
+}
+
+.static-page__eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.static-page__title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.static-page__title--giant {
+  font-size: clamp(4.5rem, 16vw, 9rem);
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.static-page__note {
+  margin: 0;
+  max-width: 30rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.static-page__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: var(--shadow-button);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.static-page__cta:hover {
+  background: var(--color-btn-primary-hover);
+  transform: translateY(-2px);
+}
