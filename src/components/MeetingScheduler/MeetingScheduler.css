@@ -1,0 +1,347 @@
+.meeting-scheduler {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  gap: 0.85rem;
+  color: var(--color-contact-text);
+  background: transparent;
+}
+
+.meeting-scheduler__bar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+
+.meeting-scheduler__host {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.meeting-scheduler__host-name {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.meeting-scheduler__title {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-contact-muted);
+}
+
+.meeting-scheduler__host-email {
+  display: inline-block;
+  margin-top: 0.08rem;
+  color: var(--color-contact-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.meeting-scheduler__host-email:hover {
+  color: var(--color-accent);
+}
+
+.meeting-scheduler__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.meeting-scheduler__durations {
+  display: inline-flex;
+  gap: 0.28rem;
+}
+
+.meeting-scheduler__chip {
+  border: 1px solid var(--color-on-dark-a22);
+  border-radius: var(--radius-pill);
+  padding: 0.32rem 0.68rem;
+  background: transparent;
+  color: var(--color-contact-muted);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.meeting-scheduler__chip--active,
+.meeting-scheduler__chip:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.meeting-scheduler__bar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-left: auto;
+}
+
+.meeting-scheduler__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--color-contact-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.meeting-scheduler__meet-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.meeting-scheduler__pick {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(120px, 0.8fr);
+  align-items: stretch;
+  border-top: 1px solid var(--color-on-dark-a14);
+  padding-top: 0.85rem;
+}
+
+.meeting-scheduler__calendar,
+.meeting-scheduler__slots {
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.meeting-scheduler__calendar {
+  padding-right: 0.95rem;
+}
+
+.meeting-scheduler__slots {
+  padding-left: 0.95rem;
+  border-left: 1px solid var(--color-on-dark-a14);
+}
+
+.meeting-scheduler__month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+}
+
+.meeting-scheduler__month-bar p {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.meeting-scheduler__month-nav {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.meeting-scheduler__month-nav button,
+.meeting-scheduler__hour-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--color-contact-muted);
+  cursor: pointer;
+}
+
+.meeting-scheduler__month-nav button {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-on-dark-a22);
+}
+
+.meeting-scheduler__month-nav button:hover,
+.meeting-scheduler__hour-toggle button:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.meeting-scheduler__weekdays,
+.meeting-scheduler__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.22rem;
+}
+
+.meeting-scheduler__weekdays {
+  margin-bottom: 0.28rem;
+}
+
+.meeting-scheduler__weekdays span {
+  text-align: center;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-contact-muted);
+}
+
+.meeting-scheduler__grid {
+  flex: 1 1 auto;
+  align-content: start;
+}
+
+.meeting-scheduler__cell {
+  aspect-ratio: 1;
+  max-height: 2.35rem;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  background: var(--color-on-dark-a06);
+  color: var(--color-contact-text);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.meeting-scheduler__cell--empty {
+  background: transparent;
+  border: none;
+}
+
+.meeting-scheduler__cell--disabled {
+  background: transparent;
+  color: var(--color-on-dark-a28);
+  cursor: default;
+}
+
+.meeting-scheduler__cell--selected {
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.meeting-scheduler__cell--today:not(.meeting-scheduler__cell--selected) {
+  box-shadow: inset 0 -2px 0 var(--color-accent);
+}
+
+.meeting-scheduler__cell:not(:disabled):hover {
+  border-color: var(--color-accent-a60);
+}
+
+.meeting-scheduler__slots-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.meeting-scheduler__slots-head p {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.meeting-scheduler__hour-toggle {
+  display: inline-flex;
+  border: 1px solid var(--color-on-dark-a20);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.meeting-scheduler__hour-toggle button {
+  padding: 0.24rem 0.45rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+}
+
+.meeting-scheduler__hour-toggle button.is-active {
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.meeting-scheduler__slot-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: auto;
+}
+
+.meeting-scheduler__slot {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--color-on-dark-a22);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-contact-text);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.meeting-scheduler__slot:hover,
+.meeting-scheduler__slot--selected {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.meeting-scheduler__empty {
+  margin: 0.2rem 0 0;
+  color: var(--color-contact-muted);
+  font-size: 0.8rem;
+}
+
+.meeting-scheduler__error {
+  margin: 0.45rem 0 0;
+  color: var(--color-error);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .meeting-scheduler {
+    height: auto;
+  }
+
+  .meeting-scheduler__bar-meta {
+    margin-left: 0;
+  }
+
+  .meeting-scheduler__pick {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-scheduler__calendar {
+    padding-right: 0;
+  }
+
+  .meeting-scheduler__slots {
+    border-left: none;
+    border-top: 1px solid var(--color-on-dark-a14);
+    padding-left: 0;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .meeting-scheduler__slot-list {
+    max-height: 220px;
+  }
+}

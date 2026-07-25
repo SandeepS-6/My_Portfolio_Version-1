@@ -6,7 +6,7 @@
   z-index: 85;
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
-  box-shadow: 0 -8px 28px rgba(42, 42, 50, 0.08);
+  box-shadow: var(--shadow-cookie);
 }
 
 .cookie-consent__inner {
@@ -35,7 +35,7 @@
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background: rgba(241, 122, 50, 0.12);
+  background: var(--color-accent-a12);
   color: var(--color-accent);
 }
 

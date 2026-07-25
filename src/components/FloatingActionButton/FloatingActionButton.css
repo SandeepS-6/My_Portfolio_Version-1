@@ -1,38 +1,59 @@
-.fab {
+.fab-shell {
   --fab-offset-bottom: 0px;
-  --fab-size: 6.5rem;
+  --fab-size: 5.35rem;
+
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + var(--fab-offset-bottom));
+  z-index: 80;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  pointer-events: none;
+}
+
+.fab-shell > .fab,
+.fab-shell > .fab-hint {
+  pointer-events: auto;
+}
+
+.fab {
   --fab-progress: 0;
   --fab-tx: 0px;
   --fab-ty: 0px;
   --fab-scale: 1;
   --fab-progress-opacity: 1;
 
-  position: fixed;
-  right: 1.5rem;
-  bottom: calc(1.5rem + var(--fab-offset-bottom));
-  z-index: 80;
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--fab-size);
-  height: var(--fab-size);
+  width: 100%;
+  height: 100%;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: var(--color-text);
-  color: var(--color-text-on-accent);
-  box-shadow: 0 10px 28px rgba(42, 42, 50, 0.28);
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      #fffdfb 0%,
+      color-mix(in srgb, var(--color-surface) 80%, var(--color-bg-soft)) 55%,
+      color-mix(in srgb, var(--color-bg-soft) 65%, #e8e4ef) 100%
+    );
+  color: var(--color-text);
+  box-shadow: var(--shadow-fab);
   transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
     scale(var(--fab-scale));
   transition:
-    bottom 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+  animation: fab-float 4.8s ease-in-out infinite;
+  overflow: visible;
 }
 
 .fab:hover:not(:disabled) {
   transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
     scale(calc(var(--fab-scale) * 1.07));
-  box-shadow: 0 14px 34px rgba(42, 42, 50, 0.34);
+  box-shadow: var(--shadow-fab-hover);
 }
 
 .fab:focus-visible {
@@ -45,15 +66,10 @@
   cursor: not-allowed;
 }
 
-/* On the black contact ending — match white “Let’s talk” theme + brand accent */
+/* Near contact — stronger shadow; pause float while docking */
 .fab[data-contact="true"] {
-  background: #ffffff;
-  color: var(--color-text);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-}
-
-.fab[data-contact="true"] .fab__arrow {
-  color: var(--color-accent);
+  box-shadow: var(--shadow-fab-contact);
+  animation: none;
 }
 
 .fab__progress {
@@ -65,6 +81,7 @@
   pointer-events: none;
   overflow: visible;
   opacity: var(--fab-progress-opacity);
+  z-index: 2;
 }
 
 .fab__progress-track,
@@ -85,57 +102,184 @@
   stroke-dashoffset: calc(1 - var(--fab-progress));
 }
 
-.fab__ring {
-  position: absolute;
-  inset: 0;
+.fab__face {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.78rem;
   width: 100%;
   height: 100%;
-  animation: fab-spin 14s linear infinite reverse;
+  border-radius: 50%;
+  box-shadow: inset 0 -8px 18px var(--color-ink-a08);
 }
 
-.fab:hover:not(:disabled) .fab__ring {
-  animation-duration: 7s;
+.fab__eye {
+  position: relative;
+  display: block;
+  width: 0.82rem;
+  height: 1.12rem;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow:
+    inset 0 0 0 1.5px var(--color-text),
+    0 1px 2px var(--color-ink-a12);
+  overflow: hidden;
+  transform-origin: center;
+  transition: transform 0.08s ease;
 }
 
-.fab__ring-text {
-  fill: currentColor;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+.fab__pupil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.36rem;
+  height: 0.36rem;
+  margin: -0.18rem 0 0 -0.18rem;
+  border-radius: 50%;
+  background: var(--color-text);
+  will-change: transform;
 }
 
-@keyframes fab-spin {
-  to {
-    transform: rotate(360deg);
+.fab__face[data-blink="true"] .fab__eye {
+  transform: scaleY(0.08);
+}
+
+@keyframes fab-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
   }
 }
 
-.fab__arrow {
+/* Same chrome as the old “?” chip — watching line sits to the left */
+.fab-hint {
+  position: absolute;
+  top: -0.35rem;
+  right: calc(100% + 0.3rem);
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: max-content;
+  max-width: 9.2rem;
+  height: auto;
+  padding: 0.38rem 0.62rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
   color: var(--color-accent);
-  transition: transform 0.25s ease;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(6px, 4px, 0) scale(0.92);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    box-shadow 0.25s ease;
 }
 
-.fab:hover:not(:disabled) .fab__arrow {
-  transform: translate(2px, -2px);
+.fab-hint[data-visible="true"] {
+  opacity: 0.92;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: fab-hint-drift 5.5s ease-in-out infinite;
+}
+
+.fab-hint:hover {
+  box-shadow: 0 8px 18px var(--color-ink-a12);
+  transform: scale(1.06);
+}
+
+.fab-hint:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.fab-shell[data-contact="true"] .fab-hint {
+  opacity: 0;
+  pointer-events: none;
+  animation: none;
+}
+
+@keyframes fab-hint-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.88;
+  }
+  25% {
+    transform: translate(2px, -4px) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-1px, -6px) scale(1);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(3px, -2px) scale(1);
+    opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
-  .fab {
-    --fab-size: 5.25rem;
+  .fab-shell {
+    --fab-size: 4.5rem;
     right: 1rem;
     bottom: calc(1rem + var(--fab-offset-bottom));
+  }
+
+  .fab__face {
+    gap: 0.62rem;
+  }
+
+  .fab__eye {
+    width: 0.68rem;
+    height: 0.92rem;
+  }
+
+  .fab__pupil {
+    width: 0.3rem;
+    height: 0.3rem;
+    margin: -0.15rem 0 0 -0.15rem;
+  }
+
+  .fab-hint {
+    top: -0.25rem;
+    right: calc(100% + 0.2rem);
+    max-width: 7.8rem;
+    padding: 0.32rem 0.52rem;
+    font-size: 0.56rem;
+  }
+}
+
+/* Project detail only: lift above mobile/tablet actions dock */
+@media (max-width: 1099px) {
+  .fab-shell.fab--project-detail {
+    bottom: calc(6.15rem + var(--fab-offset-bottom));
+  }
+}
+
+@media (max-width: 768px) {
+  .fab-shell.fab--project-detail {
+    bottom: calc(5.65rem + var(--fab-offset-bottom));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fab__ring {
+  .fab,
+  .fab-hint {
     animation: none;
-  }
-
-  .fab {
-    transition: bottom 0.25s ease, box-shadow 0.25s ease;
   }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import { getFooter } from "../../services/footer";
-import mockFooter from "../../data/mockFooter";
 import "./ContactSection.css";
 
 function MarqueeRow({ word, direction }) {
@@ -21,14 +21,18 @@ function MarqueeRow({ word, direction }) {
 }
 
 function ContactSection() {
-  const [footer, setFooter] = useState(mockFooter);
+  const [footer, setFooter] = useState(null);
 
   useEffect(() => {
     let alive = true;
 
-    getFooter().then((data) => {
-      if (alive && data) setFooter(data);
-    });
+    getFooter()
+      .then((data) => {
+        if (alive && data) setFooter(data);
+      })
+      .catch((error) => {
+        console.warn("[footer] Failed to load footer data.", error.message);
+      });
 
     return () => {
       alive = false;
@@ -42,7 +46,7 @@ function ContactSection() {
     socials = [],
     backToTopLabel,
     credits,
-  } = footer;
+  } = footer || {};
 
   return (
     <section className="contact-section" id="contact" aria-label="Contact">
@@ -60,9 +64,9 @@ function ContactSection() {
         <div className="contact-section__top">
           <div className="contact-section__cluster contact-section__cluster--left">
             <p className="contact-section__eyebrow">{eyebrow}</p>
-            <a className="contact-section__cta" href={cta?.href || "#contact"}>
+            <Link className="contact-section__cta" to="/lets-talk">
               {cta?.label || "Let's talk"}
-            </a>
+            </Link>
           </div>
 
           <nav className="contact-section__socials" aria-label="Social">

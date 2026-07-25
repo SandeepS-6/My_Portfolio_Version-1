@@ -7,11 +7,6 @@
   background: var(--color-bg);
 }
 
-/* Alternate empty sections with brand soft surface */
-.home__content > div:nth-child(even) .placeholder-section {
-  background: var(--color-bg-soft);
-}
-
 @media (min-width: 769px) {
   .home__content {
     margin-left: var(--sidebar-rail);

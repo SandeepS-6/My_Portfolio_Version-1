@@ -1,0 +1,79 @@
+.about {
+  --about-band-gap: clamp(1.75rem, 4vh, 2.75rem);
+  --about-band-pad: clamp(1.5rem, 3.5vh, 2.25rem);
+  width: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.about__inner {
+  width: 100%;
+  margin: 0;
+  padding: clamp(3rem, 7vh, 5rem) clamp(1.25rem, 3.5vw, 2.75rem);
+}
+
+.about__header {
+  margin-bottom: var(--about-band-gap);
+}
+
+.about__eyebrow {
+  margin: 0 0 0.7rem;
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.about__title {
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  color: var(--color-text);
+}
+
+/* Photo | copy + snapshot share one composition */
+.about__intro {
+  display: grid;
+  gap: var(--about-band-gap);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .about__intro {
+    grid-template-columns: minmax(17rem, 26rem) minmax(0, 1fr);
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .about-profile {
+    display: contents;
+  }
+
+  .about-profile__media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+    max-width: none;
+    height: 100%;
+    min-height: 22rem;
+    aspect-ratio: auto;
+  }
+
+  .about-profile__copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .about-snapshot {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .about__inner {
+    padding: clamp(2.75rem, 6vh, 3.75rem) var(--page-pad);
+  }
+}

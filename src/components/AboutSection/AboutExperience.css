@@ -1,0 +1,124 @@
+.about-experience {
+  margin-top: var(--about-band-gap, 2rem);
+  padding-top: var(--about-band-pad, 1.75rem);
+  border-top: 1px solid var(--color-ink-a12);
+  width: 100%;
+  min-width: 0;
+}
+
+.about-experience__title {
+  margin: 0 0 clamp(1.25rem, 2.5vh, 1.75rem);
+  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.about-experience__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 3vh, 1.75rem);
+  width: 100%;
+}
+
+.about-experience__item {
+  min-width: 0;
+}
+
+.about-experience__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  height: 100%;
+  padding-top: 0.85rem;
+  border-top: 2px solid var(--color-accent);
+}
+
+.about-experience__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.about-experience__role {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.about-experience__company {
+  margin: 0.2rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.about-experience__meta {
+  text-align: left;
+}
+
+.about-experience__period {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.about-experience__place {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.about-experience__summary {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.about-experience__highlights {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.about-experience__highlights li {
+  position: relative;
+  padding-left: 0.9rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.about-experience__highlights li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: var(--color-accent);
+}
+
+@media (min-width: 900px) {
+  .about-experience__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+}

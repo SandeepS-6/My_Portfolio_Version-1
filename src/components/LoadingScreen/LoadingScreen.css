@@ -9,13 +9,24 @@
   gap: 1.25rem;
   padding: 0 1.5rem;
   background: var(--color-bg);
-  opacity: 1;
-  transition: opacity 0.5s ease;
 }
 
-.loading-screen--hidden {
-  opacity: 0;
-  pointer-events: none;
+/*
+  Circular reveal after load — scoped so other view transitions stay alone.
+  Flag + vars are set only while loadingReveal.js is mid-flight.
+*/
+html[data-loading-vt="active"]::view-transition-old(root),
+html[data-loading-vt="active"]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-loading-vt="active"]::view-transition-new(root) {
+  clip-path: var(--loading-vt-clip-from);
+}
+
+html[data-loading-vt="active"]::view-transition-group(root) {
+  animation-duration: var(--loading-vt-duration);
 }
 
 /* --- Sentence --- */

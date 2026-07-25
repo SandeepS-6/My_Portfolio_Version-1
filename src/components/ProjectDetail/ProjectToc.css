@@ -1,0 +1,311 @@
+.pd-toc-slot {
+  min-width: 0;
+}
+
+.pd-toc {
+  display: none;
+}
+
+.pd-toc__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-strong);
+}
+
+.pd-toc__list {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 0.85rem;
+  list-style: none;
+  border-left: 1px solid var(--color-border);
+}
+
+.pd-toc__indicator {
+  position: absolute;
+  left: -1.5px;
+  top: 0;
+  width: 2px;
+  height: 1.25rem;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-toc__link {
+  display: block;
+  width: 100%;
+  padding: 0.4rem 0 0.4rem 0.85rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.pd-toc__link:hover {
+  color: var(--color-text);
+}
+
+.pd-toc__link.is-active {
+  color: var(--color-accent-strong);
+}
+
+/* Mobile: full-width header + pull tab + side drawer */
+.pd-toc-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 36;
+}
+
+.pd-toc-mobile__chrome {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-soft);
+}
+
+.pd-toc-mobile__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem clamp(1rem, 2.5vw, 1.75rem) 0.55rem;
+}
+
+.pd-toc-mobile__label {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.pd-toc-mobile__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.pd-toc-mobile__current {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.92rem;
+  font-weight: 750;
+  color: var(--color-accent-strong);
+}
+
+.pd-toc-mobile__menu,
+.pd-toc-mobile__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-accent-strong);
+  cursor: pointer;
+}
+
+.pd-toc-mobile__sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  pointer-events: none;
+  transition: grid-template-rows 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pd-toc-mobile__sub-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding: 0 clamp(1rem, 2.5vw, 1.75rem);
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    padding 0.3s ease;
+}
+
+.pd-toc-mobile__sub.is-open {
+  grid-template-rows: 1fr;
+  pointer-events: auto;
+}
+
+.pd-toc-mobile__sub.is-open .pd-toc-mobile__sub-inner {
+  padding: 0.15rem clamp(1rem, 2.5vw, 1.75rem) 0.55rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pd-toc-mobile__sub .pd-info__switch-block {
+  gap: 0.4rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--color-ink-a08);
+}
+
+.pd-toc-mobile__sub .pd-info__switch-title {
+  margin: 0;
+}
+
+.pd-toc-mobile__sub .pd-info__nav {
+  gap: 0.4rem;
+}
+
+.pd-toc-mobile__sub .pd-info__arrow {
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--color-bg);
+}
+
+.pd-toc-mobile__sub .pd-info__select {
+  padding: 0.55rem 1.7rem 0.55rem 0.7rem;
+  font-size: 0.82rem;
+  background-color: var(--color-bg);
+}
+
+/* Pull handle tucked behind the header — peeks out on the right */
+.pd-toc-mobile__pull {
+  position: absolute;
+  right: clamp(1rem, 2.5vw, 1.75rem);
+  bottom: 0;
+  z-index: 1;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12rem;
+  width: 2.6rem;
+  height: 1.25rem;
+  padding: 0 0 0.1rem;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 0.85rem 0.85rem;
+  background: var(--color-surface);
+  color: var(--color-accent-strong);
+  box-shadow: 0 5px 12px var(--color-ink-a08);
+  transform: translateY(72%);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pd-toc-mobile__pull-grip {
+  width: 0.95rem;
+  height: 2px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--color-text-soft) 65%, transparent);
+}
+
+.pd-toc-mobile__pull svg {
+  display: block;
+  margin-top: -1px;
+  transition: transform 0.25s ease;
+}
+
+.pd-toc-mobile__pull.is-open {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+}
+
+.pd-toc-mobile__pull.is-open svg {
+  transform: rotate(180deg);
+}
+
+.pd-toc-mobile__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 37;
+  background: color-mix(in srgb, var(--color-ink) 42%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    visibility 0.28s ease;
+}
+
+.pd-toc-mobile__scrim.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.pd-toc-mobile__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: auto;
+  z-index: 38;
+  display: flex;
+  flex-direction: column;
+  width: min(18.5rem, 86vw);
+  height: 100dvh;
+  padding: 1.15rem 1.1rem 1.4rem;
+  border-left: 1px solid var(--color-border);
+  border-right: none;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-fab);
+  transform: translateX(105%);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: auto;
+}
+
+.pd-toc-mobile__drawer.is-open {
+  transform: translateX(0);
+}
+
+.pd-toc-mobile__drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.pd-toc-mobile__drawer-head .pd-toc__eyebrow {
+  margin: 0;
+}
+
+.pd-toc-mobile__drawer .pd-toc__list {
+  margin-top: 0.35rem;
+}
+
+@media (min-width: 900px) {
+  .pd-toc-mobile {
+    display: none;
+  }
+
+  .pd-toc-slot {
+    position: sticky;
+    top: 4.5rem;
+    align-self: start;
+    max-height: calc(100vh - 5.5rem);
+    overflow: auto;
+  }
+
+  .pd-toc {
+    display: block;
+  }
+}
+
+@media (min-width: 1100px) {
+  .pd-toc-slot {
+    top: 4.5rem;
+  }
+}

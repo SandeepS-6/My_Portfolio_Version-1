@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import mockHero from "../../data/mockHero";
 import "./SidebarSlot.css";
 
 /*
@@ -10,10 +9,8 @@ import "./SidebarSlot.css";
              the full-screen menu overlay
 */
 
-function SidebarSlot({ visible, activeSection, menuItems }) {
+function SidebarSlot({ visible, activeSection, menuItems, initials = "S" }) {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const initials = `${mockHero.firstName[0]}${mockHero.lastName[0]}`;
 
   // Lock page scroll while the menu is open
   useEffect(() => {

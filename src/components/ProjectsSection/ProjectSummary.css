@@ -1,0 +1,83 @@
+.project-summary {
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding-top: clamp(1.5rem, 3vh, 2rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.project-summary__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.project-summary__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  height: 100%;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.project-summary__heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.project-summary__title {
+  margin: 0 0 0.25rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.project-summary__detail {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.project-summary__hobbies {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.project-summary__hobbies li {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-ink-a08);
+}
+
+.project-summary__hobbies li:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .project-summary__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: 4 columns — hobbies | responsive | service | service */
+@media (min-width: 1100px) {
+  .project-summary__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

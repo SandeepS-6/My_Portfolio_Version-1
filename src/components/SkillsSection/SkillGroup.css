@@ -1,0 +1,47 @@
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.skill-group__title {
+  margin: 0;
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.skill-group__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.15rem;
+}
+
+@media (min-width: 520px) {
+  .skill-group__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .skills__groups .skill-group__list {
+    grid-template-columns: 1fr;
+  }
+
+  .skills__band--learning .skill-group__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .skills__band--learning .skill-group__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
 import Button from "../Button/Button";
+import KineticText from "../KineticText/KineticText";
 import { getHero } from "../../services/hero";
-import mockHero from "../../data/mockHero";
 import "./HeroContent.css";
 
 function HeroContent() {
-  const [hero, setHero] = useState(mockHero);
+  const [hero, setHero] = useState(null);
 
   useEffect(() => {
     let alive = true;
 
-    getHero().then((data) => {
-      if (alive && data) setHero(data);
-    });
+    getHero()
+      .then((data) => {
+        if (alive && data) setHero(data);
+      })
+      .catch((error) => {
+        console.warn("[hero] Failed to load hero.", error.message);
+      });
 
     return () => {
       alive = false;
     };
   }, []);
+
+  if (!hero) return null;
 
   const {
     firstName,
@@ -36,8 +42,8 @@ function HeroContent() {
     <div className="hero-content">
       <header className="hero-identity">
         <p className="hero-identity__name">
-          <span>{firstName}</span>
-          <span>{lastName}</span>
+          <KineticText text={firstName} as="span" />
+          <KineticText text={lastName} as="span" />
         </p>
         <p className="hero-identity__role">{role}</p>
 
@@ -57,11 +63,15 @@ function HeroContent() {
 
       <div className="hero-pitch">
         <p className="hero-pitch__greeting">{greeting}</p>
-        <h1 className="hero-pitch__headline">{headline}</h1>
+        <KineticText
+          text={headline}
+          as="h1"
+          className="hero-pitch__headline"
+        />
         <p className="hero-pitch__bio">{bio}</p>
 
         <div className="hero-pitch__actions">
-          <Button variant="primary" asLink href={primaryCta?.href || "#work"}>
+          <Button variant="primary" asLink href={primaryCta?.href || "#projects"}>
             {primaryCta?.label || "View My Work"}
             <span className="btn__icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" width="16" height="16" fill="none">

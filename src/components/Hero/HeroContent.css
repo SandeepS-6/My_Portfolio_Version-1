@@ -22,13 +22,17 @@
 .hero-identity__name {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   margin: 0;
   font-size: clamp(2rem, 5vw, 3.4rem);
-  font-weight: 800;
   line-height: 0.95;
   letter-spacing: -0.035em;
   text-transform: uppercase;
   color: var(--color-accent);
+}
+
+.hero-identity__name .kinetic-text {
+  justify-content: flex-end;
 }
 
 .hero-identity__role {
@@ -106,7 +110,6 @@
 .hero-pitch__headline {
   margin: 0 0 1.1rem;
   font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.035em;
   text-transform: uppercase;
@@ -137,6 +140,14 @@
     align-self: stretch;
     max-width: 100%;
     text-align: left;
+  }
+
+  .hero-identity__name {
+    align-items: flex-start;
+  }
+
+  .hero-identity__name .kinetic-text {
+    justify-content: flex-start;
   }
 
   .hero-rule {

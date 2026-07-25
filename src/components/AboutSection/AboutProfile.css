@@ -1,0 +1,99 @@
+.about-profile {
+  display: grid;
+  gap: clamp(1.5rem, 3.5vw, 2.5rem);
+  align-items: start;
+  width: 100%;
+}
+
+.about-profile__media {
+  overflow: hidden;
+  background: var(--color-bg-soft);
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.about-profile__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.about-profile:hover .about-profile__photo,
+.about__intro:hover .about-profile__photo {
+  transform: scale(1.03);
+}
+
+.about-profile__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.about-profile__name {
+  margin: 0;
+  font-size: clamp(1.85rem, 3.4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.about-profile__role {
+  margin: 0;
+  font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.about-profile__rule {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.55rem 0 0.35rem;
+}
+
+.about-profile__bead {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.about-profile__line {
+  width: min(18rem, 55%);
+  height: 1.5px;
+  background: var(--color-accent);
+}
+
+.about-profile__intro {
+  margin: 0;
+  font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text);
+  max-width: none;
+}
+
+.about-profile__summary {
+  margin: 0.15rem 0 0;
+  font-size: clamp(1rem, 1.25vw, 1.08rem);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  max-width: 40rem;
+}
+
+@media (min-width: 900px) {
+  .about-profile {
+    grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr);
+  }
+}

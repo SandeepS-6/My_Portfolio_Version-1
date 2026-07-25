@@ -33,12 +33,15 @@ function Hero() {
     let isMounted = true;
 
     async function loadSkills() {
-      const data = await getSkills();
-      if (!isMounted) return;
-
-      setSkills(data);
-      skillsDataRef.current = data;
-      badgeMotionRef.current = createMotionMap(data);
+      try {
+        const data = await getSkills();
+        if (!isMounted) return;
+        setSkills(data);
+        skillsDataRef.current = data;
+        badgeMotionRef.current = createMotionMap(data);
+      } catch (error) {
+        console.warn("[skills] Failed to load skills.", error.message);
+      }
     }
 
     loadSkills();

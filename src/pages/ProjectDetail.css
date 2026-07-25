@@ -1,0 +1,151 @@
+.project-detail {
+  --projects-squircle-radius: 1.35rem;
+  --pd-toc: 210px;
+  --pd-main: min(700px, 100%);
+  --pd-info: 340px;
+  --pd-mobile-toc: 5.15rem;
+
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      900px 420px at 88% -12%,
+      var(--color-accent-a12),
+      transparent 58%
+    ),
+    radial-gradient(
+      720px 360px at 8% -8%,
+      var(--color-accent-a07),
+      transparent 62%
+    ),
+    var(--color-bg-soft);
+  color: var(--color-text);
+  padding: calc(var(--pd-mobile-toc) + 0.75rem) clamp(1rem, 2.5vw, 1.75rem)
+    clamp(4.5rem, 10vh, 6rem);
+}
+
+.project-detail__shell {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  width: min(1360px, 100%);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.project-detail__main {
+  min-width: 0;
+  width: 100%;
+  order: 1;
+}
+
+.pd-toc-slot {
+  order: 0;
+  height: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+/* Mobile/tablet: sidebar hidden; chips removed */
+.pd-info-rail {
+  display: none;
+}
+
+.project-detail[data-squircle="true"] .pd-case__cover,
+.project-detail[data-squircle="true"] .pd-case__kind,
+.project-detail[data-squircle="true"] .tech-stack__chip,
+.project-detail[data-squircle="true"] .pd-gallery__preview,
+.project-detail[data-squircle="true"] .pd-gallery__thumb,
+.project-detail[data-squircle="true"] .pd-gallery__lightbox-btn,
+.project-detail[data-squircle="true"] .pd-showcase__screen,
+.project-detail[data-squircle="true"] .pd-actions__btn,
+.project-detail[data-squircle="true"] .pd-actions--dock,
+.project-detail[data-squircle="true"] .pd-comments__composer,
+.project-detail[data-squircle="true"] .pd-comments__card,
+.project-detail[data-squircle="true"] .pd-toc-mobile__menu,
+.project-detail[data-squircle="true"] .pd-toc-mobile__close,
+.project-detail[data-squircle="true"] .pd-toc-mobile__drawer,
+.project-detail[data-squircle="true"] .pd-info,
+.project-detail[data-squircle="true"] .pd-nav__media {
+  border-radius: var(--projects-squircle-radius);
+  corner-shape: squircle;
+}
+
+.project-detail[data-squircle="true"] .pd-case__kind,
+.project-detail[data-squircle="true"] .tech-stack__chip,
+.project-detail[data-squircle="true"] .pd-actions__btn,
+.project-detail[data-squircle="true"] .pd-gallery__lightbox-btn {
+  border-radius: calc(var(--projects-squircle-radius) * 0.55);
+}
+
+.project-detail__toast {
+  position: fixed;
+  left: 50%;
+  bottom: 4.5rem;
+  z-index: 40;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.84rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-fab);
+}
+
+.project-detail--missing {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.8rem;
+  min-height: 70vh;
+}
+
+.project-detail--missing a {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .project-detail {
+    padding-top: clamp(1.25rem, 3.5vh, 2.5rem);
+  }
+
+  .pd-toc-slot {
+    height: auto;
+    order: 0;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1099px) {
+  .project-detail__shell {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+
+  .project-detail__main {
+    order: 0;
+  }
+}
+
+@media (min-width: 1100px) {
+  .project-detail__shell {
+    grid-template-columns: var(--pd-toc) minmax(0, 1fr) var(--pd-info);
+  }
+
+  .project-detail__main {
+    order: 0;
+    width: min(var(--pd-main), 100%);
+    justify-self: center;
+  }
+
+  .pd-info-rail {
+    display: contents;
+  }
+
+  .pd-actions-dock {
+    display: none;
+  }
+
+  .project-detail__toast {
+    bottom: 1.4rem;
+  }
+}

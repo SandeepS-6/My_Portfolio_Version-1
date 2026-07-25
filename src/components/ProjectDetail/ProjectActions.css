@@ -1,0 +1,72 @@
+.pd-actions {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.pd-actions__btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  min-height: 3.35rem;
+  padding: 0.45rem 0.25rem;
+  border: 1px solid var(--color-accent-a18);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.pd-actions__btn:hover {
+  color: var(--color-accent-strong);
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.pd-actions__btn.is-on {
+  color: var(--color-text-on-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.pd-actions__btn--link {
+  text-decoration: none;
+}
+
+.pd-actions__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pd-actions--dock {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 0.45rem;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-fab);
+}
+
+.pd-actions-dock {
+  position: fixed;
+  left: 50%;
+  bottom: 0.85rem;
+  z-index: 30;
+  width: min(420px, calc(100% - 1.5rem));
+  transform: translateX(-50%);
+}
+
+@media (min-width: 1100px) {
+  .pd-actions-dock {
+    display: none;
+  }
+}

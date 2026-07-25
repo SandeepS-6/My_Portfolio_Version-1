@@ -1,56 +1,217 @@
+/* Unified CTA: label + arrow circle. Separates on hover. */
+
 .btn {
+  --btn-h: 3rem;
+  --btn-pad-x: 1.45rem;
+  --btn-nest: 0.65rem; /* circle tucks into label at rest */
+  --btn-split: 0.45rem; /* gap when separated */
+  --btn-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --btn-dur: 0.45s;
+
+  position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1.35rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid transparent;
-  font-size: 0.95rem;
-  font-weight: 700;
+  height: var(--btn-h);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   line-height: 1;
+  text-decoration: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
-    border-color 0.2s ease;
+  isolation: isolate;
+  transition: transform var(--btn-dur) var(--btn-ease);
 }
 
-.btn:hover {
+.btn:hover,
+.btn:focus-visible {
   transform: translateY(-1px);
 }
 
-.btn--primary {
-  background: var(--color-btn-primary);
-  color: var(--color-btn-primary-text);
-  box-shadow: var(--shadow-button);
+.btn:focus {
+  outline: none;
 }
 
-.btn--primary:hover {
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-pill);
+}
+
+/* --- Label (text capsule) --- */
+
+.btn__label {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 calc(var(--btn-pad-x) + var(--btn-nest)) 0 var(--btn-pad-x);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: var(--shadow-button);
+  transition:
+    transform var(--btn-dur) var(--btn-ease),
+    background var(--btn-dur) var(--btn-ease),
+    box-shadow var(--btn-dur) var(--btn-ease),
+    border-color var(--btn-dur) var(--btn-ease);
+}
+
+.btn:hover .btn__label,
+.btn:focus-visible .btn__label {
+  transform: scale(1.015);
+  box-shadow: 0 10px 24px var(--color-accent-a28);
+}
+
+.btn__text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Hide legacy icons passed by callers — arrow lives in .btn__arrow */
+.btn__text .btn__icon {
+  display: none;
+}
+
+/* Soft gloss sweep on hover */
+.btn__shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    var(--color-on-dark-a20) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--btn-ease);
+}
+
+.btn:hover .btn__shine,
+.btn:focus-visible .btn__shine {
+  transform: translateX(120%);
+}
+
+/* --- Arrow circle (visual extension, not a second control) --- */
+
+.btn__arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--btn-h);
+  height: var(--btn-h);
+  margin-left: calc(-1 * var(--btn-nest));
+  border-radius: 50%;
+  box-shadow: var(--shadow-button);
+  transform: translateX(0) scale(1);
+  transition:
+    transform var(--btn-dur) var(--btn-ease),
+    background var(--btn-dur) var(--btn-ease),
+    box-shadow var(--btn-dur) var(--btn-ease),
+    border-color var(--btn-dur) var(--btn-ease);
+}
+
+.btn__arrow svg {
+  display: block;
+  transition: transform var(--btn-dur) var(--btn-ease);
+}
+
+/* Nest clears + gap opens via one translate (compositor-friendly) */
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow {
+  transform: translateX(calc(var(--btn-nest) + var(--btn-split))) scale(1.06);
+  box-shadow: 0 10px 24px var(--color-accent-a28);
+}
+
+.btn:hover .btn__arrow svg,
+.btn:focus-visible .btn__arrow svg {
+  transform: translateX(5px);
+}
+
+/* --- Variants --- */
+
+.btn--primary .btn__label,
+.btn--primary .btn__arrow {
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn--primary:hover .btn__label,
+.btn--primary:hover .btn__arrow,
+.btn--primary:focus-visible .btn__label,
+.btn--primary:focus-visible .btn__arrow {
   background: var(--color-btn-primary-hover);
 }
 
-.btn--secondary {
+.btn--secondary .btn__label,
+.btn--secondary .btn__arrow {
   background: var(--color-btn-secondary-bg);
   color: var(--color-text);
-  border-color: var(--color-btn-secondary-border);
+  border: 1px solid var(--color-btn-secondary-border);
+  box-shadow: none;
 }
 
-.btn--secondary:hover {
+.btn--secondary:hover .btn__label,
+.btn--secondary:hover .btn__arrow,
+.btn--secondary:focus-visible .btn__label,
+.btn--secondary:focus-visible .btn__arrow {
   background: var(--color-btn-secondary-hover);
   border-color: var(--color-text-soft);
+  box-shadow: var(--shadow-soft);
 }
 
-.btn__icon {
-  display: inline-flex;
-  width: 1.15rem;
-  height: 1.15rem;
+.btn--secondary .btn__shine {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    var(--color-ink-a08) 50%,
+    transparent 60%
+  );
 }
 
-.btn__icon--circle {
-  width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 50%;
-  background: var(--color-text-on-accent);
-  color: var(--color-accent);
-  align-items: center;
-  justify-content: center;
+/* --- Responsive --- */
+
+@media (max-width: 640px) {
+  .btn {
+    --btn-h: 2.75rem;
+    --btn-pad-x: 1.2rem;
+    --btn-nest: 0.5rem;
+    --btn-split: 0.35rem;
+  }
+
+  .btn__label {
+    font-size: 0.9rem;
+  }
+
+  .btn__arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn__label,
+  .btn__arrow,
+  .btn__arrow svg,
+  .btn__shine {
+    transition: none;
+  }
+
+  .btn:hover .btn__shine,
+  .btn:focus-visible .btn__shine {
+    transform: none;
+  }
 }

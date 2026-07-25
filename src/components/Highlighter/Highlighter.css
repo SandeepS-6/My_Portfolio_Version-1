@@ -1,0 +1,45 @@
+.highlighter {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.highlighter__text {
+  position: relative;
+  z-index: 1;
+}
+
+.highlighter__mark {
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--highlighter-color, var(--color-accent));
+}
+
+.highlighter--highlight .highlighter__mark {
+  top: 0.42em;
+  bottom: 0.08em;
+  border-radius: 0.18em;
+  opacity: 0.38;
+  mix-blend-mode: multiply;
+}
+
+.highlighter--underline .highlighter__mark {
+  top: auto;
+  bottom: 0.06em;
+  height: 0.14em;
+  border-radius: 999px;
+  opacity: 0.95;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlighter__mark {
+    will-change: auto;
+  }
+}

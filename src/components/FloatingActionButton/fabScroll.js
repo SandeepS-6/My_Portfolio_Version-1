@@ -27,9 +27,9 @@ export function getContactProgress(contactEl) {
   return 1 - rect.top / vh;
 }
 
-export function getDockTranslate(buttonEl, contactEl, dock) {
+export function getDockTranslate(buttonEl, contactEl, dock, anchorEl = null) {
   const size = buttonEl.offsetWidth;
-  const styles = getComputedStyle(buttonEl);
+  const styles = getComputedStyle(anchorEl || buttonEl);
   const right = parseFloat(styles.right) || 24;
   const bottom = parseFloat(styles.bottom) || 24;
 

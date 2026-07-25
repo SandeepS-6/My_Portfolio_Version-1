@@ -1,15 +1,23 @@
-import { useCallback, useState } from "react";
-import Home from "./pages/Home";
-import LetsTalk from "./pages/LetsTalk";
-import NotFound from "./pages/NotFound";
+import { lazy, Suspense, useCallback, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import { SmoothCursor } from "./components/SmoothCursor/SmoothCursor";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SiteOverlays from "./components/SiteOverlays/SiteOverlays";
 
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
+const LetsTalk = lazy(() => import("./pages/LetsTalk"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+/* Home keeps the reveal curtain; deep links skip it so detail paints immediately. */
+function shouldShowLoadingScreen() {
+  const path = window.location.pathname;
+  return path === "/" || path === "";
+}
+
 function App() {
-  const [ready, setReady] = useState(false);
-  const [showCursor, setShowCursor] = useState(false);
+  const [ready, setReady] = useState(() => !shouldShowLoadingScreen());
+  const [showCursor, setShowCursor] = useState(() => !shouldShowLoadingScreen());
 
   const handleLoadProgress = useCallback((progress) => {
     if (progress >= 80) setShowCursor(true);
@@ -29,11 +37,15 @@ function App() {
 
       {ready && (
         <>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/lets-talk" element={<LetsTalk />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/lets-talk" element={<LetsTalk />} />
+              <Route path="/contact" element={<LetsTalk />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <SiteOverlays />
         </>
       )}

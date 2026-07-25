@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
+import { runLoadingReveal } from "./loadingReveal";
 import "./LoadingScreen.css";
 
 const PHRASES = [
@@ -15,14 +17,12 @@ const FINAL_PHRASE = "One more commit... probably.";
 
 const ROTATE_EVERY_MS = 1900;
 const TAIL_OUT_MS = 380;
-const FADE_OUT_MS = 500;
 
 function LoadingScreen({ onComplete, onProgress }) {
   const [progress, setProgress] = useState(0);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [done, setDone] = useState(false);
-  const [hidden, setHidden] = useState(false);
 
   // Lock scroll while the curtain is up (html + body)
   useEffect(() => {
@@ -72,7 +72,7 @@ function LoadingScreen({ onComplete, onProgress }) {
     return () => clearInterval(id);
   }, [done]);
 
-  // Hit 100 → final line briefly → fade straight into Hero
+  // Hit 100 → final line briefly → circular reveal into the page
   useEffect(() => {
     if (progress < 100) return;
     setDone(true);
@@ -83,16 +83,15 @@ function LoadingScreen({ onComplete, onProgress }) {
       setLeaving(false);
     }, TAIL_OUT_MS);
 
-    const startFade = setTimeout(() => setHidden(true), TAIL_OUT_MS + 280);
-    const finish = setTimeout(
-      () => onComplete(),
-      TAIL_OUT_MS + 280 + FADE_OUT_MS,
-    );
+    const startReveal = setTimeout(() => {
+      runLoadingReveal(() => {
+        flushSync(() => onComplete());
+      });
+    }, TAIL_OUT_MS + 280);
 
     return () => {
       clearTimeout(showFinal);
-      clearTimeout(startFade);
-      clearTimeout(finish);
+      clearTimeout(startReveal);
     };
   }, [progress, onComplete]);
 
@@ -100,11 +99,7 @@ function LoadingScreen({ onComplete, onProgress }) {
   const percent = Math.min(100, Math.round(progress));
 
   return (
-    <div
-      className={`loading-screen${hidden ? " loading-screen--hidden" : ""}`}
-      role="status"
-      aria-label="Loading"
-    >
+    <div className="loading-screen" role="status" aria-label="Loading">
       <p className="loading-screen__sentence">
         <span
           key={tail}
