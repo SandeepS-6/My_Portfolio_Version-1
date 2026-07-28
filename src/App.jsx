@@ -1,9 +1,10 @@
-import { lazy, Suspense, useCallback, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import { SmoothCursor } from "./components/SmoothCursor/SmoothCursor";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SiteOverlays from "./components/SiteOverlays/SiteOverlays";
+import { prefetchHero } from "./services/hero";
 
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const LetsTalk = lazy(() => import("./pages/LetsTalk"));
@@ -16,11 +17,29 @@ function shouldShowLoadingScreen() {
 }
 
 function App() {
-  const [ready, setReady] = useState(() => !shouldShowLoadingScreen());
-  const [showCursor, setShowCursor] = useState(() => !shouldShowLoadingScreen());
+  const skipLoad = !shouldShowLoadingScreen();
+  const [ready, setReady] = useState(skipLoad);
+  const [showCursor, setShowCursor] = useState(skipLoad);
+  const [heroReady, setHeroReady] = useState(skipLoad);
+
+  // Loading finishes only after hero is fetched (or failed/cached)
+  useEffect(() => {
+    if (skipLoad) return undefined;
+    let alive = true;
+    prefetchHero().finally(() => {
+      if (alive) setHeroReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [skipLoad]);
 
   const handleLoadProgress = useCallback((progress) => {
     if (progress >= 80) setShowCursor(true);
+  }, []);
+
+  const handleLoadComplete = useCallback(() => {
+    setReady(true);
   }, []);
 
   return (
@@ -30,7 +49,8 @@ function App() {
 
       {!ready && (
         <LoadingScreen
-          onComplete={() => setReady(true)}
+          contentReady={heroReady}
+          onComplete={handleLoadComplete}
           onProgress={handleLoadProgress}
         />
       )}

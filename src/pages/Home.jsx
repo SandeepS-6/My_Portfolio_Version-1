@@ -1,14 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import Hero from "../components/Hero/Hero";
 import ScrollScene from "../components/ScrollScene/ScrollScene";
 import SidebarSlot from "../components/SidebarSlot/SidebarSlot";
-import PlaceholderSection from "../components/PlaceholderSection/PlaceholderSection";
+import MobileSideMenu from "../components/MobileSideMenu/MobileSideMenu";
+import AboutSection from "../components/AboutSection/AboutSection";
 import WhatIDo from "../components/WhatIDo/WhatIDo";
+import SkillsSection from "../components/SkillsSection/SkillsSection";
 import ProjectsSection from "../components/ProjectsSection/ProjectsSection";
 import ContactSection from "../components/ContactSection/ContactSection";
-import { useScrollProgress } from "../hooks/useScrollProgress";
+import { useScrollGap } from "../hooks/useScrollGap";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { useElementOnScreen } from "../hooks/useElementOnScreen";
+import { isDarkHeroStage } from "../components/Hero/backgrounds/heroBackgrounds";
 import { getHero } from "../services/hero";
 import "./Home.css";
 
@@ -32,10 +35,16 @@ const BASE_SECTIONS = [
 ];
 
 const SECTION_IDS = BASE_SECTIONS.map((section) => section.id);
+const DARK_HERO = isDarkHeroStage();
+
+const HeroStage = memo(function HeroStage() {
+  return <Hero />;
+});
 
 function Home() {
   const sceneRef = useRef(null);
-  const progress = useScrollProgress(sceneRef);
+  const gapRef = useRef(null);
+  useScrollGap(sceneRef, gapRef);
   const [sections, setSections] = useState(BASE_SECTIONS);
 
   const activeId = useActiveSection(SECTION_IDS);
@@ -43,7 +52,9 @@ function Home() {
     sections.find((section) => section.id === activeId) ?? sections[0];
 
   const contactOnScreen = useElementOnScreen("contact");
-  const sidebarVisible = activeId !== "home" && !contactOnScreen;
+  // Start true so the rail does not flash before the first measure
+  const homeOnScreen = useElementOnScreen("home", true);
+  const sidebarVisible = !homeOnScreen && !contactOnScreen;
 
   useEffect(() => {
     let alive = true;
@@ -84,29 +95,39 @@ function Home() {
   })();
 
   return (
-    <div className={`home${contactOnScreen ? " home--on-contact" : ""}`}>
+    <div
+      className={`home${contactOnScreen ? " home--on-contact" : ""}${
+        sidebarVisible ? " home--sidebar" : ""
+      }`}
+    >
       <SidebarSlot
         visible={sidebarVisible}
         activeSection={activeSection}
         menuItems={sections}
         initials={initials}
       />
+      <MobileSideMenu
+        visible={sidebarVisible}
+        menuItems={sections}
+        activeSection={activeSection}
+        initials={initials}
+      />
 
       <div id="home">
-        <ScrollScene ref={sceneRef} progress={progress}>
-          <Hero />
+        <ScrollScene ref={sceneRef} gapRef={gapRef} dark={DARK_HERO}>
+          <HeroStage />
         </ScrollScene>
       </div>
 
       <div className="home__content">
         <div id="about">
-          <PlaceholderSection code="01" title="About" />
+          <AboutSection />
         </div>
         <div id="capabilities">
           <WhatIDo />
         </div>
         <div id="skills">
-          <PlaceholderSection code="03" title="Skills" />
+          <SkillsSection />
         </div>
         <div id="projects">
           <ProjectsSection />

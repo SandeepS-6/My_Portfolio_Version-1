@@ -1,17 +1,17 @@
 import api from "./api";
+import { mockSkillsSection } from "../data/mockSkillsSection";
 
 function isSkillsSectionPayload(data) {
-  return (
-    data &&
-    !Array.isArray(data) &&
-    Array.isArray(data.skills)
-  );
+  return data && !Array.isArray(data) && Array.isArray(data.categories);
 }
 
 export async function getSkillsSection() {
-  const { data } = await api.get("/api/skills-section");
-  if (!isSkillsSectionPayload(data)) {
-    throw new Error("Skills section API returned an unexpected shape.");
+  try {
+    const { data } = await api.get("/api/skills-section");
+    if (isSkillsSectionPayload(data)) return data;
+  } catch (error) {
+    console.warn("[skills-section] API unavailable, using mock.", error.message);
   }
-  return data;
+
+  return mockSkillsSection;
 }

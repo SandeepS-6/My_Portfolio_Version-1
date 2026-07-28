@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getWhatIDo } from "../../services/whatIDo";
-import { getWhatIDoIcon } from "./whatIDoIcons";
+import { WhatIDoIcon } from "./whatIDoIcons";
+import { bindCardAutoHover } from "./cardAutoHover";
 import { bindWhatIDoCinema } from "./whatIDoMotion";
 import "./WhatIDo.css";
 
@@ -16,8 +17,8 @@ function RibbonUnit() {
       <span className="what-i-do__marquee-word what-i-do__marquee-word--fill">
         I DO
       </span>
-      <span className="what-i-do__marquee-sep" aria-hidden="true">
-        /
+      <span className="what-i-do__marquee-gap" aria-hidden="true">
+        {"\u00A0\u00A0"}
       </span>
     </span>
   );
@@ -44,6 +45,48 @@ function RibbonTrack({ count = 16 }) {
   );
 }
 
+function WhatIDoCard({ item, index }) {
+  const num = String(index + 1).padStart(2, "0");
+  const span = item.span === 2 ? 2 : 1;
+
+  return (
+    <li className={`what-i-do__card what-i-do__card--span-${span}`}>
+      <span className="what-i-do__card-bg" aria-hidden="true">
+        {num}
+      </span>
+
+      <div className="what-i-do__card-top">
+        <span className="what-i-do__card-meta">
+          <WhatIDoIcon name={item.icon} />
+          <span className="what-i-do__phase">
+            {item.phase || "WORK"}
+            <span className="what-i-do__phase-sep" aria-hidden="true">
+              ·
+            </span>
+            {num}
+          </span>
+        </span>
+        {item.accentDot ? (
+          <span className="what-i-do__accent-dot" aria-hidden="true" />
+        ) : null}
+      </div>
+
+      <h3 className="what-i-do__card-title">
+        {item.title}
+        {item.accentPeriod ? (
+          <span className="what-i-do__accent-period" aria-hidden="true">
+            .
+          </span>
+        ) : null}
+      </h3>
+
+      {item.detail ? (
+        <p className="what-i-do__card-detail">{item.detail}</p>
+      ) : null}
+    </li>
+  );
+}
+
 function WhatIDo() {
   const sectionRef = useRef(null);
   const [data, setData] = useState(null);
@@ -66,17 +109,26 @@ function WhatIDo() {
 
   useEffect(() => {
     if (!data || !sectionRef.current) return undefined;
-    return bindWhatIDoCinema(sectionRef.current);
+
+    let cleanupCinema = () => {};
+    let cleanupHover = () => {};
+
+    const frame = window.requestAnimationFrame(() => {
+      if (!sectionRef.current) return;
+      cleanupCinema = bindWhatIDoCinema(sectionRef.current) || (() => {});
+      cleanupHover = bindCardAutoHover(sectionRef.current) || (() => {});
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      cleanupCinema();
+      cleanupHover();
+    };
   }, [data]);
 
   if (!data) return null;
 
-  const {
-    eyebrow,
-    title,
-    lead,
-    items = [],
-  } = data;
+  const { title, lead, items = [] } = data;
 
   return (
     <section
@@ -88,34 +140,15 @@ function WhatIDo() {
         <div className="what-i-do__scene">
           <div className="what-i-do__scene-inner">
             <header className="what-i-do__header">
-              {eyebrow ? (
-                <p className="what-i-do__eyebrow">{eyebrow}</p>
-              ) : null}
               {title ? <h2 className="what-i-do__title">{title}</h2> : null}
               {lead ? <p className="what-i-do__lead">{lead}</p> : null}
             </header>
 
             {items.length > 0 ? (
               <ul className="what-i-do__grid">
-                {items.map((item, index) => {
-                  const Icon = getWhatIDoIcon(item.icon);
-                  return (
-                    <li key={item.id} className="what-i-do__card">
-                      <div className="what-i-do__card-top">
-                        <span className="what-i-do__icon" aria-hidden="true">
-                          <Icon size={18} strokeWidth={1.6} />
-                        </span>
-                        <span className="what-i-do__index" aria-hidden="true">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h3 className="what-i-do__card-title">{item.title}</h3>
-                      {item.detail ? (
-                        <p className="what-i-do__card-detail">{item.detail}</p>
-                      ) : null}
-                    </li>
-                  );
-                })}
+                {items.map((item, index) => (
+                  <WhatIDoCard key={item.id} item={item} index={index} />
+                ))}
               </ul>
             ) : null}
           </div>

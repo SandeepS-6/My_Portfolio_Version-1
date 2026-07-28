@@ -1,0 +1,48 @@
+.text-reveal {
+  margin: 0;
+}
+
+.text-reveal__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-reveal__line {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+  row-gap: 0.12em;
+}
+
+.text-reveal__word {
+  position: relative;
+  display: inline-block;
+}
+
+.text-reveal__ghost {
+  opacity: 0.22;
+  color: inherit;
+}
+
+.text-reveal__fill {
+  position: absolute;
+  inset: 0;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal__ghost {
+    opacity: 0;
+  }
+
+  .text-reveal__fill {
+    opacity: 1 !important;
+  }
+}

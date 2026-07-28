@@ -17,8 +17,10 @@ const FINAL_PHRASE = "One more commit... probably.";
 
 const ROTATE_EVERY_MS = 1900;
 const TAIL_OUT_MS = 380;
+/* Hold here until hero (contentReady) finishes loading */
+const WAIT_CAP = 90;
 
-function LoadingScreen({ onComplete, onProgress }) {
+function LoadingScreen({ onComplete, onProgress, contentReady = false }) {
   const [progress, setProgress] = useState(0);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -44,19 +46,21 @@ function LoadingScreen({ onComplete, onProgress }) {
     onProgress?.(progress);
   }, [progress, onProgress]);
 
-  // Steady climb to 100 — no long stall in the high 90s
+  // Climb toward 100, but pause under WAIT_CAP until hero is ready
   useEffect(() => {
     const id = setInterval(() => {
       setProgress((current) => {
         if (current >= 100) return 100;
-        const remaining = 100 - current;
+        const cap = contentReady ? 100 : WAIT_CAP;
+        if (current >= cap) return current;
+        const remaining = cap - current;
         const step = Math.max(1.8, remaining * 0.12);
-        return Math.min(100, current + step);
+        return Math.min(cap, current + step);
       });
     }, 120);
 
     return () => clearInterval(id);
-  }, []);
+  }, [contentReady]);
 
   useEffect(() => {
     if (done) return;

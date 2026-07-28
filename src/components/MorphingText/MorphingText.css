@@ -1,0 +1,31 @@
+.morphing-text {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  line-height: 1.15;
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.morphing-text__sizer {
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.morphing-text__layer {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.morphing-text__filters {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}

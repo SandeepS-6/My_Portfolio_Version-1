@@ -73,12 +73,12 @@
 }
 
 .project-item__status--featured {
-  background: color-mix(in srgb, var(--color-accent) 88%, #1a120c);
-  color: #fff6ef;
+  background: color-mix(in srgb, var(--color-accent) 88%, var(--color-status-featured-deep));
+  color: var(--color-status-featured-text);
 }
 
 .project-item__status--featured .project-item__status-dot {
-  background: #ffe0c8;
+  background: var(--color-status-featured-dot);
 }
 
 .project-item__status--production {
@@ -91,12 +91,12 @@
 }
 
 .project-item__status--opensource {
-  background: #13233a;
-  color: #d7e8ff;
+  background: var(--color-status-opensource-bg);
+  color: var(--color-status-opensource-text);
 }
 
 .project-item__status--opensource .project-item__status-dot {
-  background: #7eb6ff;
+  background: var(--color-status-opensource);
 }
 
 .project-item__status--experiment {
@@ -109,21 +109,21 @@
 }
 
 .project-item__status--concept {
-  background: #24182e;
-  color: #f0e2ff;
+  background: var(--color-status-concept-bg);
+  color: var(--color-status-concept-text);
 }
 
 .project-item__status--concept .project-item__status-dot {
-  background: #c9a4ff;
+  background: var(--color-status-concept);
 }
 
 .project-item__status--research {
-  background: #122826;
-  color: #d7fff6;
+  background: var(--color-status-research-bg);
+  color: var(--color-status-research-text);
 }
 
 .project-item__status--research .project-item__status-dot {
-  background: #5de0c5;
+  background: var(--color-status-research);
 }
 
 .project-item__status--archived {

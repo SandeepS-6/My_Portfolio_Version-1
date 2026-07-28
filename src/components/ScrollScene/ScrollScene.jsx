@@ -6,25 +6,20 @@ import "./ScrollScene.css";
   - Tall section creates scroll room (hero stays on screen)
   - Sticky stage is always 100vh
   - Left rail WIDTH grows with scroll → hero is pushed right for real
-  - The fixed SidebarSlot (rendered by Home) slides in over the gap
-    near the end of the shift and stays for all later sections
+  - Gap width is written by useScrollGap (ref) so scroll stays off React
 */
 
-const GAP_MAX = 72; // slim rail width (matches --sidebar-rail)
-
-function ScrollScene({ ref, progress, children }) {
-  const gapWidth = progress * GAP_MAX;
-
+function ScrollScene({ ref, gapRef, dark = false, children }) {
   return (
     <section
-      className="scroll-scene"
+      className={`scroll-scene${dark ? " scroll-scene--dark" : ""}`}
       ref={ref}
       aria-label="Hero introduction scene"
     >
       <div className="scroll-scene__sticky">
         <div
           className="scroll-scene__gap"
-          style={{ width: `${gapWidth}px` }}
+          ref={gapRef}
           aria-hidden="true"
         />
 

@@ -1,0 +1,508 @@
+{
+  "squircle": {
+    "radius": "1.35rem",
+    "enabled": true
+  },
+  "labels": {
+    "back": "Back to projects",
+    "docs": "Docs",
+    "info": "Project info",
+    "live": "Live demo",
+    "role": "Role",
+    "sort": "Sort projects",
+    "tech": "Tech stack",
+    "empty": "No projects match these filters.",
+    "share": "Share",
+    "github": "GitHub",
+    "labEta": "Est. completion",
+    "search": "Search projects",
+    "details": "View project",
+    "gallery": "Gallery",
+    "kindAll": "All Projects",
+    "related": "Related projects",
+    "duration": "Duration",
+    "featured": "Featured",
+    "features": "Key features",
+    "labClose": "Close laboratory",
+    "lightbox": "Open lightbox",
+    "sortName": "Name",
+    "timeline": "Build timeline",
+    "caseStudy": "Case study",
+    "emptyHint": "Clear search or pick another filter.",
+    "statusAll": "All",
+    "hiddenLead": "You found the R&D vault — prototypes still forming behind the product floor.",
+    "sortLatest": "Latest",
+    "statusLive": "Live demos",
+    "hiddenTitle": "Experimental Lab",
+    "nextProject": "Next project",
+    "prevProject": "Previous project",
+    "searchClear": "Clear search",
+    "searchEmpty": "No matches — try another keyword.",
+    "labClearance": "Clearance granted",
+    "searchRecent": "Recent searches",
+    "sortFeatured": "Featured",
+    "statusFilter": "Filter by status",
+    "statusBuilding": "In progress",
+    "projectDetailJump": "Open project detail",
+    "searchPlaceholder": "Search by name, stack, or category…",
+    "searchSuggestions": "Suggestions"
+  },
+  "intro": {
+    "quote": null,
+    "attribution": "",
+    "highlightColor": "#f17a32",
+    "underlineColor": "#87CEFA"
+  },
+  "bottom": {
+    "grid": [
+      {
+        "id": "hobbies",
+        "type": "hobbies",
+        "items": [
+          {
+            "id": "hob-cricket",
+            "title": "Playing cricket",
+            "detail": "Weekend matches, net practice, and the joy of a clean cover drive."
+          },
+          {
+            "id": "hob-bgmi",
+            "title": "Playing BGMI",
+            "detail": "Squad drops, clutch moments, and late-night ranked grinds with friends."
+          },
+          {
+            "id": "hob-books",
+            "title": "Reading books",
+            "detail": "Fiction, product thinking, and anything that sharpens how I see the world."
+          },
+          {
+            "id": "hob-music",
+            "title": "Music & focus playlists",
+            "detail": "Beats for deep work, and quieter tracks when I need to reset."
+          },
+          {
+            "id": "hob-walks",
+            "title": "Long walks",
+            "detail": "Stepping away from the screen to come back with clearer ideas."
+          }
+        ],
+        "title": "Hobbies"
+      },
+      {
+        "id": "responsive",
+        "type": "service",
+        "title": "Responsive design",
+        "detail": "Layouts that feel intentional on every screen — phone, tablet, and desktop."
+      },
+      {
+        "id": "svc-frontend",
+        "type": "service",
+        "title": "Frontend development",
+        "detail": "Responsive React interfaces with clear hierarchy and production polish."
+      },
+      {
+        "id": "svc-fullstack",
+        "type": "service",
+        "title": "Full-stack web apps",
+        "detail": "End-to-end features with Node.js, Express, and solid API contracts."
+      }
+    ]
+  },
+  "kinds": [
+    {
+      "id": "all",
+      "label": "All Projects"
+    },
+    {
+      "id": "featured",
+      "label": "Featured"
+    },
+    {
+      "id": "production",
+      "label": "Production"
+    },
+    {
+      "id": "opensource",
+      "label": "Open Source"
+    },
+    {
+      "id": "experiments",
+      "label": "Experiments"
+    },
+    {
+      "id": "concepts",
+      "label": "Concepts"
+    },
+    {
+      "id": "research",
+      "label": "Research"
+    },
+    {
+      "id": "archived",
+      "label": "Archived"
+    }
+  ],
+  "hiddenProjects": [
+    {
+      "id": "hidden-orbit",
+      "eta": "Q4 2026",
+      "name": "Orbit Notes",
+      "image": {
+        "alt": "Abstract soft shapes preview",
+        "src": "https://images.unsplash.com/photo-1618005182384-a83fe7d61c81?auto=format&fit=crop&w=800&q=70"
+      },
+      "phase": "Development",
+      "features": [
+        "Graph view",
+        "Markdown sync",
+        "Offline draft vault"
+      ],
+      "progress": 48,
+      "techStack": [
+        "React",
+        "TypeScript",
+        "IndexedDB"
+      ],
+      "description": "A calm note graph for engineers — links between ideas without the wiki tax."
+    },
+    {
+      "id": "hidden-signal",
+      "eta": "Q1 2027",
+      "name": "Signal Desk",
+      "image": {
+        "alt": "Soft gradient abstract preview",
+        "src": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=70"
+      },
+      "phase": "Design",
+      "features": [
+        "Priority lanes",
+        "Quiet hours",
+        "Slack digest"
+      ],
+      "progress": 22,
+      "techStack": [
+        "Next.js",
+        "Node",
+        "Redis"
+      ],
+      "description": "A lightweight ops desk that surfaces only the alerts that actually matter."
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-atlas",
+      "name": "Atlas Dashboard",
+      "description": "A calm operations dashboard for tracking delivery health, alerts, and team focus — built for dense data without noise.",
+      "shortDescription": "A calm operations dashboard for tracking delivery health, alerts, and team focus — built for dense data without noise.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1551281044-8b89c0d1e0b3?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Dashboard UI on a laptop screen"
+      },
+      "techStack": [
+        {
+          "name": "React",
+          "category": "UI"
+        },
+        {
+          "name": "TypeScript",
+          "category": "Language"
+        },
+        {
+          "name": "Vite",
+          "category": "Tooling"
+        },
+        {
+          "name": "Tailwind",
+          "category": "Data"
+        },
+        {
+          "name": "Recharts",
+          "category": "Infra"
+        }
+      ],
+      "features": [
+        "Live status boards with quiet empty states",
+        "Keyboard-first filters and saved views",
+        "Role-aware navigation for ops leads"
+      ],
+      "category": "Frontend",
+      "kinds": [
+        "featured",
+        "production"
+      ],
+      "role": "Frontend Engineer",
+      "duration": "3 months",
+      "from": "Aug 2025",
+      "to": "Nov 2025",
+      "progress": null,
+      "sortDate": "2025-11-12",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "https://example.com",
+      "caseStudyUrl": "#",
+      "docsUrl": "",
+      "featured": true,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 1
+    },
+    {
+      "id": "project-northstar",
+      "name": "Northstar Portfolio",
+      "description": "A motion-led personal site with scroll storytelling, CMS-ready sections, and a booking flow that stays out of the way.",
+      "shortDescription": "A motion-led personal site with scroll storytelling, CMS-ready sections, and a booking flow that stays out of the way.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Laptop showing a clean analytics layout"
+      },
+      "techStack": [
+        {
+          "name": "React",
+          "category": "UI"
+        },
+        {
+          "name": "GSAP",
+          "category": "Language"
+        },
+        {
+          "name": "Node",
+          "category": "Tooling"
+        },
+        {
+          "name": "Express",
+          "category": "Data"
+        },
+        {
+          "name": "MongoDB",
+          "category": "Infra"
+        }
+      ],
+      "features": [
+        "Scroll-scrubbed section reveals",
+        "Mock-first content services for CMS swap",
+        "Meeting scheduler with timezone clarity"
+      ],
+      "category": "Full Stack",
+      "kinds": [
+        "featured",
+        "production"
+      ],
+      "role": "Full-stack Frontend",
+      "duration": "Ongoing",
+      "from": "Jan 2026",
+      "to": "Present",
+      "progress": 65,
+      "sortDate": "2026-06-01",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "https://example.com",
+      "caseStudyUrl": "",
+      "docsUrl": "",
+      "featured": true,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 2
+    },
+    {
+      "id": "project-harbor",
+      "name": "Harbor Docs",
+      "description": "Documentation experience for a design system — fast search, clear hierarchy, and examples that feel like the real product.",
+      "shortDescription": "Documentation experience for a design system — fast search, clear hierarchy, and examples that feel like the real product.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Developer workspace with code on screen"
+      },
+      "techStack": [
+        {
+          "name": "Next.js",
+          "category": "UI"
+        },
+        {
+          "name": "MDX",
+          "category": "Language"
+        },
+        {
+          "name": "CSS Modules",
+          "category": "Tooling"
+        },
+        {
+          "name": "Algolia",
+          "category": "Data"
+        }
+      ],
+      "features": [
+        "Component playgrounds beside docs",
+        "Token tables synced from source",
+        "Light/dark preview without theme thrash"
+      ],
+      "category": "Frontend",
+      "kinds": [
+        "production",
+        "opensource"
+      ],
+      "role": "UI Engineer",
+      "duration": "2 months",
+      "from": "Jun 2025",
+      "to": "Aug 2025",
+      "progress": null,
+      "sortDate": "2025-08-20",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "https://example.com",
+      "caseStudyUrl": "#",
+      "docsUrl": "https://example.com/docs",
+      "featured": false,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 3
+    },
+    {
+      "id": "project-ledger",
+      "name": "Ledger API",
+      "description": "A tidy billing API with clear error shapes, webhook retries, and dashboards ops can trust under load.",
+      "shortDescription": "A tidy billing API with clear error shapes, webhook retries, and dashboards ops can trust under load.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Server room with soft lighting"
+      },
+      "techStack": [
+        {
+          "name": "Node",
+          "category": "UI"
+        },
+        {
+          "name": "Express",
+          "category": "Language"
+        },
+        {
+          "name": "PostgreSQL",
+          "category": "Tooling"
+        },
+        {
+          "name": "Redis",
+          "category": "Data"
+        }
+      ],
+      "features": [
+        "Idempotent payment intents",
+        "Retry-safe webhook delivery",
+        "Ops-friendly structured logs"
+      ],
+      "category": "Backend",
+      "kinds": [
+        "production",
+        "research"
+      ],
+      "role": "Backend Engineer",
+      "duration": "4 months",
+      "from": "Jan 2025",
+      "to": "May 2025",
+      "progress": null,
+      "sortDate": "2025-05-02",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "https://example.com",
+      "caseStudyUrl": "#",
+      "docsUrl": "",
+      "featured": false,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 4
+    },
+    {
+      "id": "project-pulse",
+      "name": "Pulse Board",
+      "description": "Realtime collaboration board for product squads — presence, comments, and a timeline that stays readable.",
+      "shortDescription": "Realtime collaboration board for product squads — presence, comments, and a timeline that stays readable.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Team collaborating around a laptop"
+      },
+      "techStack": [
+        {
+          "name": "React",
+          "category": "UI"
+        },
+        {
+          "name": "Socket.io",
+          "category": "Language"
+        },
+        {
+          "name": "Node",
+          "category": "Tooling"
+        },
+        {
+          "name": "MongoDB",
+          "category": "Data"
+        }
+      ],
+      "features": [
+        "Presence without noisy cursors",
+        "Threaded comments on cards",
+        "Offline-tolerant draft sync"
+      ],
+      "category": "Full Stack",
+      "kinds": [
+        "featured",
+        "experiments"
+      ],
+      "role": "Full-stack Engineer",
+      "duration": "Ongoing",
+      "from": "Feb 2026",
+      "to": "Present",
+      "progress": 40,
+      "sortDate": "2026-04-18",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "",
+      "caseStudyUrl": "",
+      "docsUrl": "",
+      "featured": true,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 5
+    },
+    {
+      "id": "project-canvas",
+      "name": "Canvas Kit",
+      "description": "A planned component kit for marketing pages — expressive type, restrained motion, and CMS-friendly slots.",
+      "shortDescription": "A planned component kit for marketing pages — expressive type, restrained motion, and CMS-friendly slots.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1100&q=72",
+        "alt": "Design tools on a desk"
+      },
+      "techStack": [
+        {
+          "name": "React",
+          "category": "UI"
+        },
+        {
+          "name": "CSS",
+          "category": "Language"
+        },
+        {
+          "name": "Storybook",
+          "category": "Tooling"
+        }
+      ],
+      "features": [
+        "Token-first primitives",
+        "Motion presets that stay calm",
+        "Slot-based CMS blocks"
+      ],
+      "category": "Frontend",
+      "kinds": [
+        "concepts",
+        "archived"
+      ],
+      "role": "Frontend Engineer",
+      "duration": "Queued",
+      "from": "Q3 2026",
+      "to": "TBD",
+      "progress": 15,
+      "sortDate": "2026-07-01",
+      "githubUrl": "https://github.com/",
+      "liveUrl": "",
+      "caseStudyUrl": "",
+      "docsUrl": "",
+      "featured": false,
+      "projectStatus": "Shipped",
+      "isVisible": true,
+      "displayOrder": 6
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getProjects } from "../../services/projects";
 import ProjectFilters from "./ProjectFilters";
 import ProjectItem from "./ProjectItem";
@@ -6,6 +7,11 @@ import ProjectsIntro from "./ProjectsIntro";
 import ProjectSummary from "./ProjectSummary";
 import HiddenProjectsEgg from "./HiddenProjectsEgg";
 import { countByStatus, filterAndSortProjects } from "./projectFilter";
+import {
+  getProjectQuery,
+  setProjectQuery,
+  subscribeProjectQuery,
+} from "./projectSearchBus";
 import {
   filterIn,
   filterOut,
@@ -16,9 +22,10 @@ import {
 import "./ProjectsSection.css";
 
 function ProjectsSection() {
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [status, setStatus] = useState("all");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(getProjectQuery);
   const [sort, setSort] = useState("latest");
   const [visible, setVisible] = useState([]);
 
@@ -26,6 +33,13 @@ function ProjectsSection() {
   const gridRef = useRef(null);
   const firstPaint = useRef(true);
   const filterRun = useRef(0);
+  const summaryPlayed = useRef(false);
+
+  useEffect(() => subscribeProjectQuery(setQuery), []);
+
+  function updateQuery(next) {
+    setProjectQuery(next);
+  }
 
   useEffect(() => {
     let alive = true;
@@ -43,6 +57,35 @@ function ProjectsSection() {
       alive = false;
     };
   }, []);
+
+  // Skills category arrows land here with ?q=...&status=all#projects
+  useEffect(() => {
+    const nextQuery = searchParams.get("q");
+    const nextStatus = searchParams.get("status");
+
+    if (nextQuery != null) setProjectQuery(nextQuery);
+    if (nextStatus === "all" || nextStatus === "live" || nextStatus === "building") {
+      setStatus(nextStatus);
+    } else if (nextQuery != null) {
+      setStatus("all");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (searchParams.get("q") == null && window.location.hash !== "#projects") {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      document.getElementById("projects")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+
+    return () => window.clearTimeout(timer);
+  }, [data, searchParams]);
 
   useEffect(() => {
     if (!data) return;
@@ -79,13 +122,22 @@ function ProjectsSection() {
 
     const clearCards =
       filterRun.current === 0
-        ? revealCards(cards)
+        ? revealCards(cards, grid)
         : (() => {
             filterIn(cards);
             return () => {};
           })();
-    const clearBars = revealProgressBars(bars);
-    const clearSummary = revealSummary(summaryNodes);
+
+    const clearBars =
+      filterRun.current === 0
+        ? revealProgressBars(bars, { trigger: grid })
+        : revealProgressBars(bars, { immediate: true });
+
+    let clearSummary = () => {};
+    if (!summaryPlayed.current && summaryNodes.length) {
+      summaryPlayed.current = true;
+      clearSummary = revealSummary(summaryNodes);
+    }
 
     return () => {
       clearCards();
@@ -94,7 +146,15 @@ function ProjectsSection() {
     };
   }, [visible]);
 
-  if (!data) return null;
+  if (!data) {
+    return (
+      <section className="projects" id="projects-panel" aria-label="Projects" aria-busy="true">
+        <div className="projects__inner">
+          <p className="projects__loading">Loading projects…</p>
+        </div>
+      </section>
+    );
+  }
 
   const {
     labels = {},
@@ -132,7 +192,7 @@ function ProjectsSection() {
           sort={sort}
           resultCount={visible.length}
           onStatus={setStatus}
-          onQuery={setQuery}
+          onQuery={updateQuery}
           onSort={setSort}
         />
 

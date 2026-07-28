@@ -1,18 +1,23 @@
 .home {
   background: var(--color-bg);
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .home__content {
   position: relative;
   background: var(--color-bg);
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 @media (min-width: 769px) {
-  .home__content {
+  /* Reserve rail space only while the sidebar is actually showing */
+  .home--sidebar .home__content {
     margin-left: var(--sidebar-rail);
   }
 
-  /* No lavender rail strip beside the contact ending */
   .home--on-contact .home__content {
     margin-left: 0;
   }
@@ -22,3 +27,4 @@
 .home--on-contact {
   background: var(--color-contact-bg);
 }
+

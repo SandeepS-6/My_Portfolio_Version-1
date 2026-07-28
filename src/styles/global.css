@@ -10,6 +10,10 @@ html,
 body {
   margin: 0;
   padding: 0;
+  /* Marquee tracks are wider than the viewport — never let them create page H-scroll */
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -22,6 +26,9 @@ body {
 
 #root {
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 img {

@@ -1,9 +1,12 @@
 .contact-section {
   position: relative;
   isolation: isolate;
+  width: 100%;
+  max-width: 100%;
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
+  overflow-x: clip;
   background: var(--color-contact-bg);
   color: var(--color-contact-text);
 }
@@ -19,16 +22,20 @@
   pointer-events: none;
   user-select: none;
   overflow: hidden;
+  overflow-x: clip;
 }
 
 .contact-section__marquee {
   overflow: hidden;
+  overflow-x: clip;
   width: 100%;
+  max-width: 100%;
 }
 
 .contact-section__track {
   display: flex;
   width: max-content;
+  max-width: none;
   will-change: transform;
 }
 
@@ -71,14 +78,26 @@
   }
 }
 
+/* Desktop / tablet: original footer layout */
 .contact-section__ui {
   position: relative;
   z-index: 1;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "cluster socials toplink"
+    ". . ."
+    "credits . .";
+  align-content: stretch;
+  column-gap: 1.5rem;
+  row-gap: 1.25rem;
   padding: clamp(1.25rem, 3vh, 2rem) clamp(1.25rem, 3.5vw, 2.75rem);
+  box-sizing: border-box;
   pointer-events: none;
 }
 
@@ -87,15 +106,16 @@
   pointer-events: auto;
 }
 
-.contact-section__top {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: start;
-  gap: 1.5rem;
+.contact-section__top,
+.contact-section__bottom {
+  display: contents;
 }
 
-.contact-section__cluster--left {
+.contact-section__cluster {
+  grid-area: cluster;
   justify-self: start;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .contact-section__eyebrow {
@@ -132,14 +152,19 @@
 }
 
 .contact-section__socials {
+  grid-area: socials;
   display: flex;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  flex-wrap: wrap;
+  gap: clamp(1rem, 3vw, 3rem);
   justify-self: center;
+  max-width: 100%;
+  min-width: 0;
   padding-top: 0.15rem;
 }
 
 .contact-section__socials a,
-.contact-section__top-link {
+.contact-section__top-link,
+.contact-section__linkedin {
   background: none;
   border: none;
   padding: 0;
@@ -154,15 +179,19 @@
 }
 
 .contact-section__socials a:hover,
-.contact-section__top-link:hover {
+.contact-section__top-link:hover,
+.contact-section__linkedin:hover {
   color: var(--color-accent);
 }
 
 .contact-section__top-link {
+  grid-area: toplink;
   justify-self: end;
+  align-self: start;
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  white-space: nowrap;
 }
 
 .contact-section__top-icon {
@@ -176,12 +205,10 @@
   color: var(--color-contact-text);
 }
 
-.contact-section__bottom {
-  display: flex;
-  align-items: flex-end;
-}
-
 .contact-section__credits {
+  grid-area: credits;
+  align-self: end;
+  justify-self: start;
   margin: 0;
   padding: 0.55rem 0.85rem;
   border: 1px solid var(--color-on-dark-a35);
@@ -193,19 +220,105 @@
   line-height: 1.2;
 }
 
-@media (max-width: 768px) {
-  .contact-section__top {
-    grid-template-columns: 1fr;
-    gap: 1.35rem;
+/* Mobile-only LinkedIn slot — hidden on web/tablet */
+.contact-section__linkedin {
+  display: none;
+}
+
+/* Tablet: keep desktop arrangement, slightly tighter */
+@media (max-width: 900px) {
+  .contact-section__ui {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-areas:
+      "cluster toplink"
+      "socials socials"
+      ". ."
+      "credits credits";
+    column-gap: 1rem;
+    row-gap: 1rem;
+    padding: 1.35rem 1.35rem 1.5rem;
   }
 
-  .contact-section__socials,
-  .contact-section__top-link {
+  .contact-section__socials {
     justify-self: start;
+    gap: 1.25rem 1.75rem;
+    padding-top: 0;
+  }
+
+  .contact-section__cta {
+    padding: 0.85rem 1.7rem;
   }
 
   .contact-section__track span {
-    font-size: clamp(3.2rem, 20vw, 5.5rem);
+    font-size: clamp(3.6rem, 14vw, 7rem);
+  }
+}
+
+/* Phone only: Let's talk right, LinkedIn text, hide Instagram + credits */
+@media (max-width: 600px) {
+  .contact-section__ui {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "eyebrow cta"
+      ". ."
+      "linkedin toplink";
+    row-gap: 0.85rem;
+    padding: 1.15rem 1.1rem 1.25rem;
+  }
+
+  .contact-section__cluster {
+    display: contents;
+  }
+
+  .contact-section__eyebrow {
+    grid-area: eyebrow;
+    align-self: center;
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    max-width: 11rem;
+  }
+
+  .contact-section__cta {
+    grid-area: cta;
+    justify-self: end;
+    align-self: start;
+    padding: 0.8rem 1.45rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+  }
+
+  .contact-section__socials,
+  .contact-section__credits {
+    display: none;
+  }
+
+  .contact-section__linkedin {
+    display: inline;
+    grid-area: linkedin;
+    align-self: end;
+    justify-self: start;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+
+  .contact-section__top-link {
+    align-self: end;
+    justify-self: end;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    gap: 0.4rem;
+  }
+
+  .contact-section__top-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .contact-section__track span {
+    font-size: clamp(3rem, 18vw, 4.75rem);
   }
 }
 

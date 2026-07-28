@@ -1,0 +1,205 @@
+/* Mobile-only header + menu — shows from 2nd section like SidebarSlot */
+.mobile-side-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-side-menu {
+    display: block;
+    pointer-events: none;
+  }
+
+  .mobile-side-menu--visible {
+    pointer-events: auto;
+  }
+
+  .mobile-side-menu .staggered-menu-wrapper.fixed-wrapper {
+    z-index: 130;
+    /* Keep header visible; panel uses its own stacking */
+    overflow: visible;
+  }
+
+  /* Fixed mobile header bar */
+  .mobile-side-menu .staggered-menu-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: var(--mobile-header-h, 3.5rem);
+    padding: 0 0.85rem;
+    padding-top: env(safe-area-inset-top, 0);
+    box-sizing: border-box;
+    align-items: center;
+    gap: 0.35rem;
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+    border-bottom: 1px solid var(--color-ink-a08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    overflow: visible;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  .mobile-side-menu--visible .staggered-menu-header {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-side-menu .sm-header-center {
+    padding: 0 0.35rem;
+  }
+
+  .mobile-side-menu .sm-toggle {
+    min-height: 2.4rem;
+    padding: 0.35rem 0.4rem 0.35rem 0.15rem;
+    margin-right: 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-text, #2a2a32);
+    overflow: visible;
+  }
+
+  .mobile-side-menu .sm-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    overflow: visible;
+  }
+
+  .mobile-side-menu .sm-icon-line {
+    background: currentColor;
+  }
+
+  .mobile-side-menu .sm-logo-label {
+    display: flex;
+  }
+
+  .mobile-side-menu .sm-toggle-textWrap {
+    --sm-toggle-width: 3.4em;
+  }
+
+  /* Section title in the middle (About, Skills, …) */
+  .mobile-header-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    margin: 0;
+    max-width: 100%;
+    animation: mobile-header-in 0.35s ease both;
+  }
+
+  .mobile-header-label__name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .mobile-header-label__sub {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Project search — medium radius, not pill */
+  .mobile-header-search {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: min(100%, 16rem);
+    height: 2.15rem;
+    padding: 0 0.65rem;
+    border: 1px solid var(--color-ink-a12);
+    border-radius: 0.65rem;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    animation: mobile-header-in 0.35s ease both;
+  }
+
+  .mobile-header-search input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .mobile-header-search input::placeholder {
+    color: var(--color-text-soft);
+  }
+
+  .mobile-header-search__clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .mobile-side-menu .sm-panel-item {
+    font-size: clamp(2rem, 11vw, 3rem);
+    letter-spacing: -1px;
+    padding-right: 1.1em;
+  }
+
+  .mobile-side-menu .sm-panel-list[data-numbering] .sm-panel-item::after {
+    right: 0.15em;
+    font-size: 14px;
+  }
+
+  .mobile-side-menu .staggered-menu-panel {
+    background: var(--color-surface);
+    padding: calc(var(--mobile-header-h, 3.5rem) + env(safe-area-inset-top, 0px) + 1.5rem)
+      1.5rem 2rem;
+  }
+
+  .mobile-side-menu .sm-prelayers {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+@keyframes mobile-header-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

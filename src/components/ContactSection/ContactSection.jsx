@@ -20,6 +20,12 @@ function MarqueeRow({ word, direction }) {
   );
 }
 
+function isLinkedIn(link) {
+  const label = (link.label || "").toLowerCase();
+  const href = (link.href || "").toLowerCase();
+  return label.includes("linkedin") || href.includes("linkedin.com");
+}
+
 function ContactSection() {
   const [footer, setFooter] = useState(null);
 
@@ -48,6 +54,8 @@ function ContactSection() {
     credits,
   } = footer || {};
 
+  const linkedIn = socials.find(isLinkedIn);
+
   return (
     <section className="contact-section" id="contact" aria-label="Contact">
       <div className="contact-section__type" aria-hidden="true">
@@ -62,25 +70,27 @@ function ContactSection() {
 
       <div className="contact-section__ui">
         <div className="contact-section__top">
-          <div className="contact-section__cluster contact-section__cluster--left">
+          <div className="contact-section__cluster">
             <p className="contact-section__eyebrow">{eyebrow}</p>
             <Link className="contact-section__cta" to="/lets-talk">
               {cta?.label || "Let's talk"}
             </Link>
           </div>
 
-          <nav className="contact-section__socials" aria-label="Social">
-            {socials.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+          {socials.length > 0 ? (
+            <nav className="contact-section__socials" aria-label="Social">
+              {socials.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          ) : null}
 
           <button
             type="button"
@@ -95,7 +105,20 @@ function ContactSection() {
         </div>
 
         <div className="contact-section__bottom">
-          <p className="contact-section__credits">{credits}</p>
+          {credits ? (
+            <p className="contact-section__credits">{credits}</p>
+          ) : null}
+
+          {linkedIn ? (
+            <a
+              className="contact-section__linkedin"
+              href={linkedIn.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {linkedIn.label || "LinkedIn"}
+            </a>
+          ) : null}
         </div>
       </div>
     </section>

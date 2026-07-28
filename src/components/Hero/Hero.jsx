@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import HeroContent from "./HeroContent";
+import HeroHi from "./HeroHi";
+import HeroBackground from "./backgrounds/HeroBackground";
+import {
+  showsHeroCopy,
+  showsSkillBadges,
+  isDarkHeroStage,
+} from "./backgrounds/heroBackgrounds";
 import SkillBadge from "../SkillBadge/SkillBadge";
 import { getSkills } from "../../services/skills";
 import {
@@ -10,13 +17,10 @@ import {
 } from "./badgeMotion";
 import "./Hero.css";
 
-/*
-  Hero layout unchanged.
-  Animation loop:
-  1) continuous idle drift + wrap
-  2) mouse repulsion
-  3) badge ↔ badge soft collisions
-*/
+// Copy for recruiters on default / floating-lines; pure 3D ids use Hi + canvas.
+const SHOW_HERO_COPY = showsHeroCopy();
+const SHOW_SKILL_BADGES = showsSkillBadges();
+const DARK_STAGE = isDarkHeroStage();
 
 function Hero() {
   const [skills, setSkills] = useState([]);
@@ -30,6 +34,8 @@ function Hero() {
   const lastTimeRef = useRef(0);
 
   useEffect(() => {
+    if (!SHOW_SKILL_BADGES) return undefined;
+
     let isMounted = true;
 
     async function loadSkills() {
@@ -52,15 +58,16 @@ function Hero() {
   }, []);
 
   useEffect(() => {
+    if (!SHOW_SKILL_BADGES) return undefined;
+
     const hero = heroRef.current;
-    if (!hero) return;
+    if (!hero) return undefined;
 
     function updateCloudSize() {
       cloudSizeRef.current.width = hero.clientWidth;
       cloudSizeRef.current.height = hero.clientHeight;
     }
 
-    // Seed mouse at hero text center so badges react before first move
     function seedMouseAtTextCenter() {
       const pitch = hero.querySelector(".hero-pitch");
       const target = pitch || hero;
@@ -99,8 +106,10 @@ function Hero() {
   }, []);
 
   useEffect(() => {
+    if (!SHOW_SKILL_BADGES) return undefined;
+
     const hero = heroRef.current;
-    if (!hero) return;
+    if (!hero) return undefined;
 
     let frameId = 0;
     lastTimeRef.current = performance.now();
@@ -113,7 +122,6 @@ function Hero() {
 
       const rawDt = now - lastTimeRef.current;
       lastTimeRef.current = now;
-      // Normalize to ~60fps steps; clamp so tab-switch doesn't teleport badges
       const dt = Math.min(2.5, rawDt / 16.67);
 
       const { width, height } = cloudSizeRef.current;
@@ -133,7 +141,7 @@ function Hero() {
           width,
           height,
           dt,
-          now
+          now,
         );
 
         if (didUpdate) {
@@ -141,7 +149,6 @@ function Hero() {
         }
       }
 
-      // Separate overlapping badges after everyone has moved
       resolveBadgeCollisions(activeMotions);
 
       for (let i = 0; i < skillsList.length; i++) {
@@ -173,20 +180,35 @@ function Hero() {
   }
 
   return (
-    <section className="hero" id="home" aria-label="Introduction" ref={heroRef}>
-      <div className="hero__skills" aria-hidden="true">
-        {skills.map((skill) => (
-          <SkillBadge
-            key={skill.id}
-            skill={skill}
-            ref={setBadgeRef(skill.id)}
-          />
-        ))}
-      </div>
+    <section
+      className={`hero${SHOW_HERO_COPY ? "" : " hero--preview"}${DARK_STAGE ? " hero--dark" : ""}`}
+      id="home"
+      aria-label="Introduction"
+      ref={heroRef}
+    >
+      <HeroBackground />
 
-      <div className="hero__inner">
-        <HeroContent />
-      </div>
+      {SHOW_HERO_COPY ? (
+        <>
+          {SHOW_SKILL_BADGES ? (
+            <div className="hero__skills" aria-hidden="true">
+              {skills.map((skill) => (
+                <SkillBadge
+                  key={skill.id}
+                  skill={skill}
+                  ref={setBadgeRef(skill.id)}
+                />
+              ))}
+            </div>
+          ) : null}
+
+          <div className="hero__inner">
+            <HeroContent />
+          </div>
+        </>
+      ) : (
+        <HeroHi />
+      )}
     </section>
   );
 }

@@ -1,0 +1,126 @@
+import gsap from "gsap";
+import { REVEAL_DURATION_MS } from "../LoadingScreen/loadingReveal";
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function heroTargets(root) {
+  if (!root) {
+    return { socials: [], greeting: null, words: [], rule: null, bio: null };
+  }
+  return {
+    socials: root.querySelectorAll(".hero-socials__link"),
+    greeting: root.querySelector(".hero-pitch__greeting"),
+    words: root.querySelectorAll(".hero-pitch__word"),
+    rule: root.querySelector(".hero-rule__line"),
+    bio: root.querySelector(".hero-pitch__bio"),
+  };
+}
+
+/** Hide copy until the entrance runs (avoids static flash under the reveal). */
+export function hideHeroText(root) {
+  const { socials, greeting, words, rule, bio } = heroTargets(root);
+  const nodes = [greeting, bio, ...socials, ...words].filter(Boolean);
+
+  if (nodes.length) gsap.set(nodes, { opacity: 0, y: 0 });
+  if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: "left center" });
+}
+
+/**
+ * Hero copy entrance — runs after the loading reveal so visitors actually see it.
+ * socials → greeting → headline words → rule → bio
+ */
+export function playHeroText(root, { onReady, delayMs } = {}) {
+  if (!root) return () => {};
+
+  const reduced = prefersReducedMotion();
+  const wait = reduced ? 0 : (delayMs ?? REVEAL_DURATION_MS + 80);
+  let ctx = null;
+  let timer = 0;
+
+  const run = () => {
+    const { socials, greeting, words, rule, bio } = heroTargets(root);
+
+    if (reduced) {
+      gsap.set([greeting, ...words, rule, bio, ...socials].filter(Boolean), {
+        clearProps: "all",
+      });
+      onReady?.();
+      return;
+    }
+
+    ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+        onComplete: () => onReady?.(),
+      });
+
+      if (socials.length) {
+        tl.fromTo(
+          socials,
+          { opacity: 0, y: -12 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.07 },
+          0,
+        );
+      }
+
+      if (greeting) {
+        tl.fromTo(
+          greeting,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.65 },
+          0.08,
+        );
+      }
+
+      if (words.length) {
+        tl.fromTo(
+          words,
+          { opacity: 0, y: 42 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.95,
+            stagger: 0.055,
+            onComplete: () => onReady?.(),
+          },
+          0.22,
+        );
+      } else {
+        onReady?.();
+      }
+
+      if (rule) {
+        tl.fromTo(
+          rule,
+          { scaleX: 0 },
+          { scaleX: 1, transformOrigin: "left center", duration: 0.75 },
+          0.55,
+        );
+      }
+
+      if (bio) {
+        tl.fromTo(
+          bio,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          0.65,
+        );
+      }
+    }, root);
+  };
+
+  // Park copy invisible, then play once the curtain is open
+  hideHeroText(root);
+  if (wait <= 0) {
+    run();
+  } else {
+    timer = window.setTimeout(run, wait);
+  }
+
+  return () => {
+    if (timer) window.clearTimeout(timer);
+    if (ctx) ctx.revert();
+  };
+}

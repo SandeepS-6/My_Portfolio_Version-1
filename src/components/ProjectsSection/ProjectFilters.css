@@ -287,6 +287,13 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* Search lives in the mobile header while Projects is active */
+  .project-filters__search-wrap {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .project-filters__dropdown {
     flex: 1 1 100%;

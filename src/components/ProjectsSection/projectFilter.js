@@ -32,6 +32,16 @@ export function filterAndSortProjects(
       .join(" ")
       .toLowerCase();
 
+    // Comma-separated skill queries match if any token hits
+    const tokens = needle
+      .split(",")
+      .map((part) => part.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (tokens.length > 1) {
+      return tokens.some((token) => haystack.includes(token));
+    }
+
     return haystack.includes(needle);
   });
 

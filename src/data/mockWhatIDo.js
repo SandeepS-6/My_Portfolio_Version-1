@@ -1,5 +1,4 @@
 export const mockWhatIDo = {
-  eyebrow: "02 — Process",
   title: "How I work",
   lead: "A clear path from first conversation to lasting product — collaboration, craft, and care at every stage.",
   cinemaTitle: "WHAT I DO",
@@ -7,87 +6,118 @@ export const mockWhatIDo = {
   items: [
     {
       id: "discovery",
-      title: "Discovery & Requirements",
+      phase: "ALIGN",
+      title: "Discovery",
       detail:
         "Listening first — clarifying goals, constraints, and success metrics so the build starts on solid ground.",
       icon: "search",
+      span: 2,
+      accentPeriod: true,
+      accentDot: true,
     },
     {
       id: "strategy",
-      title: "Product Strategy",
+      phase: "ALIGN",
+      title: "Strategy",
       detail:
         "Shaping scope and priorities into a realistic roadmap that balances ambition with what ships well.",
       icon: "compass",
+      span: 1,
     },
     {
       id: "design",
-      title: "UI/UX Collaboration",
+      phase: "ALIGN",
+      title: "UI / UX",
       detail:
-        "Partnering with designers and stakeholders to turn ideas into interfaces that feel calm and intentional.",
-      icon: "palette",
+        "Partnering with designers to turn ideas into interfaces that feel calm and intentional.",
+      icon: "brain",
+      span: 1,
     },
     {
       id: "frontend",
-      title: "Frontend Development",
+      phase: "BUILD",
+      title: "Frontend",
       detail:
-        "Building fast, responsive, accessible interfaces with modern tooling and a strong focus on performance.",
+        "Fast, responsive, accessible interfaces built with modern tooling and a real focus on performance.",
       icon: "layout",
+      span: 1,
     },
     {
       id: "backend",
-      title: "Backend Development",
+      phase: "BUILD",
+      title: "Backend",
       detail:
-        "Designing reliable services, auth, and business logic that stay maintainable as the product grows.",
+        "Reliable services, auth, and business logic that stay maintainable as the product grows.",
       icon: "server",
+      span: 1,
     },
     {
       id: "api",
-      title: "API Integration",
+      phase: "BUILD",
+      title: "Integration",
       detail:
-        "Connecting systems cleanly — resilient loading states, clear contracts, and graceful failure paths.",
+        "Connecting systems cleanly — resilient loading states, clear contracts, graceful failure paths.",
       icon: "cable",
+      span: 2,
+      accentPeriod: true,
+      accentDot: true,
     },
     {
       id: "database",
-      title: "Database Architecture",
+      phase: "BUILD",
+      title: "Database",
       detail:
-        "Modeling data for clarity and scale — schemas, migrations, and queries that protect long-term velocity.",
+        "Schemas, migrations, and queries modelled for clarity and scale — protecting long-term velocity.",
       icon: "database",
+      span: 2,
     },
     {
       id: "testing",
-      title: "Testing & Quality",
+      phase: "SHIP",
+      title: "Quality",
       detail:
-        "Catching issues early with thoughtful coverage so releases feel confident, not hopeful.",
+        "Thoughtful coverage catches issues early so releases feel confident, not hopeful.",
       icon: "shield",
+      span: 1,
     },
     {
       id: "deploy",
-      title: "Deployment & DevOps",
+      phase: "SHIP",
+      title: "Deployment",
       detail:
-        "Shipping with CI/CD, environments, and production hygiene for reliable, repeatable releases.",
+        "CI/CD, environments, and production hygiene for reliable, repeatable releases.",
       icon: "rocket",
+      span: 1,
+      accentDot: true,
     },
     {
       id: "performance",
-      title: "Performance Optimization",
+      phase: "SHIP",
+      title: "Performance",
       detail:
         "Measuring and trimming — faster loads, smoother interaction, leaner bundles in the real world.",
       icon: "gauge",
+      span: 1,
     },
     {
       id: "monitor",
-      title: "Monitoring & Maintenance",
+      phase: "CARE",
+      title: "Monitoring",
       detail:
         "Keeping products healthy after launch with observability, fixes, and calm operational ownership.",
       icon: "activity",
+      span: 1,
     },
     {
       id: "feedback",
-      title: "Feedback & Iteration",
+      phase: "CARE",
+      title: "Iteration",
       detail:
-        "Closing the loop with clients — refining features from real usage so the product keeps getting better.",
+        "Closing the loop with clients — refining features from real feedback so the product keeps getting better.",
       icon: "refresh",
+      span: 2,
+      accentPeriod: true,
+      accentDot: true,
     },
   ],
 };

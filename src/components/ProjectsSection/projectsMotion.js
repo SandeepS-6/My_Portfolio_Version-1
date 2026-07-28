@@ -1,13 +1,23 @@
 /*
   GSAP helpers for the projects section.
+  First paint uses ScrollTrigger; filter swaps stay immediate.
 */
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function revealCards(cards) {
+function killTween(tween) {
+  tween.scrollTrigger?.kill();
+  tween.progress(1);
+  tween.kill();
+}
+
+export function revealCards(cards, trigger) {
   if (!cards?.length) return () => {};
 
   if (prefersReducedMotion()) {
@@ -25,13 +35,15 @@ export function revealCards(cards) {
       stagger: 0.12,
       ease: "power2.out",
       overwrite: "auto",
+      scrollTrigger: {
+        trigger: trigger || cards[0],
+        start: "top 82%",
+        once: true,
+      },
     },
   );
 
-  return () => {
-    if (tween.isActive()) tween.progress(1);
-    tween.kill();
-  };
+  return () => killTween(tween);
 }
 
 export function filterOut(cards) {
@@ -71,7 +83,7 @@ export function filterIn(cards) {
   );
 }
 
-export function revealProgressBars(bars) {
+export function revealProgressBars(bars, { trigger, immediate = false } = {}) {
   if (!bars?.length) return () => {};
 
   if (prefersReducedMotion()) {
@@ -92,19 +104,25 @@ export function revealProgressBars(bars) {
       {
         scaleX: value,
         duration: 0.9,
-        delay: 0.25,
+        delay: immediate ? 0.1 : 0.25,
         ease: "power2.out",
         transformOrigin: "left center",
         overwrite: "auto",
+        ...(immediate
+          ? {}
+          : {
+              scrollTrigger: {
+                trigger: trigger || bar.closest("[data-project-card]") || bar,
+                start: "top 82%",
+                once: true,
+              },
+            }),
       },
     );
   });
 
   return () => {
-    tweens.forEach((tween) => {
-      if (tween.isActive()) tween.progress(1);
-      tween.kill();
-    });
+    tweens.forEach(killTween);
   };
 }
 
@@ -112,22 +130,25 @@ export function revealSummary(nodes) {
   if (!nodes?.length) return () => {};
   if (prefersReducedMotion()) return () => {};
 
-  const tween = gsap.fromTo(
-    nodes,
-    { opacity: 0, y: 32 },
-    {
+  gsap.set(nodes, { opacity: 0, y: 32 });
+
+  // Each block plays when it enters — intro and bottom summary stay independent.
+  const tweens = [...nodes].map((node) =>
+    gsap.to(node, {
       opacity: 1,
       y: 0,
       duration: 0.7,
-      stagger: 0.12,
-      delay: 0.2,
       ease: "power2.out",
       overwrite: "auto",
-    },
+      scrollTrigger: {
+        trigger: node,
+        start: "top 90%",
+        once: true,
+      },
+    }),
   );
 
   return () => {
-    if (tween.isActive()) tween.progress(1);
-    tween.kill();
+    tweens.forEach(killTween);
   };
 }

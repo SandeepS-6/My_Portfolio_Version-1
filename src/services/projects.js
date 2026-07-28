@@ -1,4 +1,5 @@
 import api from "./api";
+import mockProjectsSection from "../data/mockProjectsSection.json";
 
 /*
   UI expects { labels, kinds, projects, intro, bottom, squircle, hiddenProjects }.
@@ -40,11 +41,14 @@ function buildProjectPayload(data, id) {
 }
 
 export async function getProjects() {
-  const { data } = await api.get("/api/projects");
-  if (!isSectionPayload(data)) {
-    throw new Error("Projects API returned an unexpected shape.");
+  try {
+    const { data } = await api.get("/api/projects");
+    if (isSectionPayload(data)) return data;
+  } catch (error) {
+    console.warn("[projects] API unavailable, using mock.", error.message);
   }
-  return data;
+
+  return mockProjectsSection;
 }
 
 export async function getProjectById(id) {

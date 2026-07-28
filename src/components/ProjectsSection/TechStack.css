@@ -12,15 +12,15 @@
 }
 
 .tech-stack__chip {
-  --tech-color: #6a6a76;
+  --tech-color: var(--color-text-muted);
 
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   padding: 0.32rem 0.65rem;
   border: none;
-  background: color-mix(in srgb, var(--tech-color) 78%, #1a1a22);
-  color: color-mix(in srgb, var(--tech-color) 22%, #ffffff);
+  background: color-mix(in srgb, var(--tech-color) 78%, var(--color-tech-mix-dark));
+  color: color-mix(in srgb, var(--tech-color) 22%, var(--color-on-dark));
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.01em;

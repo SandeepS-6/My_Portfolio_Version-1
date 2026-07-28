@@ -83,8 +83,8 @@
 }
 
 .pd-case__kind--featured {
-  background: color-mix(in srgb, var(--color-accent) 88%, #1a120c);
-  color: #fff6ef;
+  background: color-mix(in srgb, var(--color-accent) 88%, var(--color-status-featured-deep));
+  color: var(--color-status-featured-text);
 }
 
 .pd-case__kind--production {
@@ -93,8 +93,8 @@
 }
 
 .pd-case__kind--opensource {
-  background: #13233a;
-  color: #d7e8ff;
+  background: var(--color-status-opensource-bg);
+  color: var(--color-status-opensource-text);
 }
 
 .pd-case__kind--experiment {
@@ -103,13 +103,13 @@
 }
 
 .pd-case__kind--concept {
-  background: #24182e;
-  color: #f0e2ff;
+  background: var(--color-status-concept-bg);
+  color: var(--color-status-concept-text);
 }
 
 .pd-case__kind--research {
-  background: #122826;
-  color: #d7fff6;
+  background: var(--color-status-research-bg);
+  color: var(--color-status-research-text);
 }
 
 .pd-case__kind--archived {

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 
 /* True while any part of the element is on screen. */
-export function useElementOnScreen(id) {
-  const [onScreen, setOnScreen] = useState(false);
+export function useElementOnScreen(id, initial = false) {
+  const [onScreen, setOnScreen] = useState(initial);
 
   useEffect(() => {
-    function update() {
+    let frame = 0;
+
+    function commit() {
+      frame = 0;
       const el = document.getElementById(id);
       if (!el) {
         setOnScreen(false);
@@ -13,16 +16,23 @@ export function useElementOnScreen(id) {
       }
 
       const rect = el.getBoundingClientRect();
-      setOnScreen(rect.top < window.innerHeight && rect.bottom > 0);
+      const next = rect.top < window.innerHeight && rect.bottom > 0;
+      setOnScreen((prev) => (prev === next ? prev : next));
     }
 
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    function requestUpdate() {
+      if (frame) return;
+      frame = window.requestAnimationFrame(commit);
+    }
+
+    commit();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
 
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
     };
   }, [id]);
 

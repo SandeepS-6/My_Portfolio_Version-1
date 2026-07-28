@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { motion, useMotionValue } from "motion/react";
 
 const DESKTOP_POINTER_QUERY = "(any-hover: hover) and (any-pointer: fine)";
 
@@ -70,27 +70,13 @@ function DefaultCursorSVG() {
   );
 }
 
-function snap(motionValue, value) {
-  if (typeof motionValue.jump === "function") {
-    motionValue.jump(value);
-  } else {
-    motionValue.set(value);
-  }
-}
-
 /*
   Mounted from app start so we always know the real mouse position.
-  Paints only when `active` — forced to clientX/clientY (never top-left 0,0).
+  Paints only when `active` — follows clientX/clientY with no lag.
 */
 export function SmoothCursor({
   cursor = <DefaultCursorSVG />,
   active = false,
-  springConfig = {
-    damping: 45,
-    stiffness: 400,
-    mass: 1,
-    restDelta: 0.001,
-  },
 }) {
   const [isDesktop, setIsDesktop] = useState(false);
   const [readyToPaint, setReadyToPaint] = useState(false);
@@ -101,22 +87,13 @@ export function SmoothCursor({
   const prevAngle = useRef(0);
   const accumulatedRotation = useRef(0);
   const activeRef = useRef(active);
+  const scaleTimeout = useRef(null);
   activeRef.current = active;
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const cursorX = useSpring(mouseX, springConfig);
-  const cursorY = useSpring(mouseY, springConfig);
-  const rotation = useSpring(0, {
-    ...springConfig,
-    damping: 60,
-    stiffness: 300,
-  });
-  const scale = useSpring(1, {
-    ...springConfig,
-    stiffness: 500,
-    damping: 35,
-  });
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+  const rotation = useMotionValue(0);
+  const scale = useMotionValue(1);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(DESKTOP_POINTER_QUERY);
@@ -126,26 +103,8 @@ export function SmoothCursor({
     return () => mediaQuery.removeEventListener("change", sync);
   }, []);
 
-  // Track real pointer from the first moment (even while loading / inactive)
   useEffect(() => {
     if (!isDesktop) return undefined;
-
-    let moveRaf = 0;
-    let scaleTimeout = null;
-    let pending = null;
-
-    function writePosition(x, y, immediate) {
-      lastPos.current = { x, y };
-      if (immediate) {
-        snap(mouseX, x);
-        snap(mouseY, y);
-        snap(cursorX, x);
-        snap(cursorY, y);
-      } else {
-        mouseX.set(x);
-        mouseY.set(y);
-      }
-    }
 
     function onPointerMove(event) {
       if (!isMousePointer(event)) return;
@@ -162,49 +121,38 @@ export function SmoothCursor({
         };
       }
       lastTime.current = now;
-      pending = { x, y };
+      lastPos.current = { x, y };
 
-      if (moveRaf) return;
-      moveRaf = requestAnimationFrame(() => {
-        moveRaf = 0;
-        if (!pending) return;
+      cursorX.set(x);
+      cursorY.set(y);
 
-        const { x: px, y: py } = pending;
-        pending = null;
+      if (!activeRef.current) return;
 
-        // Before visible: hard-snap so we never animate from (0,0)
-        writePosition(px, py, !activeRef.current);
-
-        if (!activeRef.current) return;
-
-        const speed = Math.hypot(velocity.current.x, velocity.current.y);
-        if (speed > 0.1) {
-          const angle =
-            Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
-            90;
-          let diff = angle - prevAngle.current;
-          if (diff > 180) diff -= 360;
-          if (diff < -180) diff += 360;
-          accumulatedRotation.current += diff;
-          prevAngle.current = angle;
-          rotation.set(accumulatedRotation.current);
-          scale.set(0.95);
-          if (scaleTimeout) clearTimeout(scaleTimeout);
-          scaleTimeout = setTimeout(() => scale.set(1), 150);
-        }
-      });
+      const speed = Math.hypot(velocity.current.x, velocity.current.y);
+      if (speed > 0.1) {
+        const angle =
+          Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
+          90;
+        let diff = angle - prevAngle.current;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        accumulatedRotation.current += diff;
+        prevAngle.current = angle;
+        rotation.set(accumulatedRotation.current);
+        scale.set(0.95);
+        if (scaleTimeout.current) clearTimeout(scaleTimeout.current);
+        scaleTimeout.current = setTimeout(() => scale.set(1), 150);
+      }
     }
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
-      if (moveRaf) cancelAnimationFrame(moveRaf);
-      if (scaleTimeout) clearTimeout(scaleTimeout);
+      if (scaleTimeout.current) clearTimeout(scaleTimeout.current);
     };
-  }, [isDesktop, mouseX, mouseY, cursorX, cursorY, rotation, scale]);
+  }, [isDesktop, cursorX, cursorY, rotation, scale]);
 
-  // Turn custom cursor on/off — always snap to live mouse first, then paint
   useEffect(() => {
     if (!isDesktop) return undefined;
 
@@ -219,10 +167,8 @@ export function SmoothCursor({
       y: window.innerHeight / 2,
     };
 
-    snap(mouseX, point.x);
-    snap(mouseY, point.y);
-    snap(cursorX, point.x);
-    snap(cursorY, point.y);
+    cursorX.set(point.x);
+    cursorY.set(point.y);
     lastPos.current = point;
 
     document.documentElement.classList.add("has-custom-cursor");
@@ -232,7 +178,7 @@ export function SmoothCursor({
       document.documentElement.classList.remove("has-custom-cursor");
       setReadyToPaint(false);
     };
-  }, [isDesktop, active, mouseX, mouseY, cursorX, cursorY]);
+  }, [isDesktop, active, cursorX, cursorY]);
 
   if (!isDesktop || !active || !readyToPaint) {
     return null;

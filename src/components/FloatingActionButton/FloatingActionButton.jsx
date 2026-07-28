@@ -13,15 +13,13 @@ import {
   setEyeTarget,
   stepEyes,
 } from "./fabEyes";
-import { scheduleHintAppear } from "./hintAppear";
 import { scrollToContactAndHighlight } from "./hintScroll";
 import "./FloatingActionButton.css";
-
-const WATCH_LINE = "I am watching you";
 
 function FloatingActionButton({
   onClick,
   label = "Let's talk",
+  hintLabel = "Let's connect",
   disabled = false,
   offsetBottom = 0,
   showProgress = true,
@@ -30,7 +28,6 @@ function FloatingActionButton({
 }) {
   const buttonRef = useRef(null);
   const faceRef = useRef(null);
-  const hintRef = useRef(null);
   const pupilsRef = useRef([]);
   const shellRef = useRef(null);
   const dockedRef = useRef(false);
@@ -156,12 +153,6 @@ function FloatingActionButton({
     };
   }, []);
 
-  useEffect(() => {
-    const hint = hintRef.current;
-    if (!hint || prefersReducedMotion()) return undefined;
-    return scheduleHintAppear(hint);
-  }, []);
-
   function handleClick(event) {
     if (onClick) onClick(event, { docked: dockedRef.current });
   }
@@ -220,17 +211,14 @@ function FloatingActionButton({
       </button>
 
       <button
-        ref={hintRef}
         type="button"
         className="fab-hint"
         onClick={handleHintClick}
-        data-visible="false"
-        aria-hidden="true"
         tabIndex={-1}
-        aria-label={`${WATCH_LINE} — jump to contact`}
-        title={WATCH_LINE}
+        aria-label={`${hintLabel} — jump to contact`}
+        title={hintLabel}
       >
-        {WATCH_LINE}
+        {hintLabel}
       </button>
     </div>
   );

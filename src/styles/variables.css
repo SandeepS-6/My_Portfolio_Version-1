@@ -18,6 +18,7 @@
   --color-bg-soft: #e3e2ec;
   --color-surface: #ffffff;
   --color-on-dark: var(--color-surface);
+  --color-black: #000000;
 
   /* --- Text --- */
   --color-text: #2a2a32;
@@ -60,16 +61,47 @@
   --color-on-dark-a90: rgba(255, 255, 255, 0.9);
   --color-on-dark-a92: rgba(255, 255, 255, 0.92);
 
+  /* --- Hero dark stage --- */
+  --color-hero-stage: #050507;
+  --color-hero-hi: #f2f2f2;
+  --color-hero-plate: rgba(12, 10, 14, 0.55);
+
   /* --- Feedback --- */
   --color-error: #ffb4a2;
 
+  /* --- Skill card tones --- */
+  --color-tone-sky: #2563eb;
+  --color-tone-sky-bg: rgba(37, 99, 235, 0.12);
+  --color-tone-green: #16a34a;
+  --color-tone-green-bg: rgba(22, 163, 74, 0.12);
+  --color-tone-amber: #d97706;
+  --color-tone-amber-bg: rgba(217, 119, 6, 0.14);
+  --color-tone-blue: #0284c7;
+  --color-tone-blue-bg: rgba(2, 132, 199, 0.12);
+  --color-tone-violet: #7c3aed;
+  --color-tone-violet-bg: rgba(124, 58, 237, 0.12);
+  --color-tone-rose: #e11d48;
+  --color-tone-rose-bg: rgba(225, 29, 72, 0.12);
+
   /* --- Status (projects) — badge chips --- */
+  --color-status-featured-deep: #1a120c;
+  --color-status-featured-text: #fff6ef;
+  --color-status-featured-dot: #ffe0c8;
   --color-status-done: #3dff8b;
   --color-status-done-bg: #0d2a1c;
   --color-status-done-text: #e8fff2;
+  --color-status-opensource: #7eb6ff;
+  --color-status-opensource-bg: #13233a;
+  --color-status-opensource-text: #d7e8ff;
   --color-status-progress: #f8b42d;
   --color-status-progress-bg: #a67141;
   --color-status-progress-text: #f8efe4;
+  --color-status-concept: #c9a4ff;
+  --color-status-concept-bg: #24182e;
+  --color-status-concept-text: #f0e2ff;
+  --color-status-research: #5de0c5;
+  --color-status-research-bg: #122826;
+  --color-status-research-text: #d7fff6;
   --color-status-planned: #9da5b4;
   --color-status-planned-bg: #1a1f2a;
   --color-status-planned-text: #9da5b4;
@@ -77,6 +109,7 @@
 
   /* --- Tech chip surfaces --- */
   --color-tech-chip-base: #12151c;
+  --color-tech-mix-dark: #1a1a22;
 
   /* --- Projects panel (dark band, matches contact family) --- */
   --color-projects-bg: #0f0f14;
@@ -84,7 +117,20 @@
   --color-projects-card-border: rgba(255, 255, 255, 0.08);
   --color-projects-elevated: #1e1e28;
 
+  /* --- Project lab (hidden egg) --- */
+  --color-lab-mote: #fff6e8;
+  --color-lab-veil-near: rgba(20, 18, 28, 0.35);
+  --color-lab-veil-mid: rgba(15, 14, 22, 0.78);
+  --color-lab-veil-far: rgba(10, 10, 16, 0.92);
+  --color-lab-panel: #14141c;
+  --color-lab-card: #1a1a24;
+
+  /* --- FAB soft highlights --- */
+  --color-fab-highlight: #fffdfb;
+  --color-fab-soft: #e8e4ef;
+
   /* --- Black alpha (elevation on dark) --- */
+  --color-black-a28: rgba(0, 0, 0, 0.28);
   --color-black-a45: rgba(0, 0, 0, 0.45);
 
   /* --- Actions --- */
@@ -104,6 +150,7 @@
   --shadow-fab-hover: 0 14px 34px var(--color-ink-a34);
   --shadow-fab-contact: 0 14px 40px var(--color-black-a45);
   --shadow-cookie: 0 -8px 28px var(--color-ink-a08);
+  --shadow-hero-plate: 0 12px 40px var(--color-black-a28);
 
   /* Contact ending — brand dark (same family as --color-text) */
   --color-contact-bg: var(--color-text);
@@ -118,4 +165,5 @@
   --page-pad: 1.5rem;
   --radius-pill: 999px;
   --sidebar-rail: 72px;
+  --mobile-header-h: 3.5rem;
 }

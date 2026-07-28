@@ -8,6 +8,21 @@
   box-sizing: border-box;
 }
 
+/* Landing Page bg preview — no copy padding */
+.hero--preview {
+  padding: 0;
+  background: var(--color-black);
+}
+
+/* White hero copy needs a dark full-bleed stage (floating-lines) */
+.hero--dark {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: var(--color-hero-stage);
+}
+
 /* Content stays above the floating badges */
 .hero__inner {
   position: relative;
@@ -18,6 +33,13 @@
   min-height: 0;
   display: block;
   pointer-events: none;
+}
+
+/* Dark floating-lines stage uses the full hero width + height */
+.hero--dark .hero__inner {
+  max-width: none;
+  width: 100%;
+  height: 100%;
 }
 
 /* Re-enable clicks on real content (buttons, links) */

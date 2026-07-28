@@ -1,25 +1,24 @@
-/* Tall track = scroll distance while hero stays pinned */
+/* One viewport — no extra pin scroll (gap push is off) */
 .scroll-scene {
   position: relative;
-  height: 220vh;
+  height: 100vh;
   background: var(--color-bg);
 }
 
+.scroll-scene--dark {
+  background: var(--color-hero-stage);
+}
+
 .scroll-scene__sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  height: 100%;
   display: flex;
   align-items: stretch;
   overflow: hidden;
 }
 
-/* Real left gap — width driven by scroll progress */
+/* No left rail push — hero stays edge-to-edge */
 .scroll-scene__gap {
-  flex-shrink: 0;
-  height: 100%;
-  overflow: hidden;
-  will-change: width;
+  display: none;
 }
 
 /* Hero fills remaining width and full viewport height */
@@ -27,11 +26,4 @@
   flex: 1;
   min-width: 0;
   height: 100%;
-}
-
-@media (max-width: 768px) {
-  /* On small screens, keep a shorter transition */
-  .scroll-scene {
-    height: 180vh;
-  }
 }
