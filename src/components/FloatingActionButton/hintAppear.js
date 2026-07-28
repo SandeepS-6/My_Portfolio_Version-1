@@ -1,14 +1,14 @@
 /*
-  Schedule the FAB bubble: hidden most of the time, then a short peek.
+  FAB bubble peeks every 10–15 seconds, then hides again.
 */
 
-const HIDDEN_MIN_MS = 7000;
-const HIDDEN_MAX_MS = 16000;
-const VISIBLE_MIN_MS = 2600;
-const VISIBLE_MAX_MS = 4200;
+const HIDDEN_MIN_MS = 10000;
+const HIDDEN_MAX_MS = 15000;
+const VISIBLE_MS = 3500;
+const FIRST_SHOW_MS = 10000;
 
-function nextDelay(min, max) {
-  return min + Math.random() * (max - min);
+function nextGap() {
+  return HIDDEN_MIN_MS + Math.random() * (HIDDEN_MAX_MS - HIDDEN_MIN_MS);
 }
 
 export function scheduleHintAppear(hintEl) {
@@ -25,16 +25,16 @@ export function scheduleHintAppear(hintEl) {
 
   function hide() {
     setVisible(false);
-    showTimer = window.setTimeout(show, nextDelay(HIDDEN_MIN_MS, HIDDEN_MAX_MS));
+    showTimer = window.setTimeout(show, nextGap());
   }
 
   function show() {
     setVisible(true);
-    hideTimer = window.setTimeout(hide, nextDelay(VISIBLE_MIN_MS, VISIBLE_MAX_MS));
+    hideTimer = window.setTimeout(hide, VISIBLE_MS);
   }
 
   setVisible(false);
-  showTimer = window.setTimeout(show, nextDelay(4000, 9000));
+  showTimer = window.setTimeout(show, FIRST_SHOW_MS);
 
   return () => {
     window.clearTimeout(showTimer);

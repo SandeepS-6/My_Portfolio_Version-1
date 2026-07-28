@@ -151,6 +151,11 @@
   background: var(--tone-bg);
 }
 
+.skills-card:nth-child(2n) .skills-card__icon,
+.skills-card:nth-child(3n) .skills-card__icon {
+  animation-delay: 0s;
+}
+
 .skills-card--sky {
   --tone: var(--color-tone-sky);
   --tone-bg: var(--color-tone-sky-bg);
@@ -602,10 +607,303 @@
   white-space: nowrap;
 }
 
+/* Bottom summary — same card language as category grid, no divider */
+.skills__summary {
+  width: 100%;
+  min-width: 0;
+}
+
+.skills__summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.skills-summary-card {
+  min-height: 0;
+  width: 100%;
+}
+
+.skills-summary__list {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skills-summary__list li {
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--color-ink-a08);
+}
+
+.skills-summary__list li:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.skills-summary__list--hobbies li {
+  display: block;
+}
+
+.skills-summary__hobby-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  flex-shrink: 0;
+  color: var(--tone);
+  background: var(--tone-bg);
+  overflow: visible;
+}
+
+.skills-summary__list--hobbies .skills-summary__item-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Cricket — leave as-is */
+.skills-summary__hobby-icon--cricket .skills-cricket-icon__bat {
+  transform-origin: 7px 17px;
+  animation: skills-cricket-swing 2.4s ease-in-out infinite;
+}
+
+.skills-summary__hobby-icon--cricket .skills-cricket-icon__ball,
+.skills-summary__hobby-icon--cricket .skills-cricket-icon__seam {
+  transform-origin: 7.2px 8.2px;
+  animation: skills-cricket-ball 2.4s ease-in-out infinite;
+}
+
+/* Other hobbies — animate the icon graphic itself (not the pink tile) */
+.skills-summary__hobby-icon--gaming .skills-icon > svg {
+  animation: skills-hobby-gaming 2.2s ease-in-out infinite;
+  transform-origin: center;
+  display: block;
+}
+
+/* Book — page turns across the spine */
+.skills-summary__hobby-icon--books .skills-book-icon__page {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+  animation: skills-book-turn 2.6s ease-in-out infinite;
+}
+
+.skills-summary__hobby-icon--books .skills-book-icon__lines {
+  animation: skills-book-lines 2.6s ease-in-out infinite;
+}
+
+.skills-summary__hobby-icon--music .skills-icon > svg {
+  animation: skills-hobby-music 1.8s ease-in-out infinite;
+  transform-origin: center bottom;
+  display: block;
+}
+
+/* Walks — footsteps alternate like a stride */
+.skills-summary__hobby-icon--walks .skills-walks-icon__foot--left,
+.skills-summary__hobby-icon--walks .skills-walks-icon__foot--right {
+  transform-box: view-box;
+}
+
+.skills-summary__hobby-icon--walks .skills-walks-icon__foot--left {
+  transform-origin: 8px 13px;
+  animation: skills-walk-left 1.35s ease-in-out infinite;
+}
+
+.skills-summary__hobby-icon--walks .skills-walks-icon__foot--right {
+  transform-origin: 16px 12px;
+  animation: skills-walk-right 1.35s ease-in-out infinite;
+}
+
+.skills-summary__item-title {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.skills-summary__item-detail {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
 .skills-icon {
   display: inline-grid;
   place-items: center;
   line-height: 0;
+}
+
+.skills-cricket-icon,
+.skills-book-icon,
+.skills-walks-icon {
+  display: block;
+  overflow: visible;
+}
+
+@keyframes skills-cricket-swing {
+  0%,
+  18%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-28deg);
+  }
+  48% {
+    transform: rotate(18deg);
+  }
+  62% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes skills-cricket-ball {
+  0%,
+  40% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(5px, -4px) scale(0.95);
+    opacity: 1;
+  }
+  78% {
+    transform: translate(11px, -8px) scale(0.85);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes skills-hobby-gaming {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-10deg) scale(1.06);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-4deg) scale(1.05);
+  }
+}
+
+@keyframes skills-book-turn {
+  0%,
+  8% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scaleX(0.06);
+    opacity: 1;
+  }
+  46% {
+    transform: scaleX(-0.06);
+    opacity: 1;
+  }
+  72% {
+    transform: scaleX(-1);
+    opacity: 1;
+  }
+  82% {
+    transform: scaleX(-1);
+    opacity: 0;
+  }
+  83% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+  92%,
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes skills-book-lines {
+  0%,
+  30% {
+    opacity: 0.55;
+  }
+  42%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes skills-hobby-music {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  30% {
+    transform: scale(1.12) rotate(-8deg);
+  }
+  60% {
+    transform: scale(0.96) rotate(6deg);
+  }
+}
+
+@keyframes skills-walk-left {
+  0% {
+    transform: translate(1.5px, -2px);
+    opacity: 0.2;
+  }
+  12% {
+    opacity: 1;
+  }
+  35% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-1px, 1.5px);
+    opacity: 0.45;
+  }
+  70%,
+  100% {
+    transform: translate(-1.5px, 2.5px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes skills-walk-right {
+  0%,
+  20% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(1px, -1.2px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(1.5px, -2.5px);
+    opacity: 0.2;
+  }
+  62% {
+    opacity: 0.2;
+    transform: translate(-1.5px, 2px);
+  }
+  74% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
 }
 
 /* Desktop: title left, stats widgets right */
@@ -630,6 +928,10 @@
   .skills__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: 1fr;
+  }
+
+  .skills__summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .skills-card__detail {
@@ -661,6 +963,10 @@
   .skills__footer {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
     align-items: stretch;
+  }
+
+  .skills__summary-grid {
+    grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -847,7 +1153,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .skills-tech {
+  .skills-summary__hobby-icon--cricket .skills-cricket-icon__bat,
+  .skills-summary__hobby-icon--cricket .skills-cricket-icon__ball,
+  .skills-summary__hobby-icon--cricket .skills-cricket-icon__seam,
+  .skills-summary__hobby-icon--gaming .skills-icon > svg,
+  .skills-summary__hobby-icon--books .skills-book-icon__page,
+  .skills-summary__hobby-icon--books .skills-book-icon__lines,
+  .skills-summary__hobby-icon--music .skills-icon > svg,
+  .skills-summary__hobby-icon--walks .skills-walks-icon__foot--left,
+  .skills-summary__hobby-icon--walks .skills-walks-icon__foot--right {
     animation: none;
   }
 }

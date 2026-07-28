@@ -13,7 +13,8 @@
   pointer-events: none;
 }
 
-.fab-shell > .fab {
+.fab-shell > .fab,
+.fab-shell > .fab-hint {
   pointer-events: auto;
 }
 
@@ -232,6 +233,83 @@
   }
 }
 
+/* "I am watching you" — peeks automatically, not hover */
+.fab-hint {
+  position: absolute;
+  top: -0.35rem;
+  right: calc(100% + 0.3rem);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 9.2rem;
+  height: auto;
+  padding: 0.38rem 0.62rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(6px, 4px, 0) scale(0.92);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    box-shadow 0.25s ease;
+}
+
+.fab-hint[data-visible="true"] {
+  opacity: 0.92;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+  animation: fab-hint-drift 5.5s ease-in-out infinite;
+}
+
+.fab-hint:hover {
+  box-shadow: 0 8px 18px var(--color-ink-a12);
+  transform: scale(1.06);
+}
+
+.fab-hint:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.fab-shell[data-contact="true"] .fab-hint {
+  opacity: 0;
+  pointer-events: none;
+  animation: none;
+}
+
+@keyframes fab-hint-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.88;
+  }
+  25% {
+    transform: translate(2px, -4px) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-1px, -6px) scale(1);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(3px, -2px) scale(1);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 768px) {
   .fab-shell {
     --fab-size: 5.25rem;
@@ -258,6 +336,14 @@
   .fab__ring-text {
     font-size: 7.75px;
   }
+
+  .fab-hint {
+    top: -0.25rem;
+    right: calc(100% + 0.2rem);
+    max-width: 7.8rem;
+    padding: 0.32rem 0.52rem;
+    font-size: 0.56rem;
+  }
 }
 
 @media (max-width: 1099px) {
@@ -274,12 +360,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fab,
-  .fab__ring {
+  .fab__ring,
+  .fab-hint {
     animation: none;
   }
 
   .fab__eyes,
-  .fab__arrow {
+  .fab__arrow,
+  .fab-hint {
     transition: none;
   }
 }

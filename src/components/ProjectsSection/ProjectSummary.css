@@ -2,6 +2,8 @@
   margin-top: clamp(2rem, 5vh, 3rem);
   padding-top: clamp(1.5rem, 3vh, 2rem);
   border-top: 1px solid var(--color-border);
+  width: 100%;
+  min-width: 0;
 }
 
 .project-summary__grid {

@@ -4,7 +4,6 @@ import { getProjects } from "../../services/projects";
 import ProjectFilters from "./ProjectFilters";
 import ProjectItem from "./ProjectItem";
 import ProjectsIntro from "./ProjectsIntro";
-import ProjectSummary from "./ProjectSummary";
 import HiddenProjectsEgg from "./HiddenProjectsEgg";
 import { countByStatus, filterAndSortProjects } from "./projectFilter";
 import {
@@ -17,7 +16,6 @@ import {
   filterOut,
   revealCards,
   revealProgressBars,
-  revealSummary,
 } from "./projectsMotion";
 import "./ProjectsSection.css";
 
@@ -33,7 +31,6 @@ function ProjectsSection() {
   const gridRef = useRef(null);
   const firstPaint = useRef(true);
   const filterRun = useRef(0);
-  const summaryPlayed = useRef(false);
 
   useEffect(() => subscribeProjectQuery(setQuery), []);
 
@@ -116,9 +113,6 @@ function ProjectsSection() {
 
     const cards = [...grid.querySelectorAll("[data-project-card]")];
     const bars = [...grid.querySelectorAll("[data-progress]")];
-    const summaryNodes = [
-      ...(sectionRef.current?.querySelectorAll("[data-summary-block]") || []),
-    ];
 
     const clearCards =
       filterRun.current === 0
@@ -133,16 +127,9 @@ function ProjectsSection() {
         ? revealProgressBars(bars, { trigger: grid })
         : revealProgressBars(bars, { immediate: true });
 
-    let clearSummary = () => {};
-    if (!summaryPlayed.current && summaryNodes.length) {
-      summaryPlayed.current = true;
-      clearSummary = revealSummary(summaryNodes);
-    }
-
     return () => {
       clearCards();
       clearBars();
-      clearSummary();
     };
   }, [visible]);
 
@@ -160,7 +147,6 @@ function ProjectsSection() {
     labels = {},
     kinds = [],
     projects = [],
-    bottom = {},
     squircle = {},
     intro,
     hiddenProjects = [],
@@ -213,8 +199,6 @@ function ProjectsSection() {
             </div>
           )}
         </div>
-
-        <ProjectSummary bottom={bottom} />
       </div>
 
       <HiddenProjectsEgg

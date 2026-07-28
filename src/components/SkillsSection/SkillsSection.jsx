@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getSkillsSection, peekSkillsSection } from "../../services/skillsSection";
 import { SkillsIcon } from "./skillsIcons";
 import { bindSkillsMarquee } from "./skillsMarquee";
+import SkillsSummary from "./SkillsSummary";
 import "./SkillsSection.css";
 
 function techIconUrl(tech) {
@@ -336,6 +337,7 @@ function SkillsSection() {
     favourites,
     learning,
     marquee,
+    summary = {},
   } = data;
 
   return (
@@ -376,6 +378,8 @@ function SkillsSection() {
           <LearningCard learning={learning} />
           <TechMarquee marquee={marquee} />
         </div>
+
+        <SkillsSummary summary={summary} />
       </div>
     </section>
   );
