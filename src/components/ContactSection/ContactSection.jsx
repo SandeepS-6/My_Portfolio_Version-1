@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import { getFooter } from "../../services/footer";
+import { prefetchLetsTalk } from "../../pages/prefetch";
 import "./ContactSection.css";
 
 function MarqueeRow({ word, direction }) {
@@ -72,7 +73,12 @@ function ContactSection() {
         <div className="contact-section__top">
           <div className="contact-section__cluster">
             <p className="contact-section__eyebrow">{eyebrow}</p>
-            <Link className="contact-section__cta" to="/lets-talk">
+            <Link
+              className="contact-section__cta"
+              to="/lets-talk"
+              onMouseEnter={prefetchLetsTalk}
+              onFocus={prefetchLetsTalk}
+            >
               {cta?.label || "Let's talk"}
             </Link>
           </div>

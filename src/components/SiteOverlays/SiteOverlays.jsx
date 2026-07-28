@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CookieConsent from "../CookieConsent/CookieConsent";
 import FloatingActionButton from "../FloatingActionButton/FloatingActionButton";
+import { prefetchLetsTalk } from "../../pages/prefetch";
 
 function SiteOverlays() {
   const [bannerHeight, setBannerHeight] = useState(0);
@@ -18,6 +19,7 @@ function SiteOverlays() {
   function handleFabClick(_event, meta = {}) {
     // Only the footer-docked Let's Talk opens the contact page
     if (meta.docked) {
+      prefetchLetsTalk();
       navigate("/lets-talk");
       return;
     }

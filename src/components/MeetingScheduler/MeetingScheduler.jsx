@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Globe } from "lucide-react";
-import { getMeetingSettings, getMeetingSlots } from "../../services/meeting";
+import {
+  getMeetingSettings,
+  getMeetingSlots,
+  peekMeetingSettings,
+} from "../../services/meeting";
 import GoogleMeetIcon from "./GoogleMeetIcon";
 import {
   WEEKDAYS,
@@ -14,8 +18,10 @@ import {
 import "./MeetingScheduler.css";
 
 function MeetingScheduler({ hostEmail, onSelectionChange }) {
-  const [settings, setSettings] = useState(null);
-  const [duration, setDuration] = useState(30);
+  const [settings, setSettings] = useState(() => peekMeetingSettings());
+  const [duration, setDuration] = useState(
+    () => peekMeetingSettings()?.durations?.[0] || 30,
+  );
   const [hour12, setHour12] = useState(true);
   const [month, setMonth] = useState(() => {
     const now = new Date();

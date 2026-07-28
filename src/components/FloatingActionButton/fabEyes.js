@@ -3,8 +3,8 @@
   Pupil look-at + blink scheduling. Component owns the rAF loop.
 */
 
-const MAX_LOOK = 3.2;
-const LERP = 0.14;
+const MAX_LOOK = 4.2;
+const LERP = 0.18;
 const BLINK_MIN_MS = 2200;
 const BLINK_MAX_MS = 5600;
 const BLINK_HOLD_MS = 110;

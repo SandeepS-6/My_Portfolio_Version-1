@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import {
   DOCKED_THRESHOLD,
   getContactProgress,
@@ -13,13 +14,13 @@ import {
   setEyeTarget,
   stepEyes,
 } from "./fabEyes";
-import { scrollToContactAndHighlight } from "./hintScroll";
 import "./FloatingActionButton.css";
+
+const RING_TEXT = "LET'S TALK • SAY HELLO • LET'S TALK • SAY HELLO • ";
 
 function FloatingActionButton({
   onClick,
   label = "Let's talk",
-  hintLabel = "Let's connect",
   disabled = false,
   offsetBottom = 0,
   showProgress = true,
@@ -28,9 +29,11 @@ function FloatingActionButton({
 }) {
   const buttonRef = useRef(null);
   const faceRef = useRef(null);
-  const pupilsRef = useRef([]);
+  const leftPupilRef = useRef(null);
+  const rightPupilRef = useRef(null);
   const shellRef = useRef(null);
   const dockedRef = useRef(false);
+  const pathId = useId().replace(/:/g, "");
 
   useEffect(() => {
     const el = buttonRef.current;
@@ -110,19 +113,18 @@ function FloatingActionButton({
 
   useEffect(() => {
     const face = faceRef.current;
-    if (!face || prefersReducedMotion()) return undefined;
+    if (!face) return undefined;
 
+    const reduced = prefersReducedMotion();
     const state = createEyeState();
     let frame = 0;
     let running = true;
 
     function writePupils() {
       const { x, y } = stepEyes(state);
-      pupilsRef.current.forEach((pupil) => {
-        if (pupil) {
-          pupil.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
-        }
-      });
+      const move = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+      if (leftPupilRef.current) leftPupilRef.current.style.transform = move;
+      if (rightPupilRef.current) rightPupilRef.current.style.transform = move;
     }
 
     function loop() {
@@ -132,7 +134,13 @@ function FloatingActionButton({
     }
 
     function onMove(event) {
-      setEyeTarget(state, event.clientX, event.clientY, face.getBoundingClientRect());
+      if (reduced) return;
+      setEyeTarget(
+        state,
+        event.clientX,
+        event.clientY,
+        face.getBoundingClientRect(),
+      );
     }
 
     function onLeave() {
@@ -141,7 +149,9 @@ function FloatingActionButton({
 
     frame = requestAnimationFrame(loop);
     const stopBlinks = scheduleBlinks(face, state);
+
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("mousemove", onMove, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
 
     return () => {
@@ -149,6 +159,7 @@ function FloatingActionButton({
       cancelAnimationFrame(frame);
       stopBlinks();
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("mousemove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
     };
   }, []);
@@ -157,10 +168,7 @@ function FloatingActionButton({
     if (onClick) onClick(event, { docked: dockedRef.current });
   }
 
-  function handleHintClick(event) {
-    event.stopPropagation();
-    scrollToContactAndHighlight(contactSectionId);
-  }
+  const ringPathId = `fab-text-circle-${pathId}`;
 
   return (
     <div
@@ -179,46 +187,49 @@ function FloatingActionButton({
       >
         {showProgress && (
           <svg className="fab__progress" viewBox="0 0 100 100" aria-hidden="true">
-            <circle className="fab__progress-track" cx="50" cy="50" r="48" />
             <circle
               className="fab__progress-fill"
               cx="50"
               cy="50"
               r="48"
+              fill="none"
               pathLength="1"
             />
           </svg>
         )}
 
+        {/* Text mid-band: face ~58% → path r=47 → disc edge → orange outside */}
+        <svg className="fab__ring" viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <path
+              id={ringPathId}
+              d="M 60,60 m -47,0 a 47,47 0 1,1 94,0 a 47,47 0 1,1 -94,0"
+            />
+          </defs>
+          <text className="fab__ring-text">
+            <textPath
+              href={`#${ringPathId}`}
+              textLength="295"
+              lengthAdjust="spacingAndGlyphs"
+            >
+              {RING_TEXT}
+            </textPath>
+          </text>
+        </svg>
+
         <span className="fab__face" ref={faceRef} aria-hidden="true">
-          <span className="fab__eye fab__eye--left">
-            <span
-              className="fab__pupil"
-              ref={(node) => {
-                pupilsRef.current[0] = node;
-              }}
-            />
+          <span className="fab__eyes">
+            <span className="fab__eye fab__eye--left">
+              <span className="fab__pupil" ref={leftPupilRef} />
+            </span>
+            <span className="fab__eye fab__eye--right">
+              <span className="fab__pupil" ref={rightPupilRef} />
+            </span>
           </span>
-          <span className="fab__eye fab__eye--right">
-            <span
-              className="fab__pupil"
-              ref={(node) => {
-                pupilsRef.current[1] = node;
-              }}
-            />
+          <span className="fab__arrow">
+            <ArrowUpRight size={22} strokeWidth={2.2} />
           </span>
         </span>
-      </button>
-
-      <button
-        type="button"
-        className="fab-hint"
-        onClick={handleHintClick}
-        tabIndex={-1}
-        aria-label={`${hintLabel} — jump to contact`}
-        title={hintLabel}
-      >
-        {hintLabel}
       </button>
     </div>
   );

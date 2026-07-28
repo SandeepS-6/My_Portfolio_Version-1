@@ -296,14 +296,17 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    // Half-res + no AA — fragment loops are the expensive part.
-    const RENDER_SCALE = 0.5;
-    const FRAME_MS = 1000 / 30;
+    // Mobile GPUs choke on per-pixel wave loops — lower res + FPS there.
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+    const RENDER_SCALE = isMobile ? 0.28 : 0.5;
+    const FRAME_MS = isMobile ? 1000 / 18 : 1000 / 30;
 
     const renderer = new WebGLRenderer({
       antialias: false,
       alpha: false,
-      powerPreference: "high-performance",
+      powerPreference: isMobile ? "low-power" : "high-performance",
     });
     renderer.setPixelRatio(1);
     renderer.domElement.style.width = "100%";

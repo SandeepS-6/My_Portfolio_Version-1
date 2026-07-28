@@ -1,17 +1,12 @@
 import api from "./api";
 
-const CACHE_KEY = "portfolio.whatIDo";
+const CACHE_KEY = "portfolio.settings";
 
 let memory = null;
 let inflight = null;
 
-function isWhatIDoPayload(data) {
-  return (
-    data &&
-    typeof data === "object" &&
-    !Array.isArray(data) &&
-    (data.title || data.lead || Array.isArray(data.items))
-  );
+function isSettingsPayload(data) {
+  return data && typeof data === "object" && !Array.isArray(data);
 }
 
 function readSession() {
@@ -19,7 +14,7 @@ function readSession() {
     const raw = sessionStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const data = JSON.parse(raw);
-    return isWhatIDoPayload(data) ? data : null;
+    return isSettingsPayload(data) ? data : null;
   } catch {
     return null;
   }
@@ -35,20 +30,20 @@ function remember(data) {
   return data;
 }
 
-export function peekWhatIDo() {
+export function peekSettings() {
   if (memory) return memory;
   const cached = readSession();
   if (cached) memory = cached;
   return cached;
 }
 
-export async function getWhatIDo() {
+export async function getSettings() {
   if (!inflight) {
     inflight = api
-      .get("/api/what-i-do")
+      .get("/api/settings")
       .then(({ data }) => {
-        if (!isWhatIDoPayload(data)) {
-          throw new Error("What I Do payload missing");
+        if (!isSettingsPayload(data)) {
+          throw new Error("Settings payload missing");
         }
         return remember(data);
       })
@@ -60,12 +55,12 @@ export async function getWhatIDo() {
   try {
     return await inflight;
   } catch (error) {
-    const cached = peekWhatIDo();
+    const cached = peekSettings();
     if (cached) return cached;
     throw error;
   }
 }
 
-export function prefetchWhatIDo() {
-  return getWhatIDo().catch(() => peekWhatIDo());
+export function prefetchSettings() {
+  return getSettings().catch(() => peekSettings());
 }

@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import { SmoothCursor } from "./components/SmoothCursor/SmoothCursor";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SiteOverlays from "./components/SiteOverlays/SiteOverlays";
+import { prefetchLetsTalk } from "./pages/prefetch";
 import { prefetchHero } from "./services/hero";
 import { prefetchFooter } from "./services/footer";
 
@@ -34,6 +35,15 @@ function App() {
       alive = false;
     };
   }, [skipLoad]);
+
+  // Warm contact route after home is up (chunk + APIs)
+  useEffect(() => {
+    if (!ready || skipLoad) return undefined;
+    const id = window.setTimeout(() => {
+      prefetchLetsTalk();
+    }, 1200);
+    return () => window.clearTimeout(id);
+  }, [ready, skipLoad]);
 
   const handleLoadProgress = useCallback((progress) => {
     if (progress >= 80) setShowCursor(true);

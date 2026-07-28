@@ -1,21 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getWhatIDo } from "../../services/whatIDo";
+import { getWhatIDo, peekWhatIDo } from "../../services/whatIDo";
 import { WhatIDoIcon } from "./whatIDoIcons";
 import { bindCardAutoHover } from "./cardAutoHover";
 import { bindWhatIDoCinema } from "./whatIDoMotion";
 import "./WhatIDo.css";
 
-function RibbonUnit() {
+function RibbonUnit({ emptyWord = "WHAT", fillWord = "I DO" }) {
   return (
     <span className="what-i-do__marquee-unit">
       <span className="what-i-do__marquee-word what-i-do__marquee-word--empty">
-        WHAT
+        {emptyWord}
       </span>
       <span className="what-i-do__marquee-gap" aria-hidden="true">
         {"\u00A0"}
       </span>
       <span className="what-i-do__marquee-word what-i-do__marquee-word--fill">
-        I DO
+        {fillWord}
       </span>
       <span className="what-i-do__marquee-gap" aria-hidden="true">
         {"\u00A0\u00A0"}
@@ -24,7 +24,19 @@ function RibbonUnit() {
   );
 }
 
-function RibbonTrack({ count = 16 }) {
+function splitMarquee(text) {
+  const raw = String(text || "WHAT I DO").trim() || "WHAT I DO";
+  const parts = raw.split(/\s+/);
+  if (parts.length < 2) {
+    return { emptyWord: raw, fillWord: raw };
+  }
+  return {
+    emptyWord: parts[0],
+    fillWord: parts.slice(1).join(" "),
+  };
+}
+
+function RibbonTrack({ count = 16, emptyWord, fillWord }) {
   const units = useMemo(() => Array.from({ length: count }, (_, i) => i), [count]);
 
   return (
@@ -32,12 +44,12 @@ function RibbonTrack({ count = 16 }) {
       <div className="what-i-do__marquee-drift">
         <span className="what-i-do__marquee-segment">
           {units.map((i) => (
-            <RibbonUnit key={`a-${i}`} />
+            <RibbonUnit key={`a-${i}`} emptyWord={emptyWord} fillWord={fillWord} />
           ))}
         </span>
         <span className="what-i-do__marquee-segment">
           {units.map((i) => (
-            <RibbonUnit key={`b-${i}`} />
+            <RibbonUnit key={`b-${i}`} emptyWord={emptyWord} fillWord={fillWord} />
           ))}
         </span>
       </div>
@@ -89,7 +101,7 @@ function WhatIDoCard({ item, index }) {
 
 function WhatIDo() {
   const sectionRef = useRef(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(() => peekWhatIDo());
 
   useEffect(() => {
     let alive = true;
@@ -128,7 +140,8 @@ function WhatIDo() {
 
   if (!data) return null;
 
-  const { title, lead, items = [] } = data;
+  const { title, lead, items = [], marqueeText, cinemaTitle } = data;
+  const ribbon = splitMarquee(marqueeText || cinemaTitle);
 
   return (
     <section
@@ -156,10 +169,10 @@ function WhatIDo() {
 
         <div className="what-i-do__doors" aria-hidden="true">
           <div className="what-i-do__ribbon what-i-do__ribbon--top">
-            <RibbonTrack />
+            <RibbonTrack emptyWord={ribbon.emptyWord} fillWord={ribbon.fillWord} />
           </div>
           <div className="what-i-do__ribbon what-i-do__ribbon--bottom">
-            <RibbonTrack />
+            <RibbonTrack emptyWord={ribbon.emptyWord} fillWord={ribbon.fillWord} />
           </div>
         </div>
       </div>

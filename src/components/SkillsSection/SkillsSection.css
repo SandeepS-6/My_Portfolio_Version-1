@@ -21,9 +21,21 @@
   display: grid;
   gap: 1.5rem;
   min-width: 0;
+  align-items: end;
 }
 
 .skills__intro {
+  min-width: 0;
+}
+
+.skills__stats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
   min-width: 0;
 }
 
@@ -62,17 +74,6 @@
   line-height: 1.65;
   color: var(--color-text-muted);
   max-width: 36rem;
-}
-
-.skills__stats {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-  align-items: stretch;
-  min-width: 0;
 }
 
 .skills-stat {
@@ -605,6 +606,19 @@
   display: inline-grid;
   place-items: center;
   line-height: 0;
+}
+
+/* Desktop: title left, stats widgets right */
+@media (min-width: 900px) {
+  .skills__header {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 1.15fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: end;
+  }
+
+  .skills__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 /* Tablet: stats in one row, 2-col category grid */

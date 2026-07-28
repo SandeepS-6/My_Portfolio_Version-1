@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { getSkillsSection } from "../../services/skillsSection";
+import { getSkillsSection, peekSkillsSection } from "../../services/skillsSection";
 import { SkillsIcon } from "./skillsIcons";
 import { bindSkillsMarquee } from "./skillsMarquee";
 import "./SkillsSection.css";
@@ -306,7 +306,7 @@ function TechMarquee({ marquee }) {
 }
 
 function SkillsSection() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(() => peekSkillsSection());
 
   useEffect(() => {
     let alive = true;

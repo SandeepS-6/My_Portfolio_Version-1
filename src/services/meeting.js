@@ -1,8 +1,32 @@
 import api from "./api";
 
+let settingsMemory = null;
+let settingsInflight = null;
+
+export function peekMeetingSettings() {
+  return settingsMemory;
+}
+
 export async function getMeetingSettings() {
-  const { data } = await api.get("/api/meeting");
-  return data;
+  if (settingsMemory) return settingsMemory;
+
+  if (!settingsInflight) {
+    settingsInflight = api
+      .get("/api/meeting")
+      .then(({ data }) => {
+        settingsMemory = data;
+        return data;
+      })
+      .finally(() => {
+        settingsInflight = null;
+      });
+  }
+
+  return settingsInflight;
+}
+
+export function prefetchMeetingSettings() {
+  return getMeetingSettings().catch(() => peekMeetingSettings());
 }
 
 export async function getMeetingSlots({ date, duration }) {

@@ -36,15 +36,49 @@ function plainHeadline(text) {
 
 function renderHeadlineWords(parts) {
   const nodes = [];
+  let breakId = 0;
+
+  function hasMoreWords(partIndex, chunkIndex, chunks) {
+    for (let c = chunkIndex + 1; c < chunks.length; c += 1) {
+      const next = chunks[c];
+      if (next && next !== "\n" && !/^[ \t]+$/.test(next)) return true;
+    }
+    for (let p = partIndex + 1; p < parts.length; p += 1) {
+      if (String(parts[p].text || "").replace(/\s+/g, "").length) return true;
+    }
+    return false;
+  }
+
+  function pushBreak(kind) {
+    nodes.push(
+      <br
+        key={`br-${kind}-${breakId++}`}
+        className={
+          kind === "hard"
+            ? "hero-pitch__br hero-pitch__br--hard"
+            : "hero-pitch__br"
+        }
+      />,
+    );
+  }
 
   parts.forEach((part, partIndex) => {
-    const chunks = part.text.split(/(\s+)/);
+    const chunks = part.text.split(/(\n|[ \t]+)/);
     chunks.forEach((chunk, chunkIndex) => {
       if (!chunk) return;
-      if (/^\s+$/.test(chunk)) {
+
+      if (chunk === "\n") {
+        pushBreak("hard");
+        return;
+      }
+
+      if (/^[ \t]+$/.test(chunk)) {
+        const prev = nodes[nodes.length - 1];
+        if (prev?.type === "br") return;
         nodes.push(chunk);
         return;
       }
+
       nodes.push(
         <span
           key={`${partIndex}-${chunkIndex}`}
@@ -55,6 +89,19 @@ function renderHeadlineWords(parts) {
           {chunk}
         </span>,
       );
+
+      const more = hasMoreWords(partIndex, chunkIndex, chunks);
+
+      // After accent word: Building experiences | people remember.
+      if (part.accent && more) {
+        pushBreak("soft");
+        return;
+      }
+
+      // After sentence end: …remember. | Engineering…
+      if (more && /\.["'”’]?$/.test(chunk)) {
+        pushBreak("soft");
+      }
     });
   });
 
@@ -82,6 +129,7 @@ function HeroContent() {
   const [hero, setHero] = useState(() => peekHero());
   const [socials, setSocials] = useState(() => socialsFromFooter(peekFooter()));
   const [lineLeft, setLineLeft] = useState(0);
+  const [lineTop, setLineTop] = useState(0);
   const rootRef = useRef(null);
   const handRef = useRef(null);
   const quoteRef = useRef(null);
@@ -160,7 +208,9 @@ function HeroContent() {
       const quoteNode = quoteRef.current;
       const band = bandRef.current;
       if (!quoteNode || !band) return;
-      setLineLeft(measureLinePlacement(quoteNode, band).left);
+      const place = measureLinePlacement(quoteNode, band);
+      setLineLeft(place.left);
+      setLineTop(place.top);
     };
 
     // Already played — keep text visible (do not re-hide)
@@ -187,7 +237,9 @@ function HeroContent() {
 
     function syncPlace() {
       frame = 0;
-      setLineLeft(measureLinePlacement(quoteNode, band).left);
+      const place = measureLinePlacement(quoteNode, band);
+      setLineLeft(place.left);
+      setLineTop(place.top);
     }
 
     function requestSync() {
@@ -265,6 +317,7 @@ function HeroContent() {
             className="hero-rule"
             style={{
               "--hero-line-left": `${lineLeft}px`,
+              "--hero-line-top": `${lineTop}px`,
             }}
           >
             <span className="hero-rule__line" aria-hidden="true" />

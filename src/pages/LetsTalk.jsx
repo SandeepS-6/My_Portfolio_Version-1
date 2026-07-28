@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { getContactPage } from "../services/contactPage";
-import { getFooter } from "../services/footer";
+import { getContactPage, peekContactPage } from "../services/contactPage";
+import { getFooter, peekFooter } from "../services/footer";
 import { bookMeeting } from "../services/meeting";
 import MeetingScheduler from "../components/MeetingScheduler/MeetingScheduler";
 import "./LetsTalk.css";
@@ -10,8 +10,8 @@ import "./LetsTalk.css";
 const emptyGuest = { name: "", email: "", subject: "", body: "" };
 
 function LetsTalk() {
-  const [copy, setCopy] = useState(null);
-  const [footer, setFooter] = useState(null);
+  const [copy, setCopy] = useState(() => peekContactPage());
+  const [footer, setFooter] = useState(() => peekFooter());
   const [guest, setGuest] = useState(emptyGuest);
   const [selection, setSelection] = useState({
     selectedSlot: null,

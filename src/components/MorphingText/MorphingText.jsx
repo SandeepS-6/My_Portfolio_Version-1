@@ -10,6 +10,14 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/* Continuous CSS blur morph tanks mobile FPS — keep a static name instead */
+function prefersStaticMorph() {
+  return (
+    prefersReducedMotion() ||
+    window.matchMedia("(max-width: 768px), (pointer: coarse)").matches
+  );
+}
+
 function useMorphingText(texts, startDelay = START_DELAY) {
   const textIndexRef = useRef(0);
   const morphRef = useRef(0);
@@ -24,7 +32,7 @@ function useMorphingText(texts, startDelay = START_DELAY) {
   useEffect(() => {
     const list = textsRef.current;
     if (!list.length) return undefined;
-    if (prefersReducedMotion()) {
+    if (prefersStaticMorph()) {
       if (text2Ref.current) text2Ref.current.textContent = list[0];
       if (text1Ref.current) text1Ref.current.textContent = "";
       return undefined;
@@ -128,7 +136,7 @@ function MorphingText({ texts = [], className = "", startDelay = START_DELAY }) 
   const longest = texts.reduce((a, b) => (b.length > a.length ? b : a), "");
 
   useEffect(() => {
-    setStaticOnly(prefersReducedMotion());
+    setStaticOnly(prefersStaticMorph());
   }, []);
 
   if (!texts.length) return null;

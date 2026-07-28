@@ -1,6 +1,8 @@
 .fab-shell {
   --fab-offset-bottom: 0px;
-  --fab-size: 5.35rem;
+  --fab-size: 6.5rem;
+  --fab-face-size: 58%;
+  --fab-ring-inset: 0px;
 
   position: fixed;
   right: 1.5rem;
@@ -11,8 +13,7 @@
   pointer-events: none;
 }
 
-.fab-shell > .fab,
-.fab-shell > .fab-hint {
+.fab-shell > .fab {
   pointer-events: auto;
 }
 
@@ -32,28 +33,37 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background:
-    radial-gradient(
-      circle at 32% 28%,
-      var(--color-fab-highlight) 0%,
-      color-mix(in srgb, var(--color-surface) 80%, var(--color-bg-soft)) 55%,
-      color-mix(in srgb, var(--color-bg-soft) 65%, var(--color-fab-soft)) 100%
-    );
+  background-color: #ffffff;
+  background-image: none;
   color: var(--color-text);
   box-shadow: var(--shadow-fab);
   transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
     scale(var(--fab-scale));
   transition:
     box-shadow 0.25s ease,
-    background 0.25s ease;
+    background-color 0.25s ease;
   animation: fab-float 4.8s ease-in-out infinite;
   overflow: visible;
+  isolation: isolate;
+}
+
+/* Solid white plate under text — never orange, never transparent */
+.fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  background-image: none;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .fab:hover:not(:disabled) {
   transform: translate3d(var(--fab-tx), var(--fab-ty), 0)
     scale(calc(var(--fab-scale) * 1.07));
   box-shadow: var(--shadow-fab-hover);
+  background-color: #ffffff;
 }
 
 .fab:focus-visible {
@@ -66,12 +76,17 @@
   cursor: not-allowed;
 }
 
-/* Near contact — stronger shadow; pause float while docking */
 .fab[data-contact="true"] {
-  box-shadow: var(--shadow-fab-contact);
   animation: none;
+  box-shadow: var(--shadow-fab-contact);
+  background-color: #ffffff;
 }
 
+.fab[data-contact="true"]::before {
+  background-color: #ffffff;
+}
+
+/* Orange scroll-progress stroke only — no gray track */
 .fab__progress {
   position: absolute;
   inset: -7px;
@@ -81,38 +96,93 @@
   pointer-events: none;
   overflow: visible;
   opacity: var(--fab-progress-opacity);
-  z-index: 2;
+  z-index: 1;
 }
 
-.fab__progress-track,
 .fab__progress-fill {
   fill: none;
-  stroke-width: 3;
-}
-
-.fab__progress-track {
-  stroke: var(--color-rule);
-  opacity: 0.45;
-}
-
-.fab__progress-fill {
   stroke: var(--color-accent);
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 1;
-  stroke-dashoffset: calc(1 - var(--fab-progress));
+  stroke-dashoffset: calc(1 - var(--fab-progress, 0));
 }
 
+/*
+  2) Rotating text — mid band between white face and disc edge.
+  Path radius ~47 in 120 viewBox ≈ optically centered in that band.
+*/
+.fab__ring {
+  position: absolute;
+  inset: var(--fab-ring-inset);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  animation: fab-spin 14s linear infinite;
+}
+
+.fab:hover:not(:disabled) .fab__ring {
+  animation-duration: 7s;
+}
+
+.fab__ring-text {
+  fill: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 8.75px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* 3) Inner white face — equal inset from the text band */
 .fab__face {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.78rem;
-  width: 100%;
-  height: 100%;
+  width: var(--fab-face-size);
+  height: var(--fab-face-size);
   border-radius: 50%;
-  box-shadow: inset 0 -8px 18px var(--color-ink-a08);
+  background-color: #ffffff;
+  background-image: none;
+  box-shadow:
+    inset 0 -6px 14px var(--color-ink-a08),
+    0 0 0 1px rgba(42, 42, 50, 0.06);
+}
+
+.fab__eyes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.72rem;
+  transition: opacity 0.2s ease;
+}
+
+.fab__arrow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  opacity: 0;
+  transform: scale(0.72) rotate(-12deg);
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.fab:hover .fab__eyes,
+.fab:focus-visible .fab__eyes {
+  opacity: 0;
+}
+
+.fab:hover .fab__arrow,
+.fab:focus-visible .fab__arrow {
+  opacity: 1;
+  transform: scale(1) rotate(0deg) translate(2px, -2px);
 }
 
 .fab__eye {
@@ -121,7 +191,7 @@
   width: 0.82rem;
   height: 1.12rem;
   border-radius: 50%;
-  background: var(--color-surface);
+  background: #ffffff;
   box-shadow:
     inset 0 0 0 1.5px var(--color-text),
     0 1px 2px var(--color-ink-a12);
@@ -156,69 +226,22 @@
   }
 }
 
-/* Let's connect — eyes only by default, pill on hover */
-.fab-hint {
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 0.45rem);
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: max-content;
-  height: auto;
-  padding: 0.48rem 0.85rem;
-  border: 1.5px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface);
-  color: var(--color-accent);
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
-  white-space: nowrap;
-  box-shadow: var(--shadow-soft);
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate3d(8px, -50%, 0) scale(0.94);
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.fab-shell:hover .fab-hint,
-.fab-shell:focus-within .fab-hint {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate3d(0, -50%, 0) scale(1);
-}
-
-.fab-hint:hover {
-  box-shadow: 0 8px 18px var(--color-ink-a12);
-}
-
-.fab-hint:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.fab-shell[data-contact="true"] .fab-hint {
-  opacity: 0;
-  pointer-events: none;
+@keyframes fab-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
   .fab-shell {
-    --fab-size: 4.5rem;
+    --fab-size: 5.25rem;
+    --fab-face-size: 58%;
     right: 1rem;
     bottom: calc(1rem + var(--fab-offset-bottom));
   }
 
-  .fab__face {
-    gap: 0.62rem;
+  .fab__eyes {
+    gap: 0.58rem;
   }
 
   .fab__eye {
@@ -232,14 +255,11 @@
     margin: -0.15rem 0 0 -0.15rem;
   }
 
-  .fab-hint {
-    right: calc(100% + 0.25rem);
-    padding: 0.4rem 0.7rem;
-    font-size: 0.65rem;
+  .fab__ring-text {
+    font-size: 7.75px;
   }
 }
 
-/* Project detail only: lift above mobile/tablet actions dock */
 @media (max-width: 1099px) {
   .fab-shell.fab--project-detail {
     bottom: calc(6.15rem + var(--fab-offset-bottom));
@@ -253,11 +273,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fab {
+  .fab,
+  .fab__ring {
     animation: none;
   }
 
-  .fab-hint {
+  .fab__eyes,
+  .fab__arrow {
     transition: none;
   }
 }
