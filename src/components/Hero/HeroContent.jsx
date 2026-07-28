@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, Hand } from "lucide-react";
 import { getHero, peekHero } from "../../services/hero";
-import { getFooter } from "../../services/footer";
+import { getFooter, peekFooter } from "../../services/footer";
 import MorphingText from "../MorphingText/MorphingText";
 import { measureLinePlacement } from "./heroRuleInset";
-import { playHeroText } from "./heroTextMotion";
+import { playHeroText, showHeroText } from "./heroTextMotion";
 import "./HeroContent.css";
 
 function parseHeadline(text) {
@@ -73,9 +73,14 @@ function orderHeroSocials(links) {
   return [...links].sort((a, b) => socialRank(a) - socialRank(b));
 }
 
+function socialsFromFooter(footer) {
+  if (!footer?.socials?.length) return [];
+  return orderHeroSocials(footer.socials);
+}
+
 function HeroContent() {
   const [hero, setHero] = useState(() => peekHero());
-  const [socials, setSocials] = useState([]);
+  const [socials, setSocials] = useState(() => socialsFromFooter(peekFooter()));
   const [lineLeft, setLineLeft] = useState(0);
   const rootRef = useRef(null);
   const handRef = useRef(null);
@@ -96,9 +101,9 @@ function HeroContent() {
 
     getFooter()
       .then((footer) => {
-        if (alive && footer?.socials?.length) {
-          setSocials(orderHeroSocials(footer.socials));
-        }
+        if (!alive) return;
+        const next = socialsFromFooter(footer);
+        if (next.length) setSocials(next);
       })
       .catch(() => {});
 
@@ -149,6 +154,8 @@ function HeroContent() {
   useLayoutEffect(() => {
     if (!hero || !rootRef.current) return undefined;
 
+    const root = rootRef.current;
+
     const syncLine = () => {
       const quoteNode = quoteRef.current;
       const band = bandRef.current;
@@ -156,14 +163,20 @@ function HeroContent() {
       setLineLeft(measureLinePlacement(quoteNode, band).left);
     };
 
-    // Entrance once — after loading reveal, so recruiters see the motion
+    // Already played — keep text visible (do not re-hide)
     if (textPlayedRef.current) {
+      showHeroText(root);
       syncLine();
       return undefined;
     }
-    textPlayedRef.current = true;
-    return playHeroText(rootRef.current, { onReady: syncLine });
-  }, [hero, quotePlain]);
+
+    return playHeroText(root, {
+      onStart: () => {
+        textPlayedRef.current = true;
+      },
+      onReady: syncLine,
+    });
+  }, [quotePlain]);
 
   useEffect(() => {
     const quoteNode = quoteRef.current;

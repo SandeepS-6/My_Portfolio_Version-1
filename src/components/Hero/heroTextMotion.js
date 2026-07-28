@@ -10,42 +10,55 @@ function heroTargets(root) {
     return { socials: [], greeting: null, words: [], rule: null, bio: null };
   }
   return {
-    socials: root.querySelectorAll(".hero-socials__link"),
+    socials: [...root.querySelectorAll(".hero-socials__link")],
     greeting: root.querySelector(".hero-pitch__greeting"),
-    words: root.querySelectorAll(".hero-pitch__word"),
+    words: [...root.querySelectorAll(".hero-pitch__word")],
     rule: root.querySelector(".hero-rule__line"),
     bio: root.querySelector(".hero-pitch__bio"),
   };
 }
 
-/** Hide copy until the entrance runs (avoids static flash under the reveal). */
+function allNodes({ socials, greeting, words, rule, bio }) {
+  return [greeting, bio, rule, ...socials, ...words].filter(Boolean);
+}
+
+/** Make sure copy is visible (recovery if an entrance was cancelled). */
+export function showHeroText(root) {
+  const targets = heroTargets(root);
+  const nodes = allNodes(targets);
+  if (nodes.length) gsap.set(nodes, { clearProps: "opacity,transform,y,scaleX" });
+}
+
+/** Park copy invisible until entrance runs. */
 export function hideHeroText(root) {
   const { socials, greeting, words, rule, bio } = heroTargets(root);
-  const nodes = [greeting, bio, ...socials, ...words].filter(Boolean);
+  const fade = [greeting, bio, ...socials, ...words].filter(Boolean);
 
-  if (nodes.length) gsap.set(nodes, { opacity: 0, y: 0 });
-  if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: "left center" });
+  if (fade.length) gsap.set(fade, { opacity: 0, y: 0 });
+  if (rule) gsap.set(rule, { scaleX: 0, transformOrigin: "left center", opacity: 1 });
 }
 
 /**
- * Hero copy entrance — runs after the loading reveal so visitors actually see it.
+ * Hero copy entrance after the loading reveal.
  * socials → greeting → headline words → rule → bio
  */
-export function playHeroText(root, { onReady, delayMs } = {}) {
+export function playHeroText(root, { onReady, onStart, delayMs } = {}) {
   if (!root) return () => {};
 
   const reduced = prefersReducedMotion();
-  const wait = reduced ? 0 : (delayMs ?? REVEAL_DURATION_MS + 80);
+  const wait = reduced ? 0 : (delayMs ?? REVEAL_DURATION_MS + 120);
   let ctx = null;
   let timer = 0;
+  let started = false;
 
   const run = () => {
+    started = true;
+    onStart?.();
+
     const { socials, greeting, words, rule, bio } = heroTargets(root);
 
     if (reduced) {
-      gsap.set([greeting, ...words, rule, bio, ...socials].filter(Boolean), {
-        clearProps: "all",
-      });
+      showHeroText(root);
       onReady?.();
       return;
     }
@@ -94,8 +107,8 @@ export function playHeroText(root, { onReady, delayMs } = {}) {
       if (rule) {
         tl.fromTo(
           rule,
-          { scaleX: 0 },
-          { scaleX: 1, transformOrigin: "left center", duration: 0.75 },
+          { scaleX: 0, opacity: 1 },
+          { scaleX: 1, opacity: 1, transformOrigin: "left center", duration: 0.75 },
           0.55,
         );
       }
@@ -111,16 +124,18 @@ export function playHeroText(root, { onReady, delayMs } = {}) {
     }, root);
   };
 
-  // Park copy invisible, then play once the curtain is open
   hideHeroText(root);
-  if (wait <= 0) {
-    run();
-  } else {
-    timer = window.setTimeout(run, wait);
-  }
+
+  if (wait <= 0) run();
+  else timer = window.setTimeout(run, wait);
 
   return () => {
     if (timer) window.clearTimeout(timer);
-    if (ctx) ctx.revert();
+    if (ctx) {
+      ctx.revert();
+    } else if (!started) {
+      // Effect re-ran before delay fired — don't leave text stuck at opacity 0
+      showHeroText(root);
+    }
   };
 }
