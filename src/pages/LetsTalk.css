@@ -448,25 +448,40 @@
   }
 }
 
+/* Short desktop screens: allow scroll instead of clipping Meet + fields */
+@media (max-height: 780px) and (min-width: 901px) {
+  .contact-page {
+    height: auto;
+    max-height: none;
+    min-height: 100svh;
+    overflow: auto;
+  }
+
+  .contact-page__booking {
+    min-height: 26rem;
+  }
+
+  .contact-page__panel {
+    min-height: 26rem;
+  }
+}
+
+/* Tablet / narrow desktop */
 @media (max-width: 900px) {
   .contact-page {
     height: auto;
     max-height: none;
     overflow: auto;
+    padding: 1.15rem 1.2rem 1.35rem;
   }
 
-  .contact-page__booking {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-content: start;
+  .contact-page__intro {
+    max-width: none;
+    margin-bottom: 1.15rem;
   }
 
-  .contact-page__panel {
-    min-height: 22rem;
-    height: auto;
-  }
-
-  .contact-page__socials {
-    margin-top: 1.35rem;
+  .contact-page__title {
+    font-size: clamp(2.6rem, 11vw, 4.25rem);
   }
 
   .contact-page__note,
@@ -475,8 +490,42 @@
     max-width: none;
   }
 
-  .contact-page__intro {
-    max-width: none;
+  .contact-page__booking {
+    grid-template-columns: 1fr;
+    gap: 1.35rem;
+    align-content: start;
+  }
+
+  .contact-page__panel {
+    min-height: 24rem;
+    height: auto;
+    max-height: none;
+  }
+
+  .contact-page__fields {
+    overflow: visible;
+    min-height: 0;
+  }
+
+  .contact-page__form {
+    height: auto;
+    min-height: 0;
+  }
+
+  .contact-page__form-body {
+    overflow: visible;
+  }
+
+  .contact-page__submit,
+  .contact-page__success .contact-page__submit {
+    align-self: stretch;
+    width: 100%;
+    margin-top: 1.25rem;
+  }
+
+  .contact-page__socials {
+    margin-top: 1.35rem;
+    gap: 1rem 1.35rem;
   }
 
   .contact-page__panel .meeting-scheduler__slots {
@@ -485,23 +534,85 @@
   }
 }
 
-@media (max-width: 700px) {
-  .contact-page__booking {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* Phone */
 @media (max-width: 560px) {
+  .contact-page {
+    padding: 1rem 0.95rem 1.25rem;
+  }
+
   .contact-page__top {
     flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
   }
 
   .contact-page__meta {
     text-align: left;
   }
 
+  .contact-page__email {
+    font-size: 0.85rem;
+    word-break: break-all;
+  }
+
+  .contact-page__intro {
+    margin-bottom: 1rem;
+  }
+
+  .contact-page__eyebrow {
+    margin-bottom: 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .contact-page__title {
+    font-size: clamp(2.35rem, 13vw, 3.25rem);
+  }
+
+  .contact-page__note {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-page__detail,
+  .contact-page__meeting-note {
+    margin-top: 0.65rem;
+    font-size: 0.9rem;
+  }
+
+  .contact-page__response {
+    margin-top: 0.85rem;
+  }
+
+  .contact-page__booking {
+    gap: 1.15rem;
+  }
+
+  .contact-page__panel {
+    min-height: 0;
+    padding: 0.9rem;
+    border-radius: 1rem;
+  }
+
   .contact-page__form-body {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .contact-page__field textarea {
+    min-height: 3.75rem;
+  }
+
+  .contact-page__submit {
+    padding: 0.9rem 1.25rem;
+  }
+
+  .contact-page__socials {
+    margin-top: 1.15rem;
+    gap: 0.85rem 1.1rem;
+  }
+
+  .contact-page__socials a {
+    font-size: 0.76rem;
   }
 }
 
