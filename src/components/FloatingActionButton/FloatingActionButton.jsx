@@ -5,7 +5,7 @@ import {
   getContactProgress,
   getDockTranslate,
   getPageScrollProgress,
-} from "./fabScroll";
+} from "../../utils/FloatingActionButton/fabScroll";
 import {
   clearEyeTarget,
   createEyeState,
@@ -13,9 +13,8 @@ import {
   scheduleBlinks,
   setEyeTarget,
   stepEyes,
-} from "./fabEyes";
-import { scheduleHintAppear } from "./hintAppear";
-import { scrollToContactAndHighlight } from "./hintScroll";
+} from "../../utils/FloatingActionButton/fabEyes";
+import { scheduleHintAppear } from "../../utils/FloatingActionButton/hintAppear";
 import "./FloatingActionButton.css";
 
 const RING_TEXT = "LET'S TALK • SAY HELLO • LET'S TALK • SAY HELLO • ";
@@ -23,6 +22,7 @@ const WATCH_LINE = "I am watching you";
 
 function FloatingActionButton({
   onClick,
+  onHintClick,
   label = "Let's talk",
   hintLabel = WATCH_LINE,
   disabled = false,
@@ -179,7 +179,7 @@ function FloatingActionButton({
 
   function handleHintClick(event) {
     event.stopPropagation();
-    scrollToContactAndHighlight(contactSectionId);
+    if (onHintClick) onHintClick(event);
   }
 
   const ringPathId = `fab-text-circle-${pathId}`;
@@ -254,7 +254,7 @@ function FloatingActionButton({
         data-visible="false"
         aria-hidden="true"
         tabIndex={-1}
-        aria-label={`${hintLabel} — jump to contact`}
+        aria-label={`${hintLabel} — open Let's Connect`}
       >
         {hintLabel}
       </button>

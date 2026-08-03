@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import TechStack from "../ProjectsSection/TechStack";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./ProjectRelated.css";
 
 function ProjectRelated({ projects = [], labels }) {
@@ -17,7 +18,7 @@ function ProjectRelated({ projects = [], labels }) {
           >
             <div className="pd-related__media">
               <img
-                src={project.image?.src}
+                src={mediaUrl(project.image?.src)}
                 alt={project.image?.alt || project.name}
                 loading="lazy"
               />

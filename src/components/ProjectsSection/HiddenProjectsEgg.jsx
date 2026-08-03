@@ -9,8 +9,9 @@ import {
   nextSpawnDelay,
   prefersReducedMotion,
   randomBetween,
-} from "./labMote";
-import { lockPageScroll, playLabClose, playLabReveal } from "./labReveal";
+} from "../../utils/ProjectsSection/labMote";
+import { lockPageScroll, playLabClose, playLabReveal } from "../../utils/ProjectsSection/labReveal";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./HiddenProjectsEgg.css";
 
 function LabCard({ item, etaLabel }) {
@@ -18,7 +19,7 @@ function LabCard({ item, etaLabel }) {
     <article className="project-lab__card">
       <div className="project-lab__media">
         <img
-          src={item.image?.src}
+          src={mediaUrl(item.image?.src)}
           alt={item.image?.alt || item.name}
           loading="lazy"
         />

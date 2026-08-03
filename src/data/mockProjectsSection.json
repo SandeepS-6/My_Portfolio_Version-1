@@ -191,7 +191,35 @@
       "featured": true,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 1
+      "displayOrder": 1,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1551281044-8b89c0d1e0b3?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Dashboard UI on a laptop screen"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Atlas Dashboard detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Atlas Dashboard workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1551281044-8b89c0d1e0b3?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Dashboard UI on a laptop screen"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Atlas Dashboard detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Atlas Dashboard workspace"
+        }
+      ]
     },
     {
       "id": "project-northstar",
@@ -247,7 +275,35 @@
       "featured": true,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 2
+      "displayOrder": 2,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Laptop showing a clean analytics layout"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Northstar Portfolio detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Northstar Portfolio workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Laptop showing a clean analytics layout"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Northstar Portfolio detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Northstar Portfolio workspace"
+        }
+      ]
     },
     {
       "id": "project-harbor",
@@ -299,7 +355,35 @@
       "featured": false,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 3
+      "displayOrder": 3,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Developer workspace with code on screen"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Harbor Docs detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Harbor Docs workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Developer workspace with code on screen"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Harbor Docs detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Harbor Docs workspace"
+        }
+      ]
     },
     {
       "id": "project-ledger",
@@ -351,7 +435,35 @@
       "featured": false,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 4
+      "displayOrder": 4,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Server room with soft lighting"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Ledger API detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Ledger API workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Server room with soft lighting"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Ledger API detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Ledger API workspace"
+        }
+      ]
     },
     {
       "id": "project-pulse",
@@ -403,7 +515,35 @@
       "featured": true,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 5
+      "displayOrder": 5,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Team collaborating around a laptop"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Pulse Board detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Pulse Board workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Team collaborating around a laptop"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Pulse Board detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Pulse Board workspace"
+        }
+      ]
     },
     {
       "id": "project-canvas",
@@ -451,7 +591,35 @@
       "featured": false,
       "projectStatus": "Shipped",
       "isVisible": true,
-      "displayOrder": 6
+      "displayOrder": 6,
+      "images": [
+        {
+          "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Design tools on a desk"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Canvas Kit detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Canvas Kit workspace"
+        }
+      ],
+      "gallery": [
+        {
+          "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1100&q=72",
+          "alt": "Design tools on a desk"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Canvas Kit detail view"
+        },
+        {
+          "src": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=70",
+          "alt": "Canvas Kit workspace"
+        }
+      ]
     }
   ]
 }

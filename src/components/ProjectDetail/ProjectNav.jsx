@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./ProjectNav.css";
 
 function NavCard({ project, labels, direction }) {
@@ -13,7 +14,7 @@ function NavCard({ project, labels, direction }) {
     >
       <div className="pd-nav__media">
         <img
-          src={project.image?.src}
+          src={mediaUrl(project.image?.src)}
           alt={project.image?.alt || project.name}
           loading="lazy"
         />

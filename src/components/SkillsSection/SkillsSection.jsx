@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { getSkillsSection, peekSkillsSection } from "../../services/skillsSection";
+import { mediaUrl } from "../../utils/mediaUrl";
 import { SkillsIcon } from "./skillsIcons";
-import { bindSkillsMarquee } from "./skillsMarquee";
+import { bindSkillsMarquee } from "../../utils/SkillsSection/skillsMarquee";
 import SkillsSummary from "./SkillsSummary";
 import "./SkillsSection.css";
 
 function techIconUrl(tech) {
-  if (tech?.src) return tech.src;
+  if (tech?.src) return mediaUrl(tech.src);
   if (!tech?.icon) return null;
   const color = String(tech.color || "2a2a32").replace("#", "");
   return `https://cdn.simpleicons.org/${tech.icon}/${color}`;

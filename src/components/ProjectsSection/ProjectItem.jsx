@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { FileText, MonitorPlay } from "lucide-react";
 import { GitHubIcon } from "./GitHubIcon";
 import { prefetchProjectDetail } from "../../pages/prefetch";
-import { kindTone } from "./projectFilter";
+import { kindTone } from "../../utils/ProjectsSection/projectFilter";
+import ProjectCardMedia from "./ProjectCardMedia";
 import TechStack from "./TechStack";
 import "./ProjectItem.css";
 
@@ -15,7 +16,6 @@ function ProjectItem({ project, labels, kinds = [] }) {
     id,
     name,
     description,
-    image,
     techStack = [],
     kinds: projectKinds = [],
     progress,
@@ -86,18 +86,11 @@ function ProjectItem({ project, labels, kinds = [] }) {
         onMouseEnter={prefetchProjectDetail}
         onFocus={prefetchProjectDetail}
       >
-        <div className="project-item__media">
-          <img
-            className="project-item__image"
-            src={image?.src}
-            alt={image?.alt || name}
-            loading="lazy"
-          />
-          <p className={`project-item__status project-item__status--${tone}`}>
-            <span className="project-item__status-dot" aria-hidden="true" />
-            {kindLabel(primaryKind, kinds)}
-          </p>
-        </div>
+        <ProjectCardMedia project={project} name={name} />
+        <p className={`project-item__status project-item__status--${tone}`}>
+          <span className="project-item__status-dot" aria-hidden="true" />
+          {kindLabel(primaryKind, kinds)}
+        </p>
       </Link>
 
       <div className="project-item__body">

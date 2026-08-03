@@ -124,24 +124,33 @@ function LetsTalk() {
         </div>
       </header>
 
-      <div className="contact-page__body">
-        <div className="contact-page__intro">
-          <p className="contact-page__eyebrow">{copy.eyebrow}</p>
-          <h1 className="contact-page__title">{copy.title}</h1>
-          <p className="contact-page__note">{copy.intro}</p>
+      <div className="contact-page__intro">
+        <p className="contact-page__eyebrow">{copy.eyebrow}</p>
+        <h1 className="contact-page__title">{copy.title}</h1>
+        <p className="contact-page__note">{copy.intro}</p>
 
-          {copy.detail && <p className="contact-page__detail">{copy.detail}</p>}
-          {copy.meetingNote && (
-            <p className="contact-page__meeting-note">{copy.meetingNote}</p>
-          )}
+        {copy.detail && <p className="contact-page__detail">{copy.detail}</p>}
+        {copy.meetingNote && (
+          <p className="contact-page__meeting-note">{copy.meetingNote}</p>
+        )}
 
-          {(copy.responseLabel || copy.responseValue) && (
-            <p className="contact-page__response">
-              <span>{copy.responseLabel}</span>
-              <strong>{copy.responseValue}</strong>
-            </p>
-          )}
+        {(copy.responseLabel || copy.responseValue) && (
+          <p className="contact-page__response">
+            <span>{copy.responseLabel}</span>
+            <strong>{copy.responseValue}</strong>
+          </p>
+        )}
+      </div>
 
+      <div className="contact-page__booking">
+        <div className="contact-page__panel">
+          <MeetingScheduler
+            hostEmail={email}
+            onSelectionChange={handleSelectionChange}
+          />
+        </div>
+
+        <div className="contact-page__fields">
           {status === "booked" ? (
             <div className="contact-page__success">
               <p className="contact-page__success-title">{copy.successTitle}</p>
@@ -159,59 +168,61 @@ function LetsTalk() {
             </div>
           ) : (
             <form className="contact-page__form" onSubmit={onConfirm}>
-              <p className="contact-page__form-kicker">Your details</p>
-              {selection.summary && (
-                <p className="contact-page__form-meta">{selection.summary}</p>
-              )}
+              <div className="contact-page__form-body">
+                <p className="contact-page__form-kicker">Your details</p>
+                {selection.summary && (
+                  <p className="contact-page__form-meta">{selection.summary}</p>
+                )}
 
-              <label className="contact-page__field">
-                <span>{fields.name}</span>
-                <input
-                  name="name"
-                  required
-                  autoComplete="name"
-                  value={guest.name}
-                  onChange={onGuestChange}
-                />
-              </label>
+                <label className="contact-page__field">
+                  <span>{fields.name}</span>
+                  <input
+                    name="name"
+                    required
+                    autoComplete="name"
+                    value={guest.name}
+                    onChange={onGuestChange}
+                  />
+                </label>
 
-              <label className="contact-page__field">
-                <span>{fields.email}</span>
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={guest.email}
-                  onChange={onGuestChange}
-                />
-              </label>
+                <label className="contact-page__field">
+                  <span>{fields.email}</span>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={guest.email}
+                    onChange={onGuestChange}
+                  />
+                </label>
 
-              <label className="contact-page__field contact-page__field--wide">
-                <span>{fields.subject}</span>
-                <input
-                  name="subject"
-                  value={guest.subject}
-                  onChange={onGuestChange}
-                />
-              </label>
+                <label className="contact-page__field contact-page__field--wide">
+                  <span>{fields.subject}</span>
+                  <input
+                    name="subject"
+                    value={guest.subject}
+                    onChange={onGuestChange}
+                  />
+                </label>
 
-              <label className="contact-page__field contact-page__field--wide">
-                <span>{fields.body}</span>
-                <textarea
-                  name="body"
-                  rows={3}
-                  required
-                  value={guest.body}
-                  onChange={onGuestChange}
-                />
-              </label>
+                <label className="contact-page__field contact-page__field--wide">
+                  <span>{fields.body}</span>
+                  <textarea
+                    name="body"
+                    rows={3}
+                    required
+                    value={guest.body}
+                    onChange={onGuestChange}
+                  />
+                </label>
 
-              {error && (
-                <p className="contact-page__error" role="alert">
-                  {error}
-                </p>
-              )}
+                {error && (
+                  <p className="contact-page__error" role="alert">
+                    {error}
+                  </p>
+                )}
+              </div>
 
               <button
                 type="submit"
@@ -222,30 +233,23 @@ function LetsTalk() {
               </button>
             </form>
           )}
-
-          {socials.length > 0 && (
-            <nav className="contact-page__socials" aria-label="Social">
-              {socials.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          )}
-        </div>
-
-        <div className="contact-page__panel">
-          <MeetingScheduler
-            hostEmail={email}
-            onSelectionChange={handleSelectionChange}
-          />
         </div>
       </div>
+
+      {socials.length > 0 && (
+        <nav className="contact-page__socials" aria-label="Social">
+          {socials.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      )}
     </main>
   );
 }

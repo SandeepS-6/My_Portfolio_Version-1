@@ -1,13 +1,16 @@
+/*
+  UI → GET /api/projects (lean cards) and GET /api/projects/:id (detail).
+*/
+
 import api from "./api";
 import mockProjectsSection from "../data/mockProjectsSection.json";
 
-/*
-  UI expects { labels, kinds, projects, intro, bottom, squircle, hiddenProjects }.
-  Public GET /api/projects returns that section payload from CMS.
-*/
-
 function isSectionPayload(data) {
   return data && !Array.isArray(data) && Array.isArray(data.projects);
+}
+
+function isDetailPayload(data) {
+  return data && data.project && typeof data.project === "object";
 }
 
 function buildProjectPayload(data, id) {
@@ -52,8 +55,14 @@ export async function getProjects() {
 }
 
 export async function getProjectById(id) {
-  const data = await getProjects();
-  return buildProjectPayload(data, id);
+  try {
+    const { data } = await api.get(`/api/projects/${id}`);
+    if (isDetailPayload(data)) return data;
+  } catch (error) {
+    console.warn("[projects] Detail API unavailable, using mock.", error.message);
+  }
+
+  return buildProjectPayload(mockProjectsSection, id);
 }
 
 export async function likeProject(id, { undo = false } = {}) {

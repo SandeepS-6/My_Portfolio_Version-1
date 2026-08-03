@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Expand, X } from "lucide-react";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./ProjectGallery.css";
 
 function ProjectGallery({ gallery = [], labels }) {
@@ -9,6 +10,7 @@ function ProjectGallery({ gallery = [], labels }) {
   if (!images.length) return null;
 
   const current = images[active] || images[0];
+  const currentSrc = mediaUrl(current.src);
 
   return (
     <section className="pd-gallery" aria-label={labels.gallery}>
@@ -26,7 +28,7 @@ function ProjectGallery({ gallery = [], labels }) {
 
       <div className="pd-gallery__preview">
         <img
-          src={current.src}
+          src={currentSrc}
           alt={current.alt || ""}
           loading={active === 0 ? "eager" : "lazy"}
           decoding="async"
@@ -42,7 +44,7 @@ function ProjectGallery({ gallery = [], labels }) {
             onClick={() => setActive(index)}
             aria-label={`Show image ${index + 1}`}
           >
-            <img src={image.src} alt="" loading="lazy" />
+            <img src={mediaUrl(image.src)} alt="" loading="lazy" />
           </button>
         ))}
       </div>
@@ -64,7 +66,7 @@ function ProjectGallery({ gallery = [], labels }) {
             >
               <X size={18} />
             </button>
-            <img src={current.src} alt={current.alt || ""} />
+            <img src={currentSrc} alt={current.alt || ""} />
           </div>
         </div>
       ) : null}

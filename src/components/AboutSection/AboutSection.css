@@ -1,79 +1,80 @@
+/* About — photo section on top, Education | Experience below */
 .about {
-  --about-band-gap: clamp(1.75rem, 4vh, 2.75rem);
-  --about-band-pad: clamp(1.5rem, 3.5vh, 2.25rem);
+  --about-radius-md: 0.5rem;
+
+  position: relative;
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   background: var(--color-bg);
   color: var(--color-text);
 }
 
 .about__inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: clamp(3rem, 7vh, 5rem) clamp(1.25rem, 3.5vw, 2.75rem);
+  box-sizing: border-box;
+  overflow: visible;
 }
 
-.about__header {
-  margin-bottom: var(--about-band-gap);
+.about__stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  width: 100%;
+  min-width: 0;
 }
 
-.about__eyebrow {
-  margin: 0 0 0.7rem;
-  font-size: clamp(0.78rem, 1.1vw, 0.92rem);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text);
+.about__timelines-wrap {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
 }
 
-.about__title {
-  margin: 0;
-  font-size: clamp(2rem, 4.5vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
-  color: var(--color-text);
-}
-
-/* Photo | copy + snapshot share one composition */
-.about__intro {
+.about__timelines {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: var(--about-band-gap);
-  align-items: start;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+  align-items: stretch;
+  min-width: 0;
 }
 
-@media (min-width: 900px) {
-  .about__intro {
-    grid-template-columns: minmax(17rem, 26rem) minmax(0, 1fr);
-    gap: clamp(1.75rem, 3.5vw, 3rem);
-  }
+.about__timelines > .about-panel {
+  height: 100%;
+  min-height: 100%;
+  min-width: 0;
+}
 
-  .about-profile {
-    display: contents;
-  }
-
-  .about-profile__media {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    align-self: stretch;
-    max-width: none;
-    height: 100%;
-    min-height: 22rem;
-    aspect-ratio: auto;
-  }
-
-  .about-profile__copy {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .about-snapshot {
-    grid-column: 2;
-    grid-row: 2;
+@media (max-width: 900px) {
+  .about__timelines {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .about__inner {
-    padding: clamp(2.75rem, 6vh, 3.75rem) var(--page-pad);
+    padding: clamp(2.25rem, 5vh, 3.25rem) var(--page-pad, 1rem);
+  }
+
+  .about__stack {
+    gap: 1rem;
+  }
+
+  .about__timelines {
+    gap: 0.85rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .about__inner {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
   }
 }

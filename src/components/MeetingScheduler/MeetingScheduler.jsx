@@ -14,10 +14,11 @@ import {
   formatSelectedDay,
   shiftMonth,
   todayKeyLocal,
-} from "./meetingCalendar";
+} from "../../utils/MeetingScheduler/meetingCalendar";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./MeetingScheduler.css";
 
-function MeetingScheduler({ hostEmail, onSelectionChange }) {
+function MeetingScheduler({ hostEmail, hostImageUrl, onSelectionChange }) {
   const [settings, setSettings] = useState(() => peekMeetingSettings());
   const [duration, setDuration] = useState(
     () => peekMeetingSettings()?.durations?.[0] || 30,
@@ -118,14 +119,23 @@ function MeetingScheduler({ hostEmail, onSelectionChange }) {
       .join("")
       .slice(0, 2)
       .toUpperCase();
+  const avatarSrc = mediaUrl(settings.hostImageUrl || hostImageUrl);
 
   return (
     <div className="meeting-scheduler" aria-label="Meeting scheduler">
       <header className="meeting-scheduler__bar">
         <div className="meeting-scheduler__host">
-          <span className="meeting-scheduler__avatar" aria-hidden="true">
-            {initials}
-          </span>
+          {avatarSrc ? (
+            <img
+              className="meeting-scheduler__avatar meeting-scheduler__avatar--photo"
+              src={avatarSrc}
+              alt=""
+            />
+          ) : (
+            <span className="meeting-scheduler__avatar" aria-hidden="true">
+              {initials}
+            </span>
+          )}
           <div>
             <p className="meeting-scheduler__host-name">{settings.hostName}</p>
             <p className="meeting-scheduler__title">{duration} min meeting</p>
@@ -273,17 +283,26 @@ function MeetingScheduler({ hostEmail, onSelectionChange }) {
                 <button
                   key={slot.startAt}
                   type="button"
-                  className={`meeting-scheduler__slot${
+                  disabled={!!slot.booked}
+                  className={[
+                    "meeting-scheduler__slot",
+                    slot.booked ? "meeting-scheduler__slot--booked" : "",
                     selectedSlot?.startAt === slot.startAt
-                      ? " meeting-scheduler__slot--selected"
-                      : ""
-                  }`}
+                      ? "meeting-scheduler__slot--selected"
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   onClick={() => {
+                    if (slot.booked) return;
                     setSelectedSlot(slot);
                     setError("");
                   }}
                 >
-                  {hour12 ? slot.label : slot.label24}
+                  <span>{hour12 ? slot.label : slot.label24}</span>
+                  {slot.booked && (
+                    <span className="meeting-scheduler__slot-note">Booked</span>
+                  )}
                 </button>
               ))}
           </div>

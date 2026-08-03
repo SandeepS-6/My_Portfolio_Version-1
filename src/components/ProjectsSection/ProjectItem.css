@@ -26,6 +26,7 @@
 
 .project-item__media-link {
   display: block;
+  position: relative;
   color: inherit;
   text-decoration: none;
 }
@@ -38,19 +39,51 @@
 }
 
 .project-item__image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.55s ease;
+  opacity: 0;
+  transition:
+    opacity 0.7s ease,
+    transform 0.55s ease;
 }
 
-.project-item:hover .project-item__image {
+.project-item__image.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.project-item:hover .project-item__image.is-active {
   transform: scale(1.05);
+}
+
+.project-item__dots {
+  position: absolute;
+  z-index: 2;
+  right: 0.75rem;
+  bottom: 0.7rem;
+  display: flex;
+  gap: 0.28rem;
+}
+
+.project-item__dot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, #fff 45%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #000 18%, transparent);
+}
+
+.project-item__dot.is-active {
+  background: #fff;
 }
 
 .project-item__status {
   position: absolute;
+  z-index: 2;
   top: 0.85rem;
   left: 0.85rem;
   display: inline-flex;

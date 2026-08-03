@@ -6,7 +6,7 @@ import {
   postProjectComment,
   recordProjectView,
 } from "../services/projects";
-import { CASE_SECTIONS } from "../components/ProjectDetail/caseStudyNav";
+import { CASE_SECTIONS } from "../utils/ProjectDetail/caseStudyNav";
 import ProjectToc from "../components/ProjectDetail/ProjectToc";
 import ProjectInfoPanel from "../components/ProjectDetail/ProjectInfoPanel";
 import ProjectCaseStudy from "../components/ProjectDetail/ProjectCaseStudy";

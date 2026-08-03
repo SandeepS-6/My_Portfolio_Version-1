@@ -3,8 +3,8 @@ import { ArrowUpRight, Hand } from "lucide-react";
 import { getHero, peekHero } from "../../services/hero";
 import { getFooter, peekFooter } from "../../services/footer";
 import MorphingText from "../MorphingText/MorphingText";
-import { measureLinePlacement } from "./heroRuleInset";
-import { playHeroText, showHeroText } from "./heroTextMotion";
+import { measureLinePlacement } from "../../utils/Hero/heroRuleInset";
+import { playHeroText, showHeroText } from "../../utils/Hero/heroTextMotion";
 import "./HeroContent.css";
 
 function parseHeadline(text) {
@@ -129,7 +129,6 @@ function HeroContent() {
   const [hero, setHero] = useState(() => peekHero());
   const [socials, setSocials] = useState(() => socialsFromFooter(peekFooter()));
   const [lineLeft, setLineLeft] = useState(0);
-  const [lineTop, setLineTop] = useState(0);
   const rootRef = useRef(null);
   const handRef = useRef(null);
   const quoteRef = useRef(null);
@@ -210,7 +209,6 @@ function HeroContent() {
       if (!quoteNode || !band) return;
       const place = measureLinePlacement(quoteNode, band);
       setLineLeft(place.left);
-      setLineTop(place.top);
     };
 
     // Already played — keep text visible (do not re-hide)
@@ -239,7 +237,6 @@ function HeroContent() {
       frame = 0;
       const place = measureLinePlacement(quoteNode, band);
       setLineLeft(place.left);
-      setLineTop(place.top);
     }
 
     function requestSync() {
@@ -317,7 +314,7 @@ function HeroContent() {
             className="hero-rule"
             style={{
               "--hero-line-left": `${lineLeft}px`,
-              "--hero-line-top": `${lineTop}px`,
+              "--hero-line-top": "338px",
             }}
           >
             <span className="hero-rule__line" aria-hidden="true" />

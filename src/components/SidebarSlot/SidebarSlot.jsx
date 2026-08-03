@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import "./SidebarSlot.css";
 
-/*
-  Fixed left rail:
-  - top    → initials logo
-  - middle → vertical label that follows the active section
-  - bottom → hamburger that morphs into a cross and toggles
-             the full-screen menu overlay
-*/
+const DEFAULT_LOGO = "/brand/sa-mark.svg";
 
-function SidebarSlot({ visible, activeSection, menuItems, initials = "S" }) {
+function SidebarSlot({
+  visible,
+  activeSection,
+  menuItems,
+  logoUrl = DEFAULT_LOGO,
+  initials = "SA",
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Lock page scroll while the menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -20,7 +19,6 @@ function SidebarSlot({ visible, activeSection, menuItems, initials = "S" }) {
     };
   }, [menuOpen]);
 
-  // If the rail hides (scrolled back into the hero), close the menu
   useEffect(() => {
     if (!visible) setMenuOpen(false);
   }, [visible]);
@@ -31,8 +29,18 @@ function SidebarSlot({ visible, activeSection, menuItems, initials = "S" }) {
         className={`sidebar-slot${visible ? " sidebar-slot--visible" : ""}`}
         aria-hidden={!visible}
       >
-        <a className="sidebar-slot__logo" href="#home" aria-label="Back to top">
-          {initials}
+        <a className="sidebar-slot__logo" href="#home" aria-label="Saliganti Sandeep — Home">
+          {logoUrl ? (
+            <img
+              className="sidebar-slot__logo-img"
+              src={logoUrl}
+              alt=""
+              width="40"
+              height="40"
+            />
+          ) : (
+            initials
+          )}
         </a>
 
         <div className="sidebar-slot__middle">

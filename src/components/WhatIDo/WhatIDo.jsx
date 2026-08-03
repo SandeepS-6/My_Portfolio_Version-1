@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getWhatIDo, peekWhatIDo } from "../../services/whatIDo";
 import { WhatIDoIcon } from "./whatIDoIcons";
-import { bindCardAutoHover } from "./cardAutoHover";
-import { bindWhatIDoCinema } from "./whatIDoMotion";
+import { bindCardAutoHover } from "../../utils/WhatIDo/cardAutoHover";
+import { bindWhatIDoCinema } from "../../utils/WhatIDo/whatIDoMotion";
 import "./WhatIDo.css";
 
 function RibbonUnit({ emptyWord = "WHAT", fillWord = "I DO" }) {

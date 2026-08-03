@@ -389,17 +389,19 @@ export const StaggeredMenu = ({
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
           {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt="Logo"
-              className="sm-logo-img"
-              draggable={false}
-              width={110}
-              height={24}
-            />
+            <a href="#home" aria-label="Saliganti Sandeep — Home">
+              <img
+                src={logoUrl}
+                alt=""
+                className="sm-logo-img"
+                draggable={false}
+                width={40}
+                height={40}
+              />
+            </a>
           ) : (
             <a className="sm-logo-label" href="#home" aria-label="Back to top">
-              {logoLabel || "S"}
+              {logoLabel || "SA"}
             </a>
           )}
         </div>

@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import { getAbout } from "../../services/about";
-import AboutProfile from "./AboutProfile";
-import AboutSnapshot from "./AboutSnapshot";
-import AboutExperience from "./AboutExperience";
-import AboutEducation from "./AboutEducation";
-import AboutLife from "./AboutLife";
+import ProfileCard from "./ProfileCard";
+import EducationTimeline from "./EducationTimeline";
+import ExperienceTimeline from "./ExperienceTimeline";
+import HelloMark from "./HelloMark";
+import { getAbout, peekAbout } from "../../services/about";
+import { mockAbout } from "../../data/mockAbout";
 import "./AboutSection.css";
 
 function AboutSection() {
-  const [about, setAbout] = useState(null);
+  const [data, setData] = useState(() => peekAbout() || mockAbout);
 
   useEffect(() => {
     let alive = true;
 
     getAbout()
-      .then((data) => {
-        if (alive) setAbout(data);
+      .then((next) => {
+        if (alive && next) setData(next);
       })
       .catch((error) => {
-        console.warn("[about] Failed to load about data.", error.message);
+        console.warn("[about] Failed to load about.", error.message);
       });
 
     return () => {
@@ -26,26 +26,21 @@ function AboutSection() {
     };
   }, []);
 
-  if (!about) return null;
-
   return (
-    <section className="about" id="about" aria-label={about.title || "About"}>
+    <section className="about" id="about" aria-label={data.eyebrow || "About"}>
       <div className="about__inner">
-        <header className="about__header">
-          {about.eyebrow ? (
-            <p className="about__eyebrow">{about.eyebrow}</p>
-          ) : null}
-          {about.title ? <h2 className="about__title">{about.title}</h2> : null}
-        </header>
+        <div className="about__stack">
+          <ProfileCard data={data} />
 
-        <div className="about__intro">
-          <AboutProfile about={about} />
-          <AboutSnapshot about={about} />
+          <div className="about__timelines-wrap">
+            <HelloMark text={data.hello} asBackground />
+
+            <div className="about__timelines">
+              <EducationTimeline items={data.education} />
+              <ExperienceTimeline items={data.experience} />
+            </div>
+          </div>
         </div>
-
-        <AboutExperience about={about} />
-        <AboutEducation about={about} />
-        <AboutLife about={about} />
       </div>
     </section>
   );

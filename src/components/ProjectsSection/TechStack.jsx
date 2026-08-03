@@ -8,7 +8,7 @@
 
   Unknown names still render; icon/color fall back until CMS fills them in.
 */
-import { normalizeTech, techIconUrl } from "./techTone";
+import { normalizeTech, techIconUrl } from "../../utils/ProjectsSection/techTone";
 import "./TechStack.css";
 
 function TechStack({

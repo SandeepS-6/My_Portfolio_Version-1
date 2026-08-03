@@ -1,0 +1,227 @@
+/* Full-width horizontal photo section */
+.about-profile {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem 1.5rem 1.4rem;
+  border-radius: var(--about-radius-md, 0.5rem);
+  border: none;
+  overflow: hidden;
+  background: var(--color-surface);
+  box-shadow: 0 8px 28px var(--color-ink-a05);
+}
+
+.about-profile::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    radial-gradient(
+      70% 80% at 0% 0%,
+      var(--color-accent-a07),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      var(--color-surface) 0%,
+      var(--color-bg-soft) 100%
+    );
+  pointer-events: none;
+}
+
+.about-profile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.about-profile__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 0;
+}
+
+.about-profile__lead {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1 1 16rem;
+}
+
+.about-profile__identity {
+  min-width: 0;
+}
+
+.about-profile__photo {
+  width: 8rem;
+  height: 8rem;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: var(--about-radius-md, 0.5rem);
+  border: 2px solid var(--color-surface);
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    0 8px 20px var(--color-ink-a08);
+  background: var(--color-bg-soft);
+  transition: transform 0.28s ease;
+}
+
+.about-profile:hover .about-profile__photo {
+  transform: scale(1.03);
+}
+
+.about-profile__greeting {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.about-profile__name {
+  margin: 0 0 0.3rem;
+  font-size: clamp(1.2rem, 4.2vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.about-profile__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.about-profile__location {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-soft);
+}
+
+.about-profile__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  width: min(100%, 22rem);
+  flex: 0 1 18rem;
+  min-width: 0;
+}
+
+.about-profile__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .about-profile {
+    padding: 1.25rem 1.15rem 1.2rem;
+    gap: 1.1rem;
+  }
+
+  .about-profile__body {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .about-profile__actions {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .about-profile__photo {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-profile {
+    padding: 1.1rem 1rem 1.15rem;
+    gap: 1.1rem;
+    border-radius: 0.45rem;
+  }
+
+  .about-profile__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.15rem;
+  }
+
+  .about-profile__lead {
+    flex: 1 1 auto;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .about-profile__photo {
+    width: 7.25rem;
+    height: 7.25rem;
+  }
+
+  .about-profile__greeting {
+    font-size: 0.78rem;
+  }
+
+  .about-profile__name {
+    font-size: clamp(1.3rem, 6.5vw, 1.55rem);
+  }
+
+  .about-profile__title {
+    font-size: 1.02rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .about-profile__location {
+    font-size: 0.9rem;
+  }
+
+  .about-profile__actions {
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  /* Socials first, resume under them on mobile */
+  .about-profile__actions .about-socials {
+    order: 1;
+  }
+
+  .about-profile__actions .about-resume {
+    order: 2;
+  }
+
+  .about-profile__body {
+    gap: 1.1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-profile__photo {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+
+  .about-profile {
+    padding: 1rem 0.85rem 1.05rem;
+  }
+}

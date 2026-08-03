@@ -5,18 +5,18 @@ import ProjectFilters from "./ProjectFilters";
 import ProjectItem from "./ProjectItem";
 import ProjectsIntro from "./ProjectsIntro";
 import HiddenProjectsEgg from "./HiddenProjectsEgg";
-import { countByStatus, filterAndSortProjects } from "./projectFilter";
+import { countByStatus, filterAndSortProjects } from "../../utils/ProjectsSection/projectFilter";
 import {
   getProjectQuery,
   setProjectQuery,
   subscribeProjectQuery,
-} from "./projectSearchBus";
+} from "../../utils/ProjectsSection/projectSearchBus";
 import {
   filterIn,
   filterOut,
   revealCards,
   revealProgressBars,
-} from "./projectsMotion";
+} from "../../utils/ProjectsSection/projectsMotion";
 import "./ProjectsSection.css";
 
 function ProjectsSection() {

@@ -5,8 +5,7 @@ import { SmoothCursor } from "./components/SmoothCursor/SmoothCursor";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SiteOverlays from "./components/SiteOverlays/SiteOverlays";
 import { prefetchLetsTalk } from "./pages/prefetch";
-import { prefetchHero } from "./services/hero";
-import { prefetchFooter } from "./services/footer";
+import { waitHomeReady } from "./services/waitHomeReady";
 
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const LetsTalk = lazy(() => import("./pages/LetsTalk"));
@@ -24,15 +23,17 @@ function App() {
   const [showCursor, setShowCursor] = useState(skipLoad);
   const [heroReady, setHeroReady] = useState(skipLoad);
 
-  // Loading finishes only after hero + footer (socials) are ready
+  // Hold the curtain until the API is awake (not soft-fail / mock fallback)
   useEffect(() => {
     if (skipLoad) return undefined;
-    let alive = true;
-    Promise.all([prefetchHero(), prefetchFooter()]).finally(() => {
-      if (alive) setHeroReady(true);
+
+    const controller = new AbortController();
+    waitHomeReady(controller.signal).then((ok) => {
+      if (ok && !controller.signal.aborted) setHeroReady(true);
     });
+
     return () => {
-      alive = false;
+      controller.abort();
     };
   }, [skipLoad]);
 

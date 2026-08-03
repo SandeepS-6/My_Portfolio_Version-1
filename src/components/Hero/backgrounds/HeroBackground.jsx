@@ -1,4 +1,4 @@
-import { ACTIVE_HERO_BACKGROUND } from "./heroBackgrounds";
+import { ACTIVE_HERO_BACKGROUND } from "../../../utils/Hero/heroBackgrounds";
 import FloatingLinesBackground from "./FloatingLinesBackground";
 import MoonBackground from "./MoonBackground";
 import ForestBackground from "./ForestBackground";

@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import Dropdown from "../Dropdown/Dropdown";
-import { searchSuggestions } from "./projectFilter";
+import { searchSuggestions } from "../../utils/ProjectsSection/projectFilter";
 import "./ProjectFilters.css";
 
 const RECENT_KEY = "portfolio-project-searches";

@@ -27,6 +27,9 @@ function Button({
   href = "#",
   type = "button",
   onClick,
+  download,
+  target,
+  rel,
 }) {
   const className = `btn btn--${variant}`;
 
@@ -44,7 +47,13 @@ function Button({
 
   if (asLink) {
     return (
-      <a className={className} href={href}>
+      <a
+        className={className}
+        href={href}
+        download={download || undefined}
+        target={target}
+        rel={rel}
+      >
         {content}
       </a>
     );

@@ -6,7 +6,7 @@ import {
   getProjectQuery,
   setProjectQuery,
   subscribeProjectQuery,
-} from "../ProjectsSection/projectSearchBus";
+} from "../../utils/ProjectsSection/projectSearchBus";
 import "./MobileSideMenu.css";
 
 const LAYER_COLORS = ["#f17a32", "#2a2a32"];
@@ -60,7 +60,8 @@ function MobileSideMenu({
   visible = false,
   menuItems = [],
   activeSection,
-  initials = "S",
+  initials = "SA",
+  logoUrl = "/brand/sa-mark.svg",
 }) {
   const [socialItems, setSocialItems] = useState([]);
 
@@ -119,6 +120,7 @@ function MobileSideMenu({
           socialItems={socialItems}
           displaySocials={socialItems.length > 0}
           displayItemNumbering
+          logoUrl={logoUrl}
           logoLabel={initials}
           menuButtonColor="#2a2a32"
           openMenuButtonColor="#2a2a32"

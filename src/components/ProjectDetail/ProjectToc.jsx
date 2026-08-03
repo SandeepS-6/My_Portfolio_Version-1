@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronDown, List, X } from "lucide-react";
-import { CASE_SECTIONS, scrollToSection } from "./caseStudyNav";
+import { CASE_SECTIONS, scrollToSection } from "../../utils/ProjectDetail/caseStudyNav";
 import ProjectSwitcher from "./ProjectSwitcher";
 import "./ProjectToc.css";
 import "./ProjectInfoPanel.css";

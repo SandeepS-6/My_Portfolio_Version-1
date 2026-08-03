@@ -6,7 +6,7 @@ import {
   showsHeroCopy,
   showsSkillBadges,
   isDarkHeroStage,
-} from "./backgrounds/heroBackgrounds";
+} from "../../utils/Hero/heroBackgrounds";
 import SkillBadge from "../SkillBadge/SkillBadge";
 import { getSkills } from "../../services/skills";
 import {
@@ -14,7 +14,7 @@ import {
   updateBadgeMotion,
   resolveBadgeCollisions,
   applyBadgeTransform,
-} from "./badgeMotion";
+} from "../../utils/Hero/badgeMotion";
 import "./Hero.css";
 
 // Copy for recruiters on default / floating-lines; pure 3D ids use Hi + canvas.

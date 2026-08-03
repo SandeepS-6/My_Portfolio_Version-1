@@ -11,10 +11,14 @@ import ContactSection from "../components/ContactSection/ContactSection";
 import { useScrollGap } from "../hooks/useScrollGap";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { useElementOnScreen } from "../hooks/useElementOnScreen";
-import { isDarkHeroStage } from "../components/Hero/backgrounds/heroBackgrounds";
+import { isDarkHeroStage } from "../utils/Hero/heroBackgrounds";
 import { getHero } from "../services/hero";
 import { getSettings, peekSettings } from "../services/settings";
+import { getFooter, peekFooter } from "../services/footer";
+import { mediaUrl } from "../utils/mediaUrl";
 import "./Home.css";
+
+const DEFAULT_LOGO = "/brand/sa-mark.svg";
 
 const BASE_SECTIONS = [
   {
@@ -82,6 +86,10 @@ function Home() {
 
   const [settings, setSettings] = useState(() => peekSettings());
   const [sections, setSections] = useState(BASE_SECTIONS);
+  const [logoUrl, setLogoUrl] = useState(() => {
+    const footer = peekFooter();
+    return mediaUrl(footer?.logo) || DEFAULT_LOGO;
+  });
 
   const visibleSections = useMemo(() => {
     if (!settings) return BASE_SECTIONS;
@@ -138,6 +146,14 @@ function Home() {
         console.warn("[home] Failed to load hero for sidebar.", error.message);
       });
 
+    getFooter()
+      .then((footer) => {
+        if (!alive) return;
+        const next = mediaUrl(footer?.logo);
+        if (next) setLogoUrl(next);
+      })
+      .catch(() => {});
+
     return () => {
       alive = false;
     };
@@ -150,13 +166,13 @@ function Home() {
 
   const initials = (() => {
     const home = menuItems.find((section) => section.id === "home");
-    const parts = String(home?.label || "S")
+    const parts = String(home?.label || "Saliganti Sandeep")
       .split(/\s+/)
       .filter(Boolean);
     if (parts.length >= 2) {
       return `${parts[0][0] || ""}${parts[1][0] || ""}`.toUpperCase();
     }
-    return (parts[0]?.[0] || "S").toUpperCase();
+    return (parts[0]?.slice(0, 2) || "SA").toUpperCase();
   })();
 
   if (settings?.maintenanceMode) {
@@ -185,12 +201,14 @@ function Home() {
         visible={sidebarVisible}
         activeSection={activeSection}
         menuItems={menuItems}
+        logoUrl={logoUrl}
         initials={initials}
       />
       <MobileSideMenu
         visible={sidebarVisible}
         menuItems={menuItems}
         activeSection={activeSection}
+        logoUrl={logoUrl}
         initials={initials}
       />
 

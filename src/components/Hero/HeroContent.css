@@ -152,7 +152,7 @@
 .hero-rule {
   position: absolute;
   left: var(--hero-line-left, 45%);
-  top: var(--hero-line-top, 0px);
+  top: var(--hero-line-top, 338px);
   right: 0;
   display: flex;
   align-items: baseline;

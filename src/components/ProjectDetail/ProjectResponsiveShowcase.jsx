@@ -1,3 +1,5 @@
+import { mediaUrl } from "../../utils/mediaUrl";
+
 function ProjectResponsiveShowcase({ showcase = {} }) {
   const frames = [
     { key: "desktop", label: "Desktop", image: showcase.desktop, ratio: "16 / 10" },
@@ -28,7 +30,7 @@ function ProjectResponsiveShowcase({ showcase = {} }) {
               style={{ aspectRatio: frame.ratio }}
             >
               <img
-                src={frame.image.src}
+                src={mediaUrl(frame.image.src)}
                 alt={frame.image.alt || frame.label}
                 loading="lazy"
                 decoding="async"

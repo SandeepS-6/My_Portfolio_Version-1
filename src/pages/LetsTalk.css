@@ -26,7 +26,9 @@
 }
 
 .contact-page__top,
-.contact-page__body {
+.contact-page__intro,
+.contact-page__booking,
+.contact-page__socials {
   position: relative;
   z-index: 1;
 }
@@ -37,7 +39,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: clamp(1rem, 2.8vh, 1.75rem);
+  margin-bottom: clamp(0.85rem, 2vh, 1.25rem);
   animation: contact-page-in 0.5s ease both;
 }
 
@@ -82,24 +84,34 @@
   color: var(--color-contact-text);
 }
 
-.contact-page__body {
+.contact-page__intro {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 36rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.5rem);
+  animation: contact-page-in 0.6s ease 0.06s both;
+}
+
+.contact-page__booking {
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.15fr);
+  grid-template-columns: minmax(320px, 1.15fr) minmax(260px, 24rem);
   gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: stretch;
   width: 100%;
   max-width: 1180px;
+  margin-inline: auto;
 }
 
-.contact-page__intro {
+.contact-page__fields {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   min-height: 0;
-  overflow: auto;
-  padding-right: 0.25rem;
-  animation: contact-page-in 0.6s ease 0.06s both;
+  align-self: stretch;
+  overflow: hidden;
 }
 
 .contact-page__eyebrow {
@@ -164,11 +176,23 @@
 }
 
 .contact-page__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  margin-top: 0;
+  max-width: none;
+}
+
+.contact-page__form-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.85rem 0.9rem;
-  margin-top: 1.25rem;
-  max-width: 24rem;
+  align-content: start;
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
 }
 
 .contact-page__form-kicker {
@@ -239,12 +263,12 @@
 }
 
 .contact-page__submit {
-  justify-self: start;
-  grid-column: 1 / -1;
-  margin-top: 0.15rem;
+  flex: 0 0 auto;
+  align-self: flex-end;
+  margin-top: auto;
   padding: 0.85rem 1.5rem;
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: 0.625rem;
   background: var(--color-surface);
   color: var(--color-text);
   font: inherit;
@@ -268,8 +292,17 @@
 }
 
 .contact-page__success {
-  margin-top: 1.25rem;
-  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 100%;
+  margin-top: 0;
+  max-width: none;
+}
+
+.contact-page__success .contact-page__submit {
+  margin-top: auto;
+  align-self: flex-end;
 }
 
 .contact-page__success-title {
@@ -285,11 +318,12 @@
 }
 
 .contact-page__socials {
+  flex: 0 0 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem;
-  margin-top: auto;
-  padding-top: 1.25rem;
+  margin-top: clamp(0.85rem, 2vh, 1.25rem);
+  padding-top: 0;
 }
 
 .contact-page__socials a {
@@ -310,13 +344,97 @@
   min-width: 0;
   min-height: 0;
   height: 100%;
+  max-height: 100%;
   display: flex;
+  overflow: hidden;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  border-radius: 1.15rem;
+  background: #fff;
+  color: #1a1a1a;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
   animation: contact-page-in 0.65s ease 0.12s both;
 }
 
 .contact-page__panel > .meeting-scheduler {
   flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
+  color: #1a1a1a;
+  background: #fff;
+}
+
+/* Light-theme overrides so Meet UI stays readable on white */
+.contact-page__panel .meeting-scheduler__title,
+.contact-page__panel .meeting-scheduler__host-email,
+.contact-page__panel .meeting-scheduler__meta,
+.contact-page__panel .meeting-scheduler__chip,
+.contact-page__panel .meeting-scheduler__month-nav button,
+.contact-page__panel .meeting-scheduler__hour-toggle button,
+.contact-page__panel .meeting-scheduler__weekdays span,
+.contact-page__panel .meeting-scheduler__empty {
+  color: #6b6b73;
+}
+
+.contact-page__panel .meeting-scheduler__host-name,
+.contact-page__panel .meeting-scheduler__month-bar p,
+.contact-page__panel .meeting-scheduler__slots-head p,
+.contact-page__panel .meeting-scheduler__cell,
+.contact-page__panel .meeting-scheduler__slot {
+  color: #1a1a1a;
+}
+
+.contact-page__panel .meeting-scheduler__pick {
+  border-top-color: rgba(26, 26, 32, 0.12);
+}
+
+.contact-page__panel .meeting-scheduler__slots {
+  border-left-color: rgba(26, 26, 32, 0.12);
+}
+
+.contact-page__panel .meeting-scheduler__chip,
+.contact-page__panel .meeting-scheduler__month-nav button,
+.contact-page__panel .meeting-scheduler__hour-toggle,
+.contact-page__panel .meeting-scheduler__slot {
+  border-color: rgba(26, 26, 32, 0.16);
+}
+
+.contact-page__panel .meeting-scheduler__cell {
+  background: #f2f2f4;
+}
+
+.contact-page__panel .meeting-scheduler__cell--empty,
+.contact-page__panel .meeting-scheduler__cell--disabled {
+  background: transparent;
+}
+
+.contact-page__panel .meeting-scheduler__cell--disabled {
+  color: rgba(26, 26, 32, 0.28);
+}
+
+.contact-page__panel .meeting-scheduler__chip--active,
+.contact-page__panel .meeting-scheduler__chip:hover,
+.contact-page__panel .meeting-scheduler__cell--selected,
+.contact-page__panel .meeting-scheduler__hour-toggle button.is-active,
+.contact-page__panel .meeting-scheduler__slot:hover,
+.contact-page__panel .meeting-scheduler__slot--selected {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+
+.contact-page__panel .meeting-scheduler__slot--booked,
+.contact-page__panel .meeting-scheduler__slot--booked:hover {
+  opacity: 0.55;
+  border-color: rgba(26, 26, 32, 0.16);
+  background: transparent;
+  color: rgba(26, 26, 32, 0.45);
+}
+
+.contact-page__panel .meeting-scheduler__host-email:hover,
+.contact-page__panel .meeting-scheduler__month-nav button:hover,
+.contact-page__panel .meeting-scheduler__hour-toggle button:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 @keyframes contact-page-in {
@@ -337,8 +455,14 @@
     overflow: auto;
   }
 
-  .contact-page__body {
-    grid-template-columns: 1fr;
+  .contact-page__booking {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-content: start;
+  }
+
+  .contact-page__panel {
+    min-height: 22rem;
+    height: auto;
   }
 
   .contact-page__socials {
@@ -349,6 +473,21 @@
   .contact-page__detail,
   .contact-page__meeting-note {
     max-width: none;
+  }
+
+  .contact-page__intro {
+    max-width: none;
+  }
+
+  .contact-page__panel .meeting-scheduler__slots {
+    border-left: none;
+    border-top: 1px solid rgba(26, 26, 32, 0.12);
+  }
+}
+
+@media (max-width: 700px) {
+  .contact-page__booking {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -361,7 +500,7 @@
     text-align: left;
   }
 
-  .contact-page__form {
+  .contact-page__form-body {
     grid-template-columns: 1fr;
   }
 }

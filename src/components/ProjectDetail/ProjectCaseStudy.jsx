@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Eye } from "lucide-react";
-import { kindTone } from "../ProjectsSection/projectFilter";
+import { kindTone } from "../../utils/ProjectsSection/projectFilter";
 import TechStack from "../ProjectsSection/TechStack";
 import ProjectGallery from "./ProjectGallery";
 import ProjectResponsiveShowcase from "./ProjectResponsiveShowcase";
 import ProjectComments from "./ProjectComments";
 import ProjectRelated from "./ProjectRelated";
+import { mediaUrl } from "../../utils/mediaUrl";
 import "./ProjectCaseStudy.css";
 import "./ProjectResponsiveShowcase.css";
 
@@ -51,7 +52,7 @@ function ProjectCaseStudy({
 
       <div className="pd-case__cover">
         <img
-          src={project.image?.src}
+          src={mediaUrl(project.image?.src)}
           alt={project.image?.alt || project.name}
           fetchPriority="high"
           decoding="async"

@@ -2,13 +2,11 @@
   position: fixed;
   inset: 0;
   z-index: 90; /* above the page, below the custom cursor (100) */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  padding: 0 1.5rem;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
   background: var(--color-bg);
+  font-family: var(--font-sans);
 }
 
 /*
@@ -29,32 +27,53 @@ html[data-loading-vt="active"]::view-transition-group(root) {
   animation-duration: var(--loading-vt-duration);
 }
 
-/* --- Sentence --- */
-.loading-screen__sentence {
+/* --- Centered rotating messages --- */
+.loading-screen__message {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0 0.55ch;
-  max-width: 28ch;
-  min-height: 2.2em; /* keep layout steady while phrases wrap */
   align-content: center;
+  gap: 0 0.55ch;
+  margin: 0;
+  max-width: min(28ch, 88vw);
+  min-height: 2.6em;
   text-align: center;
-  font-size: clamp(1.6rem, 4.2vw, 2.6rem);
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 4.4vw, 2.5rem);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.3;
-}
-
-.loading-screen__tail {
   color: var(--color-text);
-  animation: loading-tail-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  -webkit-font-smoothing: antialiased;
 }
 
-.loading-screen__tail--leaving {
-  animation: loading-tail-out 0.38s ease both;
+.loading-screen__text {
+  display: inline-block;
+  animation: loading-text-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes loading-tail-in {
+.loading-screen__text--leaving {
+  animation: loading-text-out 0.38s ease both;
+}
+
+/* --- Bottom-right percent (reference-scale) --- */
+.loading-screen__percent {
+  position: absolute;
+  right: clamp(1.25rem, 4vw, 2.25rem);
+  bottom: clamp(1.25rem, 4vw, 2.25rem);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(2.15rem, 6.5vw, 3.75rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  animation: loading-percent-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+@keyframes loading-text-in {
   from {
     opacity: 0;
     filter: blur(10px);
@@ -67,59 +86,64 @@ html[data-loading-vt="active"]::view-transition-group(root) {
   }
 }
 
-@keyframes loading-tail-out {
+@keyframes loading-text-out {
   from {
     opacity: 1;
     filter: blur(0);
     transform: translateY(0);
   }
-  to {
+  to {  
     opacity: 0;
     filter: blur(10px);
     transform: translateY(-16px);
   }
 }
 
-/* --- Progress --- */
-.loading-screen__progress {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.55rem;
-  width: min(420px, 72vw);
+@keyframes loading-percent-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.loading-screen__line {
-  width: 100%;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--color-border);
-  overflow: hidden;
+/* Phone */
+@media (max-width: 640px) {
+  .loading-screen {
+    padding: 1.1rem;
+  }
+
+  .loading-screen__message {
+    max-width: 16ch;
+    font-size: clamp(1.25rem, 6.2vw, 1.7rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .loading-screen__percent {
+    right: 1.1rem;
+    bottom: 1.1rem;
+    font-size: clamp(1.9rem, 9vw, 2.6rem);
+  }
 }
 
-.loading-screen__line-fill {
-  height: 100%;
-  border-radius: 2px;
-  background: var(--color-accent);
-  transition: width 0.15s linear;
-}
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .loading-screen__message {
+    max-width: 22ch;
+    font-size: clamp(1.55rem, 3.4vw, 2.1rem);
+  }
 
-.loading-screen__percent {
-  margin: 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
+  .loading-screen__percent {
+    font-size: clamp(2.4rem, 5vw, 3.25rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loading-screen__tail,
-  .loading-screen__tail--leaving {
+  .loading-screen__text,
+  .loading-screen__text--leaving,
+  .loading-screen__percent {
     animation: none;
-  }
-
-  .loading-screen__line-fill {
-    transition: none;
   }
 }

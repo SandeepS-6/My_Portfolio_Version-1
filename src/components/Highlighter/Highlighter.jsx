@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import { bindScrollHighlight } from "./highlighterMotion";
+import { bindScrollHighlight } from "../../utils/Highlighter/highlighterMotion";
 import "./Highlighter.css";
 
 /*

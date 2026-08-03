@@ -16,14 +16,9 @@ function SiteOverlays() {
     setBannerHeight(visible ? height : 0);
   }, []);
 
-  function handleFabClick(_event, meta = {}) {
-    // Only the footer-docked Let's Talk opens the contact page
-    if (meta.docked) {
-      prefetchLetsTalk();
-      navigate("/lets-talk");
-      return;
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  function openLetsTalk() {
+    prefetchLetsTalk();
+    navigate("/lets-talk");
   }
 
   return (
@@ -32,7 +27,8 @@ function SiteOverlays() {
       {!onContactPage && (
         <FloatingActionButton
           key={onProjectDetail ? "fab-project" : "fab-default"}
-          onClick={handleFabClick}
+          onClick={openLetsTalk}
+          onHintClick={openLetsTalk}
           label="Let's talk"
           contactSectionId="contact"
           className={onProjectDetail ? "fab--project-detail" : ""}
