@@ -1,21 +1,27 @@
 .contact-page {
   position: relative;
   isolation: isolate;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100svh;
   height: 100svh;
   max-height: 100svh;
   overflow: hidden;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   padding: clamp(1rem, 2.4vh, 1.6rem) clamp(1.15rem, 3.2vw, 2.5rem)
     clamp(1rem, 2.4vh, 1.6rem);
   background: var(--color-contact-bg);
   color: var(--color-contact-text);
+  box-sizing: border-box;
 }
 
 .contact-page__glow {
   position: absolute;
-  inset: auto -8% -22% 38%;
+  inset: auto 0 -22% 30%;
   height: 58%;
+  max-width: 100%;
   z-index: 0;
   pointer-events: none;
   background: radial-gradient(
@@ -97,11 +103,11 @@
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(320px, 1.15fr) minmax(260px, 24rem);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 24rem);
   gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: stretch;
   width: 100%;
-  max-width: 1180px;
+  max-width: min(1180px, 100%);
   margin-inline: auto;
 }
 
@@ -131,6 +137,8 @@
   letter-spacing: -0.05em;
   text-transform: uppercase;
   color: var(--color-contact-text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contact-page__note {
@@ -454,7 +462,8 @@
     height: auto;
     max-height: none;
     min-height: 100svh;
-    overflow: auto;
+    overflow: visible;
+    overflow-x: clip;
   }
 
   .contact-page__booking {
@@ -463,16 +472,30 @@
 
   .contact-page__panel {
     min-height: 26rem;
+    overflow: visible;
   }
 }
 
-/* Tablet / narrow desktop */
+/* Tablet / phone: document scroll, no nested lock */
 @media (max-width: 900px) {
   .contact-page {
-    height: auto;
-    max-height: none;
-    overflow: auto;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 100svh;
+    overflow: visible !important;
+    overflow-x: clip !important;
     padding: 1.15rem 1.2rem 1.35rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-page__glow {
+    inset: auto 0 -18% 10%;
+  }
+
+  .contact-page__top,
+  .contact-page__intro,
+  .contact-page__panel {
+    animation: none;
   }
 
   .contact-page__intro {
@@ -491,15 +514,19 @@
   }
 
   .contact-page__booking {
-    grid-template-columns: 1fr;
+    flex: 0 0 auto;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.35rem;
     align-content: start;
+    width: 100%;
+    max-width: 100%;
   }
 
   .contact-page__panel {
-    min-height: 24rem;
+    min-height: 0;
     height: auto;
     max-height: none;
+    overflow: visible;
   }
 
   .contact-page__fields {
@@ -548,6 +575,8 @@
 
   .contact-page__meta {
     text-align: left;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .contact-page__email {
@@ -557,6 +586,7 @@
 
   .contact-page__intro {
     margin-bottom: 1rem;
+    min-width: 0;
   }
 
   .contact-page__eyebrow {
@@ -565,7 +595,7 @@
   }
 
   .contact-page__title {
-    font-size: clamp(2.35rem, 13vw, 3.25rem);
+    font-size: clamp(2.2rem, 12vw, 3rem);
   }
 
   .contact-page__note {
@@ -591,6 +621,8 @@
     min-height: 0;
     padding: 0.9rem;
     border-radius: 1rem;
+    width: 100%;
+    max-width: 100%;
   }
 
   .contact-page__form-body {

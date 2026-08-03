@@ -23,6 +23,10 @@ function LetsTalk() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     let alive = true;
 
     getContactPage()
