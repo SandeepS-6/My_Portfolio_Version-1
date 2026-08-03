@@ -505,6 +505,11 @@
     margin-bottom: 1.15rem;
   }
 
+  .contact-page__detail,
+  .contact-page__availability {
+    display: none !important;
+  }
+
   .contact-page__title {
     font-size: clamp(2.6rem, 11vw, 4.25rem);
   }
@@ -586,10 +591,6 @@
     word-break: break-all;
   }
 
-  .contact-page__detail {
-    display: none;
-  }
-
   .contact-page__intro {
     margin-bottom: 1rem;
     min-width: 0;
@@ -609,7 +610,6 @@
     font-size: 0.95rem;
   }
 
-  .contact-page__detail,
   .contact-page__meeting-note {
     margin-top: 0.65rem;
     font-size: 0.9rem;
