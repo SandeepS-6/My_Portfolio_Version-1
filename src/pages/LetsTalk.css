@@ -19,11 +19,12 @@
 
 .contact-page__glow {
   position: absolute;
-  inset: auto 0 -22% 30%;
-  height: 58%;
+  inset: auto 0 0 30%;
+  height: 45%;
   max-width: 100%;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
   background: radial-gradient(
     ellipse at center,
     var(--color-accent-a18),
@@ -482,14 +483,15 @@
     height: auto !important;
     max-height: none !important;
     min-height: 100svh;
-    overflow: visible !important;
-    overflow-x: clip !important;
+    /* clip absolute glow so it cannot create light page scroll below */
+    overflow: clip !important;
     padding: 1.15rem 1.2rem 1.35rem;
     -webkit-overflow-scrolling: touch;
   }
 
   .contact-page__glow {
-    inset: auto 0 -18% 10%;
+    inset: auto 0 0 8%;
+    height: 38%;
   }
 
   .contact-page__top,

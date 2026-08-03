@@ -27,6 +27,15 @@ function LetsTalk() {
   }, []);
 
   useEffect(() => {
+    const body = document.body;
+    const prev = body.style.background;
+    body.style.background = "var(--color-contact-bg)";
+    return () => {
+      body.style.background = prev;
+    };
+  }, []);
+
+  useEffect(() => {
     let alive = true;
 
     getContactPage()
