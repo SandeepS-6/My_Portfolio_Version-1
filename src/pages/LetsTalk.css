@@ -506,7 +506,8 @@
   }
 
   .contact-page__detail,
-  .contact-page__availability {
+  .contact-page__availability,
+  .contact-page__email {
     display: none !important;
   }
 
